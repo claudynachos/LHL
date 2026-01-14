@@ -1,5 +1,5 @@
 """Game simulation and scheduling service"""
-from app import db
+from extensions import db
 from models.simulation import Simulation
 from models.team import Team
 from models.game import Game, PlayerStat, Standing

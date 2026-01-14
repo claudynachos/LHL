@@ -7,7 +7,7 @@ def admin_required():
     """Decorator to check if user is admin"""
     from models.user import User
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get(user_id)
     if not user or not user.is_admin:
         return jsonify({'error': 'Admin access required'}), 403
@@ -33,7 +33,7 @@ def list_users():
 @jwt_required()
 def delete_user(user_id):
     """Delete a user (admin only)"""
-    from app import db
+    from extensions import db
     from models.user import User
     
     error = admin_required()

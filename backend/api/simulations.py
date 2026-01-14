@@ -8,12 +8,12 @@ bp = Blueprint('simulations', __name__)
 @jwt_required()
 def create_simulation():
     """Create a new simulation"""
-    from app import db
+    from extensions import db
     from models.simulation import Simulation
     from models.team import Team
     from services.league_service import initialize_league
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())  # Convert string identity back to int
     data = request.get_json()
     
     if not data or not data.get('year_length') or not data.get('num_teams'):
@@ -61,7 +61,7 @@ def get_simulation(simulation_id):
     from models.simulation import Simulation
     from models.team import Team
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     simulation = Simulation.query.get(simulation_id)
     
     if not simulation:
@@ -83,7 +83,7 @@ def list_simulations():
     """List user's simulations"""
     from models.simulation import Simulation
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     simulations = Simulation.query.filter_by(user_id=user_id).order_by(Simulation.created_at.desc()).all()
     
     return jsonify({
@@ -96,7 +96,7 @@ def make_draft_pick(simulation_id):
     """Make a draft pick"""
     from models.simulation import Simulation
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     simulation = Simulation.query.get(simulation_id)
     
     if not simulation or simulation.user_id != user_id:
@@ -112,13 +112,56 @@ def make_draft_pick(simulation_id):
     
     return jsonify(result), 200
 
+@bp.route('/<int:simulation_id>/draft/current', methods=['GET'])
+@jwt_required()
+def get_current_draft_pick(simulation_id):
+    """Get current draft pick info"""
+    from models.simulation import Simulation
+    from models.team import Team
+    
+    user_id = int(get_jwt_identity())
+    simulation = Simulation.query.get(simulation_id)
+    
+    if not simulation or simulation.user_id != user_id:
+        return jsonify({'error': 'Simulation not found or unauthorized'}), 404
+    
+    if simulation.status != 'draft':
+        return jsonify({'error': 'Draft not in progress', 'draft_complete': True}), 200
+    
+    # Get draft state from simulation
+    teams = Team.query.filter_by(simulation_id=simulation_id).order_by(Team.id).all()
+    num_teams = len(teams)
+    
+    # Calculate current pick (simplified - assumes snake draft)
+    current_pick = simulation.draft_pick or 1
+    total_picks = num_teams * 20  # 20 players per team roster
+    
+    # Determine which team is picking
+    round_num = ((current_pick - 1) // num_teams) + 1
+    pick_in_round = ((current_pick - 1) % num_teams)
+    
+    # Snake draft: reverse order in even rounds
+    if round_num % 2 == 0:
+        pick_in_round = num_teams - 1 - pick_in_round
+    
+    picking_team = teams[pick_in_round] if pick_in_round < len(teams) else teams[0]
+    
+    return jsonify({
+        'round': round_num,
+        'pick': current_pick,
+        'total_picks': total_picks,
+        'team_id': picking_team.id,
+        'team_name': f"{picking_team.city} {picking_team.name}",
+        'is_user_team': picking_team.user_controlled
+    }), 200
+
 @bp.route('/<int:simulation_id>/simulate-to-playoffs', methods=['POST'])
 @jwt_required()
 def simulate_to_playoffs(simulation_id):
     """Simulate games until playoffs"""
     from models.simulation import Simulation
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     simulation = Simulation.query.get(simulation_id)
     
     if not simulation or simulation.user_id != user_id:
@@ -135,7 +178,7 @@ def simulate_playoff_round(simulation_id):
     """Simulate a playoff round"""
     from models.simulation import Simulation
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     simulation = Simulation.query.get(simulation_id)
     
     if not simulation or simulation.user_id != user_id:
@@ -155,7 +198,7 @@ def simulate_full_season(simulation_id):
     """Simulate entire season including playoffs"""
     from models.simulation import Simulation
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     simulation = Simulation.query.get(simulation_id)
     
     if not simulation or simulation.user_id != user_id:

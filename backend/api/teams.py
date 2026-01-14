@@ -7,7 +7,7 @@ bp = Blueprint('teams', __name__)
 @jwt_required()
 def get_team(team_id):
     """Get team details"""
-    from app import db
+    from extensions import db
     from models.team import Team, Roster, LineAssignment
     from models.player import Player
     
@@ -34,7 +34,7 @@ def get_team(team_id):
 @jwt_required()
 def get_roster(team_id):
     """Get team roster"""
-    from app import db
+    from extensions import db
     from models.team import Team, Roster
     from models.player import Player
     
@@ -55,11 +55,11 @@ def get_roster(team_id):
 @jwt_required()
 def manage_lines(team_id):
     """Get or update team lines"""
-    from app import db
+    from extensions import db
     from models.team import Team, LineAssignment
     from models.simulation import Simulation
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     team = Team.query.get(team_id)
     
     if not team:
@@ -104,11 +104,11 @@ def manage_lines(team_id):
 @jwt_required()
 def sign_free_agent(team_id):
     """Sign a free agent player"""
-    from app import db
+    from extensions import db
     from models.team import Team, Roster
     from models.simulation import Simulation
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     team = Team.query.get(team_id)
     
     if not team:

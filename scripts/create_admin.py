@@ -8,7 +8,8 @@ import os
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
-from app import app, db
+from app import app
+from extensions import db
 from models.user import User
 
 def create_admin():

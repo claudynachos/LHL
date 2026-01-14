@@ -27,8 +27,8 @@ export default function DraftPage() {
       const simResponse = await api.get(`/api/simulations/${simulationId}`);
       setTeams(simResponse.data.teams);
 
-      // Load all players
-      const playersResponse = await api.get('/api/players');
+      // Load all players (trailing slash required)
+      const playersResponse = await api.get('/api/players/');
       setAvailablePlayers(playersResponse.data.players || []);
 
       // Get current pick info

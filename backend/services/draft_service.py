@@ -1,5 +1,5 @@
 """Draft service for handling snake draft logic"""
-from app import db
+from extensions import db
 from models.team import Team, Roster
 from models.player import Player, Coach
 import random

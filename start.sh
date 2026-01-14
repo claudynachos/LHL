@@ -42,8 +42,14 @@ echo -e "Run ${BLUE}python3 scripts/seed_database.py${NC} if you haven't already
 echo ""
 
 # Start both servers
+BACKEND_PORT=5000
+if lsof -nP -iTCP:${BACKEND_PORT} -sTCP:LISTEN >/dev/null 2>&1; then
+    echo -e "${YELLOW}Port ${BACKEND_PORT} is in use. Switching backend to 5001...${NC}"
+    BACKEND_PORT=5001
+fi
+
 echo -e "${GREEN}Starting servers...${NC}"
-echo -e "  Backend will run on: ${BLUE}http://localhost:5000${NC}"
+echo -e "  Backend will run on: ${BLUE}http://localhost:${BACKEND_PORT}${NC}"
 echo -e "  Frontend will run on: ${BLUE}http://localhost:3000${NC}"
 echo ""
 echo -e "${YELLOW}Press Ctrl+C to stop all servers${NC}"
@@ -62,7 +68,7 @@ trap cleanup SIGINT SIGTERM
 # Start backend
 cd backend
 source venv/bin/activate
-python app.py &
+PORT=${BACKEND_PORT} python -m app &
 BACKEND_PID=$!
 cd ..
 
@@ -71,7 +77,7 @@ sleep 2
 
 # Start frontend
 cd frontend
-npm run dev &
+NEXT_PUBLIC_API_URL="http://localhost:${BACKEND_PORT}" npm run dev &
 FRONTEND_PID=$!
 cd ..
 

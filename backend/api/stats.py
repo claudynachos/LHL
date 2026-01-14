@@ -8,7 +8,7 @@ bp = Blueprint('stats', __name__)
 @jwt_required()
 def get_season_stats(simulation_id):
     """Get current season stats"""
-    from app import db
+    from extensions import db
     from models.game import PlayerStat
     from models.player import Player
     from models.team import Team
@@ -63,7 +63,7 @@ def get_season_stats(simulation_id):
 @jwt_required()
 def get_alltime_stats(simulation_id):
     """Get all-time stats across all seasons"""
-    from app import db
+    from extensions import db
     from models.game import PlayerStat
     from models.player import Player
     from models.team import Team
@@ -105,7 +105,7 @@ def get_alltime_stats(simulation_id):
 @jwt_required()
 def get_standings(simulation_id):
     """Get league standings"""
-    from app import db
+    from extensions import db
     from models.game import Standing
     from models.team import Team
     

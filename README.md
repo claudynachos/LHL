@@ -1,293 +1,116 @@
 # Legend Hockey League (LHL)
 
-A web-based hockey simulation game featuring historical NHL legends. Draft teams and simulate 20-25 year seasons with detailed statistics tracking.
+A hockey simulation game where you draft teams of NHL legends and simulate epic 20-25 year seasons.
 
 ## Features
 
-- **Draft System**: Snake draft with 20 players + 1 coach per team
-- **Simulation Engine**: Rust-powered game simulation with realistic NHL statistics
-- **Multiple League Sizes**: 4, 6, 8, 10, or 12 teams
-- **Detailed Stats**: Track goals, assists, hits, blocks, +/-, and more
-- **Lines Configuration**: Customize your forward lines, defense pairs, and goalies
-- **Multi-Season Support**: Simulate 20-25 year dynasties
-- **Admin Panel**: User management and analytics dashboard
+- **Draft System**: Snake draft format to build your dream team of hockey legends
+- **Season Simulation**: Simulate full seasons with realistic game outcomes
+- **Playoff System**: Compete for the championship through bracket-style playoffs
+- **Player Stats**: Track individual player performance across seasons
+- **Team Management**: Configure lines and strategy for your team
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14 with TypeScript, TailwindCSS
-- **Backend**: Python Flask with SQLAlchemy
-- **Simulation**: Rust (compiled binary)
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend**: Flask, SQLAlchemy, Flask-JWT-Extended
 - **Database**: PostgreSQL
-- **Authentication**: JWT tokens
-- **Deployment**: Vercel
+
+## Prerequisites
+
+- Python 3.11+
+- Node.js 18+
+- PostgreSQL 15+ (running locally)
+
+## Quick Start
+
+### 1. Setup PostgreSQL Database
+
+```bash
+# Create the database
+createdb -U postgres lhl_db
+```
+
+### 2. Configure Environment
+
+Create `backend/.env`:
+
+```
+DATABASE_URL=postgresql://postgres@localhost/lhl_db
+JWT_SECRET_KEY=your-secret-key-here
+CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+```
+
+### 3. Install Dependencies & Seed Database
+
+```bash
+# Backend
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Create tables
+python -c "from app import app; from extensions import db; app.app_context().push(); db.create_all()"
+
+# Seed player data
+cd ..
+python scripts/seed_database.py
+
+# Frontend
+cd frontend
+npm install
+```
+
+### 4. Run the Application
+
+```bash
+# From project root
+bash start.sh
+```
+
+The app will be available at:
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5001
+
+## Usage
+
+1. **Register/Login**: Create an account or log in
+2. **Create Simulation**: Choose simulation length (20-25 years) and number of teams (4-12)
+3. **Draft**: Select players in snake draft format to build your roster
+4. **Simulate**: Watch your team compete through seasons and playoffs
+5. **Track Stats**: View player and team statistics
 
 ## Project Structure
 
 ```
-lhl/
-├── frontend/              # Next.js application
-│   ├── app/              # App router pages
-│   ├── components/       # React components
-│   └── lib/             # API clients and utilities
-├── backend/              # Flask API
-│   ├── api/             # Route handlers
-│   ├── models/          # SQLAlchemy models
-│   └── services/        # Business logic
-├── simulation/           # Rust simulation engine
-│   └── src/             # Rust source code
-├── data/                # Player/coach data
-└── scripts/             # Utility scripts
+LHL/
+├── backend/           # Flask API
+│   ├── api/          # Route handlers
+│   ├── models/       # SQLAlchemy models
+│   ├── services/     # Business logic
+│   └── app.py        # Main application
+├── frontend/          # Next.js app
+│   ├── app/          # Pages and components
+│   └── lib/          # Utilities and types
+├── data/             # Sample player data
+├── scripts/          # Database scripts
+└── start.sh          # Startup script
 ```
 
-## Quick Start
+## API Endpoints
 
-### Prerequisites
+See [API_DOCS.md](./API_DOCS.md) for full API documentation.
 
-- Node.js 18+ and npm
-- Python 3.10+
-- PostgreSQL
-- Rust 1.70+ (for compiling simulation engine)
+### Key Endpoints
 
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone <repository-url>
-cd LHL
-```
-
-2. **Set up the backend**
-```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-3. **Set up the database**
-```bash
-# Create PostgreSQL database
-createdb lhl_db
-
-# Copy environment file
-cp .env.example .env
-
-# Edit .env with your database credentials
-# DATABASE_URL=postgresql://user:password@localhost/lhl_db
-# JWT_SECRET_KEY=your-secret-key
-
-# Run migrations and seed data
-python scripts/seed_database.py
-```
-
-4. **Compile Rust simulation engine**
-```bash
-cd ../simulation
-cargo build --release
-```
-
-5. **Set up the frontend**
-```bash
-cd ../frontend
-npm install
-cp .env.example .env.local
-
-# Edit .env.local
-# NEXT_PUBLIC_API_URL=http://localhost:5000
-```
-
-### Running Locally
-
-1. **Start the backend** (Terminal 1)
-```bash
-cd backend
-source venv/bin/activate
-python app.py
-```
-
-2. **Start the frontend** (Terminal 2)
-```bash
-cd frontend
-npm run dev
-```
-
-3. **Access the application**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
-
-## Usage
-
-### Creating Your First Simulation
-
-1. Register an account or login
-2. Click "Start New Simulation"
-3. Choose league size (4-12 teams) and duration (20-25 years)
-4. Complete the snake draft (20 players + 1 coach per team)
-5. Configure your team's lines
-6. Start simulating!
-
-### Simulation Controls
-
-- **Simulate to Playoffs**: Run all regular season games
-- **Simulate Playoff Round**: Simulate one playoff round
-- **Simulate Full Season**: Complete entire season including playoffs
-
-### Viewing Stats
-
-- **Season Stats**: Current season leaders
-- **All-Time Stats**: Historical records across all seasons
-- **Standings**: Conference tables with W-L-PTS
-- **Trophies**: Award winners by season
-
-## API Documentation
-
-### Authentication
-
-#### POST /api/auth/register
-Register a new user
-```json
-{
-  "username": "string",
-  "email": "string",
-  "password": "string"
-}
-```
-
-#### POST /api/auth/login
-Login user
-```json
-{
-  "username": "string",
-  "password": "string"
-}
-```
-
-### Simulations
-
-#### POST /api/simulations/create
-Create new simulation
-```json
-{
-  "year_length": 20,
-  "num_teams": 6
-}
-```
-
-#### GET /api/simulations/{id}
-Get simulation details
-
-#### POST /api/simulations/{id}/draft
-Make a draft pick
-```json
-{
-  "player_id": 123
-}
-```
-
-#### POST /api/simulations/{id}/simulate-to-playoffs
-Simulate regular season
-
-#### POST /api/simulations/{id}/simulate-season
-Simulate full season
-
-### Stats
-
-#### GET /api/stats/season/{simulation_id}
-Get current season statistics
-
-#### GET /api/stats/standings/{simulation_id}
-Get league standings
-
-## Simulation Algorithm
-
-The Rust simulation engine uses realistic NHL statistics and formulas. See [simulation/ALGORITHM.md](simulation/ALGORITHM.md) for detailed documentation including:
-
-- Ice time distribution (Line 1: 35%, Line 2: 30%, etc.)
-- Skill weightings (OFF, DEF, PHYS, LEAD, CONST)
-- Goal probability calculations
-- Home ice advantage (+5%)
-- Playoff physicality boost (+20%)
-- Coach impact modifiers
-
-## Deployment to Vercel
-
-### Prerequisites
-- Vercel account
-- PostgreSQL database (Vercel Postgres or external provider)
-
-### Steps
-
-1. **Install Vercel CLI**
-```bash
-npm install -g vercel
-```
-
-2. **Set environment variables in Vercel**
-```bash
-vercel env add DATABASE_URL
-vercel env add JWT_SECRET_KEY
-```
-
-3. **Deploy**
-```bash
-vercel --prod
-```
-
-4. **Upload Rust binary**
-After compilation, ensure the Rust binary is included in the deployment or uploaded separately to Vercel storage.
-
-## Testing
-
-### Run backend tests
-```bash
-cd backend
-pytest
-```
-
-### Run frontend tests
-```bash
-cd frontend
-npm test
-```
-
-### Test simulation engine
-```bash
-cd simulation
-cargo test
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests
-5. Submit a pull request
-
-## Performance Targets
-
-- ✅ Draft team and simulate season in < 5 clicks
-- ✅ Single game simulation: < 100ms
-- ✅ Full season (82 games): < 5 seconds
-- ✅ Stats pages load: < 1 second
-
-## Future Enhancements (V2)
-
-- Multiplayer synchronization
-- In-season trades
-- Player progression system
-- Advanced analytics and visualizations
-- Mobile app (iOS/Android)
-- Custom leagues and rules
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login
+- `POST /api/simulations/create` - Create new simulation
+- `GET /api/simulations/:id` - Get simulation details
+- `POST /api/simulations/:id/draft` - Make draft pick
+- `GET /api/players/` - Get all available players
 
 ## License
 
-MIT License
-
-## Support
-
-For issues, questions, or feature requests, please open an issue on GitHub.
-
----
-
-Built with ❤️ for hockey fans everywhere
+MIT

@@ -3,12 +3,10 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 bp = Blueprint('auth', __name__)
 
-bp = Blueprint('auth', __name__)
-
 @bp.route('/register', methods=['POST'])
 def register():
     """Register a new user"""
-    from app import db
+    from extensions import db
     from models.user import User
     
     data = request.get_json()
@@ -33,8 +31,8 @@ def register():
     db.session.add(user)
     db.session.commit()
     
-    # Create access token
-    access_token = create_access_token(identity=user.id)
+    # Create access token (identity must be a string)
+    access_token = create_access_token(identity=str(user.id))
     
     return jsonify({
         'message': 'User registered successfully',
@@ -57,7 +55,7 @@ def login():
     if not user or not user.check_password(data['password']):
         return jsonify({'error': 'Invalid credentials'}), 401
     
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     
     return jsonify({
         'message': 'Login successful',
@@ -71,7 +69,7 @@ def get_current_user():
     """Get current user info"""
     from models.user import User
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get(user_id)
     
     if not user:

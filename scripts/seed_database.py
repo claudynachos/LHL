@@ -9,7 +9,8 @@ import json
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
-from app import app, db
+from app import app
+from extensions import db
 from models.player import Player, Coach
 
 def seed_database():
@@ -45,14 +46,16 @@ def seed_database():
         for goalie_data in data['goalies']:
             existing = Player.query.filter_by(name=goalie_data['name']).first()
             if not existing:
+                # Goalies use 'gen' (general) rating - map to attributes
+                gen_rating = goalie_data.get('gen', 80)
                 goalie = Player(
                     name=goalie_data['name'],
                     position='G',
-                    off=goalie_data['off'],
-                    def_=goalie_data['def'],
-                    phys=goalie_data['phys'],
-                    lead=goalie_data['lead'],
-                    const=goalie_data['const'],
+                    off=gen_rating,  # Use gen for all goalie stats
+                    def_=gen_rating,
+                    phys=gen_rating,
+                    lead=gen_rating,
+                    const=goalie_data.get('const', 80),
                     is_goalie=True
                 )
                 db.session.add(goalie)
@@ -62,9 +65,13 @@ def seed_database():
         for coach_data in data['coaches']:
             existing = Coach.query.filter_by(name=coach_data['name']).first()
             if not existing:
+                # Coaches have off/def - average them for overall rating
+                off = coach_data.get('off', 80)
+                def_ = coach_data.get('def', 80)
+                rating = (off + def_) // 2
                 coach = Coach(
                     name=coach_data['name'],
-                    rating=coach_data['rating']
+                    rating=rating
                 )
                 db.session.add(coach)
         

@@ -1,4 +1,4 @@
-from app import db
+from extensions import db
 from datetime import datetime
 
 class Simulation(db.Model):
@@ -11,6 +11,7 @@ class Simulation(db.Model):
     current_season = db.Column(db.Integer, default=1)
     current_date = db.Column(db.Date, nullable=False)
     status = db.Column(db.String(20), default='draft')  # draft, season, playoffs, completed
+    draft_pick = db.Column(db.Integer, default=1)  # Current draft pick number
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Relationships
@@ -26,5 +27,6 @@ class Simulation(db.Model):
             'current_season': self.current_season,
             'current_date': self.current_date.isoformat() if self.current_date else None,
             'status': self.status,
+            'draft_pick': self.draft_pick,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
