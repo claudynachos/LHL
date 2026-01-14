@@ -1,0 +1,12 @@
+# Cursor ignore file
+node_modules/
+.next/
+venv/
+env/
+__pycache__/
+*.pyc
+target/
+.vercel/
+.DS_Store
+*.db
+*.sqlite

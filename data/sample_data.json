@@ -1,0 +1,2486 @@
+{
+  "players": [
+    {
+      "name": "Mario Lemieux",
+      "position": "C",
+      "off": 115,
+      "def": 82,
+      "lead": 88,
+      "phys": 85,
+      "const": 92
+    },
+    {
+      "name": "Wayne Gretzky",
+      "position": "C",
+      "off": 118,
+      "def": 79,
+      "lead": 90,
+      "phys": 75,
+      "const": 98
+    },
+    {
+      "name": "Gordie Howe",
+      "position": "RW",
+      "off": 95,
+      "def": 90,
+      "lead": 95,
+      "phys": 90,
+      "const": 94
+    },
+    {
+      "name": "Connor McDavid",
+      "position": "C",
+      "off": 110,
+      "def": 88,
+      "lead": 87,
+      "phys": 80,
+      "const": 92
+    },
+    {
+      "name": "Cale Makar",
+      "position": "RD",
+      "off": 104,
+      "def": 94,
+      "lead": 84,
+      "phys": 79,
+      "const": 93
+    },
+    {
+      "name": "Bobby Orr",
+      "position": "LD",
+      "off": 108,
+      "def": 89,
+      "lead": 85,
+      "phys": 80,
+      "const": 90
+    },
+    {
+      "name": "Sidney Crosby",
+      "position": "C",
+      "off": 95,
+      "def": 93,
+      "lead": 93,
+      "phys": 82,
+      "const": 95
+    },
+    {
+      "name": "Alex Ovechkin",
+      "position": "LW",
+      "off": 109,
+      "def": 80,
+      "lead": 82,
+      "phys": 93,
+      "const": 90
+    },
+    {
+      "name": "Maurice Richard",
+      "position": "RW",
+      "off": 104,
+      "def": 78,
+      "lead": 92,
+      "phys": 90,
+      "const": 92
+    },
+    {
+      "name": "Raymond Bourque",
+      "position": "RD",
+      "off": 98,
+      "def": 89,
+      "lead": 89,
+      "phys": 79,
+      "const": 92
+    },
+    {
+      "name": "Jaromir Jagr",
+      "position": "RW",
+      "off": 96,
+      "def": 82,
+      "lead": 83,
+      "phys": 89,
+      "const": 100
+    },
+    {
+      "name": "Dale Hawerchuk",
+      "position": "C",
+      "off": 94,
+      "def": 89,
+      "lead": 88,
+      "phys": 85,
+      "const": 87
+    },
+    {
+      "name": "Nicklas Lidstrom",
+      "position": "LD",
+      "off": 92,
+      "def": 94,
+      "lead": 90,
+      "phys": 76,
+      "const": 95
+    },
+    {
+      "name": "Larry Robinson",
+      "position": "LD",
+      "off": 87,
+      "def": 94,
+      "lead": 88,
+      "phys": 92,
+      "const": 87
+    },
+    {
+      "name": "Steve Yzerman",
+      "position": "C",
+      "off": 96,
+      "def": 90,
+      "lead": 92,
+      "phys": 74,
+      "const": 93
+    },
+    {
+      "name": "Pavel Datsyuk",
+      "position": "C",
+      "off": 95,
+      "def": 94,
+      "lead": 80,
+      "phys": 83,
+      "const": 90
+    },
+    {
+      "name": "Stan Mikita",
+      "position": "C",
+      "off": 99,
+      "def": 88,
+      "lead": 85,
+      "phys": 80,
+      "const": 90
+    },
+    {
+      "name": "Nathan MacKinnon",
+      "position": "C",
+      "off": 100,
+      "def": 83,
+      "lead": 86,
+      "phys": 83,
+      "const": 91
+    },
+    {
+      "name": "Mark Messier",
+      "position": "C",
+      "off": 87,
+      "def": 88,
+      "lead": 98,
+      "phys": 88,
+      "const": 87
+    },
+    {
+      "name": "Leon Draisaitl",
+      "position": "RW",
+      "off": 97,
+      "def": 86,
+      "lead": 84,
+      "phys": 84,
+      "const": 92
+    },
+    {
+      "name": "Mark Recchi",
+      "position": "RW",
+      "off": 94,
+      "def": 88,
+      "lead": 85,
+      "phys": 85,
+      "const": 92
+    },
+    {
+      "name": "Scott Stevens",
+      "position": "LD",
+      "off": 79,
+      "def": 97,
+      "lead": 85,
+      "phys": 99,
+      "const": 88
+    },
+    {
+      "name": "Jean B\u00e9liveau",
+      "position": "C",
+      "off": 90,
+      "def": 90,
+      "lead": 99,
+      "phys": 78,
+      "const": 88
+    },
+    {
+      "name": "Chris Pronger",
+      "position": "LD",
+      "off": 82,
+      "def": 94,
+      "lead": 87,
+      "phys": 97,
+      "const": 86
+    },
+    {
+      "name": "Joe Malone",
+      "position": "C",
+      "off": 99,
+      "def": 80,
+      "lead": 85,
+      "phys": 92,
+      "const": 85
+    },
+    {
+      "name": "Chris Chelios",
+      "position": "RD",
+      "off": 82,
+      "def": 92,
+      "lead": 88,
+      "phys": 92,
+      "const": 92
+    },
+    {
+      "name": "Bobby Clarke",
+      "position": "LW",
+      "off": 87,
+      "def": 90,
+      "lead": 91,
+      "phys": 90,
+      "const": 86
+    },
+    {
+      "name": "Denis Potvin",
+      "position": "LD",
+      "off": 92,
+      "def": 90,
+      "lead": 88,
+      "phys": 82,
+      "const": 89
+    },
+    {
+      "name": "Scott Niedermayer",
+      "position": "LD",
+      "off": 92,
+      "def": 92,
+      "lead": 86,
+      "phys": 78,
+      "const": 92
+    },
+    {
+      "name": "Bryan Trottier",
+      "position": "C",
+      "off": 97,
+      "def": 88,
+      "lead": 85,
+      "phys": 78,
+      "const": 90
+    },
+    {
+      "name": "Paul Coffey",
+      "position": "LD",
+      "off": 98,
+      "def": 83,
+      "lead": 85,
+      "phys": 79,
+      "const": 94
+    },
+    {
+      "name": "Dit Clapper",
+      "position": "LD",
+      "off": 82,
+      "def": 94,
+      "lead": 85,
+      "phys": 88,
+      "const": 95
+    },
+    {
+      "name": "Drew Doughty",
+      "position": "RD",
+      "off": 88,
+      "def": 91,
+      "lead": 85,
+      "phys": 85,
+      "const": 92
+    },
+    {
+      "name": "Shea Weber",
+      "position": "RD",
+      "off": 87,
+      "def": 90,
+      "lead": 88,
+      "phys": 93,
+      "const": 84
+    },
+    {
+      "name": "Jarome Iginla",
+      "position": "RW",
+      "off": 89,
+      "def": 86,
+      "lead": 87,
+      "phys": 91,
+      "const": 89
+    },
+    {
+      "name": "Brendan Shanahan",
+      "position": "LW",
+      "off": 88,
+      "def": 86,
+      "lead": 88,
+      "phys": 91,
+      "const": 88
+    },
+    {
+      "name": "Al MacInnis",
+      "position": "RD",
+      "off": 90,
+      "def": 90,
+      "lead": 85,
+      "phys": 88,
+      "const": 90
+    },
+    {
+      "name": "Joe Sakic",
+      "position": "C",
+      "off": 97,
+      "def": 86,
+      "lead": 88,
+      "phys": 74,
+      "const": 91
+    },
+    {
+      "name": "Newsy Lalonde",
+      "position": "C",
+      "off": 100,
+      "def": 83,
+      "lead": 80,
+      "phys": 83,
+      "const": 88
+    },
+    {
+      "name": "Ted Lindsay",
+      "position": "LW",
+      "off": 88,
+      "def": 90,
+      "lead": 85,
+      "phys": 82,
+      "const": 94
+    },
+    {
+      "name": "Patrice Bergeron",
+      "position": "C",
+      "off": 79,
+      "def": 105,
+      "lead": 94,
+      "phys": 75,
+      "const": 86
+    },
+    {
+      "name": "Ron Francis",
+      "position": "C",
+      "off": 91,
+      "def": 94,
+      "lead": 83,
+      "phys": 72,
+      "const": 96
+    },
+    {
+      "name": "Johnny Bucyk",
+      "position": "LW",
+      "off": 90,
+      "def": 90,
+      "lead": 88,
+      "phys": 80,
+      "const": 89
+    },
+    {
+      "name": "Zdeno Chara",
+      "position": "LD",
+      "off": 80,
+      "def": 92,
+      "lead": 90,
+      "phys": 94,
+      "const": 86
+    },
+    {
+      "name": "Doug Wilson",
+      "position": "RD",
+      "off": 87,
+      "def": 89,
+      "lead": 88,
+      "phys": 85,
+      "const": 90
+    },
+    {
+      "name": "Doug Harvey",
+      "position": "LD",
+      "off": 85,
+      "def": 98,
+      "lead": 90,
+      "phys": 72,
+      "const": 93
+    },
+    {
+      "name": "Mike Bossy",
+      "position": "RW",
+      "off": 106,
+      "def": 78,
+      "lead": 80,
+      "phys": 77,
+      "const": 90
+    },
+    {
+      "name": "Auston Matthews",
+      "position": "C",
+      "off": 100,
+      "def": 87,
+      "lead": 79,
+      "phys": 73,
+      "const": 92
+    },
+    {
+      "name": "Rod Langway",
+      "position": "LD",
+      "off": 74,
+      "def": 105,
+      "lead": 85,
+      "phys": 90,
+      "const": 86
+    },
+    {
+      "name": "Aleksander Barkov",
+      "position": "C",
+      "off": 89,
+      "def": 94,
+      "lead": 82,
+      "phys": 80,
+      "const": 90
+    },
+    {
+      "name": "Joe Thornton",
+      "position": "C",
+      "off": 96,
+      "def": 82,
+      "lead": 85,
+      "phys": 79,
+      "const": 94
+    },
+    {
+      "name": "Rob Blake",
+      "position": "RD",
+      "off": 86,
+      "def": 90,
+      "lead": 80,
+      "phys": 95,
+      "const": 88
+    },
+    {
+      "name": "Doug Gilmour",
+      "position": "C",
+      "off": 91,
+      "def": 87,
+      "lead": 84,
+      "phys": 87,
+      "const": 87
+    },
+    {
+      "name": "Shane Doan",
+      "position": "RW",
+      "off": 84,
+      "def": 88,
+      "lead": 85,
+      "phys": 90,
+      "const": 92
+    },
+    {
+      "name": "Vladimir Konstantinov",
+      "position": "RD",
+      "off": 80,
+      "def": 95,
+      "lead": 82,
+      "phys": 95,
+      "const": 87
+    },
+    {
+      "name": "Brian Leetch",
+      "position": "LD",
+      "off": 97,
+      "def": 88,
+      "lead": 80,
+      "phys": 77,
+      "const": 88
+    },
+    {
+      "name": "Tim Horton",
+      "position": "RD",
+      "off": 78,
+      "def": 96,
+      "lead": 85,
+      "phys": 90,
+      "const": 90
+    },
+    {
+      "name": "King Clancy",
+      "position": "LD",
+      "off": 84,
+      "def": 92,
+      "lead": 88,
+      "phys": 82,
+      "const": 91
+    },
+    {
+      "name": "Peter Forsberg",
+      "position": "C",
+      "off": 94,
+      "def": 85,
+      "lead": 80,
+      "phys": 85,
+      "const": 89
+    },
+    {
+      "name": "Kevin Lowe",
+      "position": "RD",
+      "off": 78,
+      "def": 94,
+      "lead": 85,
+      "phys": 90,
+      "const": 92
+    },
+    {
+      "name": "Brad Park",
+      "position": "LD",
+      "off": 88,
+      "def": 90,
+      "lead": 85,
+      "phys": 78,
+      "const": 94
+    },
+    {
+      "name": "Adam Oates",
+      "position": "C",
+      "off": 98,
+      "def": 81,
+      "lead": 83,
+      "phys": 79,
+      "const": 90
+    },
+    {
+      "name": "Quinn Hughes",
+      "position": "LD",
+      "off": 100,
+      "def": 82,
+      "lead": 82,
+      "phys": 75,
+      "const": 90
+    },
+    {
+      "name": "Bobby Hull",
+      "position": "LW",
+      "off": 96,
+      "def": 79,
+      "lead": 80,
+      "phys": 90,
+      "const": 88
+    },
+    {
+      "name": "Eddie Shore",
+      "position": "RD",
+      "off": 80,
+      "def": 92,
+      "lead": 85,
+      "phys": 92,
+      "const": 88
+    },
+    {
+      "name": "Jack Stewart",
+      "position": "RD",
+      "off": 80,
+      "def": 94,
+      "lead": 85,
+      "phys": 90,
+      "const": 87
+    },
+    {
+      "name": "Kevin Hatcher",
+      "position": "LD",
+      "off": 80,
+      "def": 92,
+      "lead": 82,
+      "phys": 95,
+      "const": 88
+    },
+    {
+      "name": "Marcel Dionne",
+      "position": "LW",
+      "off": 101,
+      "def": 83,
+      "lead": 80,
+      "phys": 74,
+      "const": 88
+    },
+    {
+      "name": "Syl Apps",
+      "position": "C",
+      "off": 86,
+      "def": 88,
+      "lead": 85,
+      "phys": 85,
+      "const": 90
+    },
+    {
+      "name": "Randy Carlyle",
+      "position": "RD",
+      "off": 82,
+      "def": 90,
+      "lead": 85,
+      "phys": 90,
+      "const": 88
+    },
+    {
+      "name": "Dave Andreychuk",
+      "position": "LW",
+      "off": 88,
+      "def": 85,
+      "lead": 87,
+      "phys": 88,
+      "const": 85
+    },
+    {
+      "name": "Bob Gainey",
+      "position": "LW",
+      "off": 74,
+      "def": 100,
+      "lead": 90,
+      "phys": 85,
+      "const": 86
+    },
+    {
+      "name": "George Armstrong",
+      "position": "RW",
+      "off": 84,
+      "def": 90,
+      "lead": 88,
+      "phys": 80,
+      "const": 91
+    },
+    {
+      "name": "Babe Siebert",
+      "position": "RD",
+      "off": 80,
+      "def": 92,
+      "lead": 85,
+      "phys": 90,
+      "const": 87
+    },
+    {
+      "name": "Red Kelly",
+      "position": "LD",
+      "off": 85,
+      "def": 94,
+      "lead": 88,
+      "phys": 75,
+      "const": 88
+    },
+    {
+      "name": "Larry Murphy",
+      "position": "RD",
+      "off": 92,
+      "def": 89,
+      "lead": 82,
+      "phys": 75,
+      "const": 89
+    },
+    {
+      "name": "Borje Salming",
+      "position": "LD",
+      "off": 90,
+      "def": 92,
+      "lead": 80,
+      "phys": 75,
+      "const": 90
+    },
+    {
+      "name": "Henrik Zetterberg",
+      "position": "LW",
+      "off": 88,
+      "def": 93,
+      "lead": 80,
+      "phys": 75,
+      "const": 92
+    },
+    {
+      "name": "Frank Nighbor",
+      "position": "C",
+      "off": 84,
+      "def": 94,
+      "lead": 88,
+      "phys": 75,
+      "const": 89
+    },
+    {
+      "name": "Joe Nieuwendyk",
+      "position": "C",
+      "off": 86,
+      "def": 90,
+      "lead": 80,
+      "phys": 82,
+      "const": 92
+    },
+    {
+      "name": "Toe Blake",
+      "position": "LW",
+      "off": 84,
+      "def": 90,
+      "lead": 92,
+      "phys": 75,
+      "const": 91
+    },
+    {
+      "name": "Victor Hedman",
+      "position": "LD",
+      "off": 89,
+      "def": 89,
+      "lead": 82,
+      "phys": 80,
+      "const": 88
+    },
+    {
+      "name": "Frank Mahovlich",
+      "position": "LW",
+      "off": 95,
+      "def": 78,
+      "lead": 80,
+      "phys": 88,
+      "const": 88
+    },
+    {
+      "name": "Sid Abel",
+      "position": "LW",
+      "off": 84,
+      "def": 90,
+      "lead": 88,
+      "phys": 80,
+      "const": 89
+    },
+    {
+      "name": "Henri Richard",
+      "position": "C",
+      "off": 83,
+      "def": 87,
+      "lead": 99,
+      "phys": 72,
+      "const": 94
+    },
+    {
+      "name": "Mike Modano",
+      "position": "C",
+      "off": 91,
+      "def": 83,
+      "lead": 87,
+      "phys": 80,
+      "const": 88
+    },
+    {
+      "name": "Teemu Selanne",
+      "position": "RW",
+      "off": 97,
+      "def": 80,
+      "lead": 80,
+      "phys": 78,
+      "const": 91
+    },
+    {
+      "name": "Mark Howe",
+      "position": "LD",
+      "off": 88,
+      "def": 91,
+      "lead": 80,
+      "phys": 78,
+      "const": 90
+    },
+    {
+      "name": "Roman Josi",
+      "position": "RD",
+      "off": 91,
+      "def": 88,
+      "lead": 80,
+      "phys": 79,
+      "const": 88
+    },
+    {
+      "name": "Daniel Alfredsson",
+      "position": "RW",
+      "off": 88,
+      "def": 87,
+      "lead": 88,
+      "phys": 76,
+      "const": 90
+    },
+    {
+      "name": "Sergei Fedorov",
+      "position": "C",
+      "off": 90,
+      "def": 91,
+      "lead": 80,
+      "phys": 76,
+      "const": 88
+    },
+    {
+      "name": "Bernie Geoffrion",
+      "position": "RW",
+      "off": 94,
+      "def": 80,
+      "lead": 83,
+      "phys": 80,
+      "const": 90
+    },
+    {
+      "name": "Phil Housley",
+      "position": "LD",
+      "off": 93,
+      "def": 86,
+      "lead": 79,
+      "phys": 77,
+      "const": 88
+    },
+    {
+      "name": "Ryan Getzlaf",
+      "position": "C",
+      "off": 88,
+      "def": 83,
+      "lead": 82,
+      "phys": 85,
+      "const": 90
+    },
+    {
+      "name": "Anze Kopitar",
+      "position": "C",
+      "off": 82,
+      "def": 92,
+      "lead": 85,
+      "phys": 80,
+      "const": 89
+    },
+    {
+      "name": "Tom Johnson",
+      "position": "LD",
+      "off": 78,
+      "def": 94,
+      "lead": 85,
+      "phys": 85,
+      "const": 87
+    },
+    {
+      "name": "Marian Hossa",
+      "position": "RW",
+      "off": 88,
+      "def": 88,
+      "lead": 80,
+      "phys": 80,
+      "const": 89
+    },
+    {
+      "name": "Keith Tkachuk",
+      "position": "LW",
+      "off": 88,
+      "def": 79,
+      "lead": 85,
+      "phys": 93,
+      "const": 84
+    },
+    {
+      "name": "Mats Sundin",
+      "position": "C",
+      "off": 90,
+      "def": 82,
+      "lead": 81,
+      "phys": 85,
+      "const": 88
+    },
+    {
+      "name": "Pavel Bure",
+      "position": "RW",
+      "off": 96,
+      "def": 77,
+      "lead": 83,
+      "phys": 78,
+      "const": 90
+    },
+    {
+      "name": "Corey Perry",
+      "position": "RW",
+      "off": 88,
+      "def": 82,
+      "lead": 78,
+      "phys": 92,
+      "const": 87
+    },
+    {
+      "name": "Earl Seibert",
+      "position": "RD",
+      "off": 82,
+      "def": 92,
+      "lead": 85,
+      "phys": 80,
+      "const": 87
+    },
+    {
+      "name": "Babe Pratt",
+      "position": "LD",
+      "off": 80,
+      "def": 93,
+      "lead": 80,
+      "phys": 88,
+      "const": 86
+    },
+    {
+      "name": "Brad Marchand",
+      "position": "LW",
+      "off": 88,
+      "def": 82,
+      "lead": 86,
+      "phys": 80,
+      "const": 90
+    },
+    {
+      "name": "Phil Esposito",
+      "position": "LW",
+      "off": 93,
+      "def": 78,
+      "lead": 80,
+      "phys": 85,
+      "const": 88
+    },
+    {
+      "name": "Jamie Benn",
+      "position": "LW",
+      "off": 86,
+      "def": 84,
+      "lead": 80,
+      "phys": 88,
+      "const": 88
+    },
+    {
+      "name": "Nikita Kucherov",
+      "position": "RW",
+      "off": 100,
+      "def": 78,
+      "lead": 73,
+      "phys": 73,
+      "const": 96
+    },
+    {
+      "name": "Yvan Cournoyer",
+      "position": "RW",
+      "off": 88,
+      "def": 80,
+      "lead": 89,
+      "phys": 82,
+      "const": 87
+    },
+    {
+      "name": "Peter Stastny",
+      "position": "C",
+      "off": 94,
+      "def": 80,
+      "lead": 81,
+      "phys": 77,
+      "const": 90
+    },
+    {
+      "name": "Howie Morenz",
+      "position": "C",
+      "off": 90,
+      "def": 82,
+      "lead": 86,
+      "phys": 80,
+      "const": 85
+    },
+    {
+      "name": "Pierre Pilote",
+      "position": "LD",
+      "off": 86,
+      "def": 88,
+      "lead": 85,
+      "phys": 78,
+      "const": 86
+    },
+    {
+      "name": "Sergei Zubov",
+      "position": "RD",
+      "off": 92,
+      "def": 88,
+      "lead": 78,
+      "phys": 72,
+      "const": 88
+    },
+    {
+      "name": "Matthew Tkachuk",
+      "position": "LW",
+      "off": 90,
+      "def": 81,
+      "lead": 85,
+      "phys": 81,
+      "const": 86
+    },
+    {
+      "name": "John Carlson",
+      "position": "RD",
+      "off": 88,
+      "def": 86,
+      "lead": 78,
+      "phys": 82,
+      "const": 88
+    },
+    {
+      "name": "Gary Suter",
+      "position": "RD",
+      "off": 80,
+      "def": 92,
+      "lead": 78,
+      "phys": 90,
+      "const": 85
+    },
+    {
+      "name": "Guy Lapointe",
+      "position": "LD",
+      "off": 82,
+      "def": 90,
+      "lead": 80,
+      "phys": 82,
+      "const": 90
+    },
+    {
+      "name": "Ilya Kovalchuk",
+      "position": "LW",
+      "off": 96,
+      "def": 77,
+      "lead": 77,
+      "phys": 82,
+      "const": 88
+    },
+    {
+      "name": "Guy Lafleur",
+      "position": "RW",
+      "off": 99,
+      "def": 75,
+      "lead": 80,
+      "phys": 73,
+      "const": 92
+    },
+    {
+      "name": "Jari Kurri",
+      "position": "RW",
+      "off": 92,
+      "def": 86,
+      "lead": 78,
+      "phys": 72,
+      "const": 90
+    },
+    {
+      "name": "Herb Gardiner",
+      "position": "LD",
+      "off": 78,
+      "def": 94,
+      "lead": 80,
+      "phys": 85,
+      "const": 87
+    },
+    {
+      "name": "Eric Lindros",
+      "position": "C",
+      "off": 93,
+      "def": 81,
+      "lead": 77,
+      "phys": 92,
+      "const": 77
+    },
+    {
+      "name": "Slava Fetisov",
+      "position": "LD",
+      "off": 82,
+      "def": 90,
+      "lead": 85,
+      "phys": 80,
+      "const": 86
+    },
+    {
+      "name": "Flash Hollett",
+      "position": "RD",
+      "off": 78,
+      "def": 90,
+      "lead": 80,
+      "phys": 92,
+      "const": 86
+    },
+    {
+      "name": "Dave Babych",
+      "position": "LD",
+      "off": 78,
+      "def": 90,
+      "lead": 78,
+      "phys": 92,
+      "const": 88
+    },
+    {
+      "name": "Jeff Beukeboom",
+      "position": "RD",
+      "off": 74,
+      "def": 94,
+      "lead": 78,
+      "phys": 95,
+      "const": 86
+    },
+    {
+      "name": "Ken Daneyko",
+      "position": "RD",
+      "off": 78,
+      "def": 89,
+      "lead": 80,
+      "phys": 92,
+      "const": 87
+    },
+    {
+      "name": "Pat Lafontaine",
+      "position": "C",
+      "off": 97,
+      "def": 78,
+      "lead": 79,
+      "phys": 76,
+      "const": 87
+    },
+    {
+      "name": "Evgeni Malkin",
+      "position": "C",
+      "off": 94,
+      "def": 80,
+      "lead": 75,
+      "phys": 80,
+      "const": 89
+    },
+    {
+      "name": "Denis Savard",
+      "position": "C",
+      "off": 92,
+      "def": 79,
+      "lead": 83,
+      "phys": 76,
+      "const": 90
+    },
+    {
+      "name": "Roman Hamrlik",
+      "position": "LD",
+      "off": 82,
+      "def": 90,
+      "lead": 75,
+      "phys": 85,
+      "const": 90
+    },
+    {
+      "name": "Lanny Ulman",
+      "position": "C",
+      "off": 94,
+      "def": 81,
+      "lead": 80,
+      "phys": 75,
+      "const": 87
+    },
+    {
+      "name": "Alex Delvecchio",
+      "position": "LW",
+      "off": 84,
+      "def": 92,
+      "lead": 85,
+      "phys": 68,
+      "const": 91
+    },
+    {
+      "name": "Bill Guerin",
+      "position": "RW",
+      "off": 86,
+      "def": 80,
+      "lead": 82,
+      "phys": 88,
+      "const": 87
+    },
+    {
+      "name": "Jonathan Toews",
+      "position": "C",
+      "off": 79,
+      "def": 91,
+      "lead": 88,
+      "phys": 78,
+      "const": 87
+    },
+    {
+      "name": "Alex Pietrangelo",
+      "position": "RD",
+      "off": 79,
+      "def": 90,
+      "lead": 83,
+      "phys": 84,
+      "const": 87
+    },
+    {
+      "name": "Henrik Sedin",
+      "position": "C",
+      "off": 92,
+      "def": 85,
+      "lead": 80,
+      "phys": 71,
+      "const": 88
+    },
+    {
+      "name": "Luc Robitaille",
+      "position": "LW",
+      "off": 95,
+      "def": 79,
+      "lead": 79,
+      "phys": 74,
+      "const": 90
+    },
+    {
+      "name": "Bill Gadsby",
+      "position": "LD",
+      "off": 80,
+      "def": 88,
+      "lead": 82,
+      "phys": 85,
+      "const": 88
+    },
+    {
+      "name": "Doug Weight",
+      "position": "C",
+      "off": 88,
+      "def": 82,
+      "lead": 82,
+      "phys": 80,
+      "const": 88
+    },
+    {
+      "name": "Doug Mohns",
+      "position": "LW",
+      "off": 82,
+      "def": 88,
+      "lead": 80,
+      "phys": 78,
+      "const": 94
+    },
+    {
+      "name": "Claude Provost",
+      "position": "RW",
+      "off": 84,
+      "def": 92,
+      "lead": 80,
+      "phys": 72,
+      "const": 90
+    },
+    {
+      "name": "Darryl Sittler",
+      "position": "C",
+      "off": 88,
+      "def": 82,
+      "lead": 85,
+      "phys": 75,
+      "const": 90
+    },
+    {
+      "name": "Clark Gillies",
+      "position": "LW",
+      "off": 86,
+      "def": 78,
+      "lead": 80,
+      "phys": 92,
+      "const": 87
+    },
+    {
+      "name": "Joe Pavelski",
+      "position": "RW",
+      "off": 86,
+      "def": 90,
+      "lead": 82,
+      "phys": 71,
+      "const": 88
+    },
+    {
+      "name": "Brian Rafalski",
+      "position": "LD",
+      "off": 88,
+      "def": 90,
+      "lead": 78,
+      "phys": 70,
+      "const": 89
+    },
+    {
+      "name": "Owen Nolan",
+      "position": "RW",
+      "off": 88,
+      "def": 78,
+      "lead": 75,
+      "phys": 92,
+      "const": 88
+    },
+    {
+      "name": "Jamie Macoun",
+      "position": "RD",
+      "off": 76,
+      "def": 92,
+      "lead": 80,
+      "phys": 88,
+      "const": 86
+    },
+    {
+      "name": "Doug Jarvis",
+      "position": "LD",
+      "off": 75,
+      "def": 92,
+      "lead": 82,
+      "phys": 80,
+      "const": 94
+    },
+    {
+      "name": "Jeremy Roenick",
+      "position": "C",
+      "off": 90,
+      "def": 79,
+      "lead": 76,
+      "phys": 86,
+      "const": 87
+    },
+    {
+      "name": "Darryl Sydor",
+      "position": "RD",
+      "off": 82,
+      "def": 90,
+      "lead": 78,
+      "phys": 80,
+      "const": 88
+    },
+    {
+      "name": "Pierre Bouchard",
+      "position": "LD",
+      "off": 82,
+      "def": 90,
+      "lead": 78,
+      "phys": 80,
+      "const": 88
+    },
+    {
+      "name": "Duncan Keith",
+      "position": "LD",
+      "off": 89,
+      "def": 87,
+      "lead": 79,
+      "phys": 72,
+      "const": 87
+    },
+    {
+      "name": "Ryan Smyth",
+      "position": "LW",
+      "off": 84,
+      "def": 84,
+      "lead": 75,
+      "phys": 90,
+      "const": 87
+    },
+    {
+      "name": "Ryan Suter",
+      "position": "LD",
+      "off": 83,
+      "def": 90,
+      "lead": 78,
+      "phys": 79,
+      "const": 87
+    },
+    {
+      "name": "Sergei Gonchar",
+      "position": "RD",
+      "off": 90,
+      "def": 86,
+      "lead": 78,
+      "phys": 70,
+      "const": 90
+    },
+    {
+      "name": "Milt Schmidt",
+      "position": "C",
+      "off": 84,
+      "def": 87,
+      "lead": 85,
+      "phys": 74,
+      "const": 88
+    },
+    {
+      "name": "Patrick Kane",
+      "position": "LW",
+      "off": 98,
+      "def": 75,
+      "lead": 75,
+      "phys": 72,
+      "const": 94
+    },
+    {
+      "name": "Jean Ratelle",
+      "position": "C",
+      "off": 88,
+      "def": 80,
+      "lead": 80,
+      "phys": 80,
+      "const": 90
+    },
+    {
+      "name": "Erik Karlsson",
+      "position": "RD",
+      "off": 98,
+      "def": 78,
+      "lead": 77,
+      "phys": 70,
+      "const": 88
+    },
+    {
+      "name": "Brent Burns",
+      "position": "RD",
+      "off": 89,
+      "def": 80,
+      "lead": 77,
+      "phys": 85,
+      "const": 86
+    },
+    {
+      "name": "Rod Brind'Amour",
+      "position": "C",
+      "off": 75,
+      "def": 94,
+      "lead": 85,
+      "phys": 80,
+      "const": 86
+    },
+    {
+      "name": "Brett Hull",
+      "position": "RW",
+      "off": 97,
+      "def": 73,
+      "lead": 79,
+      "phys": 77,
+      "const": 88
+    },
+    {
+      "name": "Martin St. Louis",
+      "position": "RW",
+      "off": 93,
+      "def": 78,
+      "lead": 82,
+      "phys": 72,
+      "const": 90
+    },
+    {
+      "name": "Jack Eichel",
+      "position": "C",
+      "off": 94,
+      "def": 82,
+      "lead": 73,
+      "phys": 75,
+      "const": 87
+    },
+    {
+      "name": "Adam Graves",
+      "position": "LW",
+      "off": 84,
+      "def": 83,
+      "lead": 75,
+      "phys": 90,
+      "const": 87
+    },
+    {
+      "name": "Bill Quackenbush",
+      "position": "RD",
+      "off": 76,
+      "def": 90,
+      "lead": 78,
+      "phys": 85,
+      "const": 92
+    },
+    {
+      "name": "Jason Arnott",
+      "position": "C",
+      "off": 84,
+      "def": 82,
+      "lead": 75,
+      "phys": 88,
+      "const": 90
+    },
+    {
+      "name": "Vincent Damphousse",
+      "position": "C",
+      "off": 90,
+      "def": 78,
+      "lead": 85,
+      "phys": 75,
+      "const": 88
+    },
+    {
+      "name": "Woody Dumart",
+      "position": "LW",
+      "off": 82,
+      "def": 85,
+      "lead": 85,
+      "phys": 78,
+      "const": 88
+    },
+    {
+      "name": "Gary Roberts",
+      "position": "RW",
+      "off": 86,
+      "def": 78,
+      "lead": 75,
+      "phys": 92,
+      "const": 88
+    },
+    {
+      "name": "Patrick Marleau",
+      "position": "C",
+      "off": 86,
+      "def": 83,
+      "lead": 83,
+      "phys": 75,
+      "const": 89
+    },
+    {
+      "name": "Gilbert Perreault",
+      "position": "C",
+      "off": 93,
+      "def": 79,
+      "lead": 77,
+      "phys": 76,
+      "const": 87
+    },
+    {
+      "name": "Mitch Marner",
+      "position": "RW",
+      "off": 90,
+      "def": 87,
+      "lead": 72,
+      "phys": 71,
+      "const": 90
+    },
+    {
+      "name": "Steve Shutt",
+      "position": "LW",
+      "off": 89,
+      "def": 77,
+      "lead": 88,
+      "phys": 77,
+      "const": 85
+    },
+    {
+      "name": "Dave Keon",
+      "position": "C",
+      "off": 83,
+      "def": 89,
+      "lead": 82,
+      "phys": 72,
+      "const": 88
+    },
+    {
+      "name": "Daniel Sedin",
+      "position": "LW",
+      "off": 92,
+      "def": 82,
+      "lead": 78,
+      "phys": 71,
+      "const": 87
+    },
+    {
+      "name": "Dickie Moore",
+      "position": "LW",
+      "off": 90,
+      "def": 78,
+      "lead": 87,
+      "phys": 70,
+      "const": 90
+    },
+    {
+      "name": "James Patrick",
+      "position": "LD",
+      "off": 84,
+      "def": 88,
+      "lead": 75,
+      "phys": 78,
+      "const": 88
+    },
+    {
+      "name": "Valeri Kharlamov",
+      "position": "RW",
+      "off": 93,
+      "def": 75,
+      "lead": 74,
+      "phys": 83,
+      "const": 88
+    },
+    {
+      "name": "Sergei Makarov",
+      "position": "RW",
+      "off": 90,
+      "def": 78,
+      "lead": 73,
+      "phys": 84,
+      "const": 88
+    },
+    {
+      "name": "David Pastrnak",
+      "position": "RW",
+      "off": 93,
+      "def": 77,
+      "lead": 75,
+      "phys": 75,
+      "const": 91
+    },
+    {
+      "name": "Mathieu Schneider",
+      "position": "LD",
+      "off": 88,
+      "def": 86,
+      "lead": 75,
+      "phys": 72,
+      "const": 88
+    },
+    {
+      "name": "Glenn Anderson",
+      "position": "RW",
+      "off": 88,
+      "def": 80,
+      "lead": 78,
+      "phys": 78,
+      "const": 87
+    },
+    {
+      "name": "Marc-Edouard Vlasic",
+      "position": "LD",
+      "off": 75,
+      "def": 92,
+      "lead": 78,
+      "phys": 85,
+      "const": 84
+    },
+    {
+      "name": "Bill Barber",
+      "position": "LW",
+      "off": 86,
+      "def": 78,
+      "lead": 75,
+      "phys": 88,
+      "const": 86
+    },
+    {
+      "name": "Bryan Berard",
+      "position": "RD",
+      "off": 86,
+      "def": 88,
+      "lead": 75,
+      "phys": 75,
+      "const": 82
+    },
+    {
+      "name": "Vincent Lecavalier",
+      "position": "C",
+      "off": 87,
+      "def": 79,
+      "lead": 81,
+      "phys": 79,
+      "const": 85
+    },
+    {
+      "name": "Derian Hatcher",
+      "position": "RD",
+      "off": 75,
+      "def": 87,
+      "lead": 80,
+      "phys": 92,
+      "const": 82
+    },
+    {
+      "name": "John Tavares",
+      "position": "C",
+      "off": 82,
+      "def": 83,
+      "lead": 84,
+      "phys": 78,
+      "const": 85
+    },
+    {
+      "name": "Kirk Muller",
+      "position": "LW",
+      "off": 76,
+      "def": 89,
+      "lead": 87,
+      "phys": 82,
+      "const": 79
+    },
+    {
+      "name": "Tom Webster",
+      "position": "RW",
+      "off": 82,
+      "def": 88,
+      "lead": 78,
+      "phys": 75,
+      "const": 85
+    },
+    {
+      "name": "Brian Bellows",
+      "position": "LW",
+      "off": 88,
+      "def": 77,
+      "lead": 74,
+      "phys": 88,
+      "const": 82
+    },
+    {
+      "name": "Johnny Gaudreau",
+      "position": "LW",
+      "off": 93,
+      "def": 71,
+      "lead": 77,
+      "phys": 70,
+      "const": 99
+    },
+    {
+      "name": "Eric Staal",
+      "position": "C",
+      "off": 80,
+      "def": 81,
+      "lead": 82,
+      "phys": 85,
+      "const": 84
+    },
+    {
+      "name": "Jason Smith",
+      "position": "RD",
+      "off": 70,
+      "def": 92,
+      "lead": 75,
+      "phys": 95,
+      "const": 83
+    },
+    {
+      "name": "P.K. Subban",
+      "position": "RD",
+      "off": 88,
+      "def": 80,
+      "lead": 75,
+      "phys": 85,
+      "const": 78
+    },
+    {
+      "name": "Rick Nash",
+      "position": "LW",
+      "off": 90,
+      "def": 78,
+      "lead": 70,
+      "phys": 88,
+      "const": 80
+    },
+    {
+      "name": "Ken Danforth",
+      "position": "RD",
+      "off": 74,
+      "def": 90,
+      "lead": 78,
+      "phys": 85,
+      "const": 84
+    },
+    {
+      "name": "Zigmund Palffy",
+      "position": "C",
+      "off": 85,
+      "def": 80,
+      "lead": 80,
+      "phys": 80,
+      "const": 82
+    },
+    {
+      "name": "Bernie Federko",
+      "position": "C",
+      "off": 88,
+      "def": 75,
+      "lead": 77,
+      "phys": 78,
+      "const": 90
+    },
+    {
+      "name": "Rick Tocchet",
+      "position": "LW",
+      "off": 84,
+      "def": 78,
+      "lead": 75,
+      "phys": 92,
+      "const": 80
+    },
+    {
+      "name": "Claude Lemieux",
+      "position": "LW",
+      "off": 75,
+      "def": 82,
+      "lead": 87,
+      "phys": 90,
+      "const": 78
+    },
+    {
+      "name": "Cam Neely",
+      "position": "RW",
+      "off": 90,
+      "def": 72,
+      "lead": 70,
+      "phys": 95,
+      "const": 80
+    },
+    {
+      "name": "Brad Richards",
+      "position": "C",
+      "off": 88,
+      "def": 78,
+      "lead": 80,
+      "phys": 70,
+      "const": 88
+    },
+    {
+      "name": "Paul Kariya",
+      "position": "LW",
+      "off": 93,
+      "def": 77,
+      "lead": 77,
+      "phys": 72,
+      "const": 79
+    },
+    {
+      "name": "Pat Verbeek",
+      "position": "LW",
+      "off": 82,
+      "def": 75,
+      "lead": 80,
+      "phys": 90,
+      "const": 82
+    },
+    {
+      "name": "Alex Kovalev",
+      "position": "RW",
+      "off": 95,
+      "def": 70,
+      "lead": 72,
+      "phys": 80,
+      "const": 84
+    },
+    {
+      "name": "Theoren Fleury",
+      "position": "RW",
+      "off": 83,
+      "def": 80,
+      "lead": 80,
+      "phys": 80,
+      "const": 82
+    },
+    {
+      "name": "Elmer Lach",
+      "position": "C",
+      "off": 88,
+      "def": 80,
+      "lead": 75,
+      "phys": 70,
+      "const": 88
+    },
+    {
+      "name": "Reed Larson",
+      "position": "LD",
+      "off": 86,
+      "def": 82,
+      "lead": 70,
+      "phys": 78,
+      "const": 85
+    },
+    {
+      "name": "Mats Naslund",
+      "position": "LW",
+      "off": 88,
+      "def": 78,
+      "lead": 75,
+      "phys": 73,
+      "const": 88
+    },
+    {
+      "name": "Niklas Backstrom",
+      "position": "C",
+      "off": 90,
+      "def": 78,
+      "lead": 74,
+      "phys": 71,
+      "const": 87
+    },
+    {
+      "name": "Al Iafrate",
+      "position": "LD",
+      "off": 86,
+      "def": 78,
+      "lead": 70,
+      "phys": 88,
+      "const": 82
+    },
+    {
+      "name": "Lanny McDonald",
+      "position": "RW",
+      "off": 90,
+      "def": 72,
+      "lead": 75,
+      "phys": 78,
+      "const": 88
+    },
+    {
+      "name": "Michel Goulet",
+      "position": "LW",
+      "off": 94,
+      "def": 73,
+      "lead": 71,
+      "phys": 75,
+      "const": 85
+    },
+    {
+      "name": "Mark Eaton",
+      "position": "RD",
+      "off": 72,
+      "def": 90,
+      "lead": 75,
+      "phys": 85,
+      "const": 84
+    },
+    {
+      "name": "Gary Galin",
+      "position": "LD",
+      "off": 74,
+      "def": 90,
+      "lead": 75,
+      "phys": 82,
+      "const": 83
+    },
+    {
+      "name": "Ryan McDonagh",
+      "position": "LD",
+      "off": 72,
+      "def": 89,
+      "lead": 82,
+      "phys": 83,
+      "const": 80
+    },
+    {
+      "name": "Milan Hejduk",
+      "position": "RW",
+      "off": 84,
+      "def": 77,
+      "lead": 75,
+      "phys": 77,
+      "const": 88
+    },
+    {
+      "name": "Taylor Hall",
+      "position": "LW",
+      "off": 88,
+      "def": 82,
+      "lead": 70,
+      "phys": 75,
+      "const": 77
+    },
+    {
+      "name": "Artemi Panarin",
+      "position": "LW",
+      "off": 93,
+      "def": 73,
+      "lead": 73,
+      "phys": 70,
+      "const": 85
+    },
+    {
+      "name": "Peter Bondra",
+      "position": "RW",
+      "off": 90,
+      "def": 74,
+      "lead": 75,
+      "phys": 72,
+      "const": 85
+    },
+    {
+      "name": "Bill Cook",
+      "position": "RW",
+      "off": 90,
+      "def": 74,
+      "lead": 72,
+      "phys": 70,
+      "const": 88
+    },
+    {
+      "name": "Mike Gartner",
+      "position": "RW",
+      "off": 92,
+      "def": 72,
+      "lead": 70,
+      "phys": 70,
+      "const": 87
+    },
+    {
+      "name": "Tony Amonte",
+      "position": "RW",
+      "off": 88,
+      "def": 72,
+      "lead": 70,
+      "phys": 75,
+      "const": 88
+    },
+    {
+      "name": "Rick Middleton",
+      "position": "RW",
+      "off": 90,
+      "def": 72,
+      "lead": 70,
+      "phys": 70,
+      "const": 88
+    },
+    {
+      "name": "Dino Ciccarelli",
+      "position": "RW",
+      "off": 90,
+      "def": 70,
+      "lead": 70,
+      "phys": 75,
+      "const": 86
+    },
+    {
+      "name": "Rod Gilbert",
+      "position": "RW",
+      "off": 88,
+      "def": 72,
+      "lead": 75,
+      "phys": 70,
+      "const": 86
+    },
+    {
+      "name": "Rick Martin",
+      "position": "LW",
+      "off": 90,
+      "def": 72,
+      "lead": 70,
+      "phys": 70,
+      "const": 85
+    },
+    {
+      "name": "Andy Bathgate",
+      "position": "RW",
+      "off": 87,
+      "def": 74,
+      "lead": 70,
+      "phys": 70,
+      "const": 86
+    },
+    {
+      "name": "Ray Whitney",
+      "position": "LW",
+      "off": 88,
+      "def": 73,
+      "lead": 70,
+      "phys": 70,
+      "const": 85
+    },
+    {
+      "name": "Bernie Nicholls",
+      "position": "RW",
+      "off": 90,
+      "def": 70,
+      "lead": 70,
+      "phys": 70,
+      "const": 85
+    },
+    {
+      "name": "Thomas Vanek",
+      "position": "LW",
+      "off": 88,
+      "def": 71,
+      "lead": 70,
+      "phys": 72,
+      "const": 82
+    },
+    {
+      "name": "Joe Mullen",
+      "position": "RW",
+      "off": 89,
+      "def": 70,
+      "lead": 70,
+      "phys": 70,
+      "const": 84
+    },
+    {
+      "name": "Charlie Simmer",
+      "position": "RW",
+      "off": 88,
+      "def": 70,
+      "lead": 70,
+      "phys": 70,
+      "const": 85
+    },
+    {
+      "name": "Phil Kessel",
+      "position": "RW",
+      "off": 90,
+      "def": 70,
+      "lead": 70,
+      "phys": 70,
+      "const": 80
+    }
+  ],
+  "goalies": [
+    {
+      "name": "Dominik Hasek",
+      "position": "G",
+      "gen": 98,
+      "const": 91
+    },
+    {
+      "name": "Vladislav Tretiak",
+      "position": "G",
+      "gen": 98,
+      "const": 93
+    },
+    {
+      "name": "Patrick Roy",
+      "position": "G",
+      "gen": 95,
+      "const": 96
+    },
+    {
+      "name": "Martin Brodeur",
+      "position": "G",
+      "gen": 93,
+      "const": 97
+    },
+    {
+      "name": "Carey Price",
+      "position": "G",
+      "gen": 93,
+      "const": 92
+    },
+    {
+      "name": "Ken Dryden",
+      "position": "G",
+      "gen": 92,
+      "const": 94
+    },
+    {
+      "name": "Georges Vezina",
+      "position": "G",
+      "gen": 92,
+      "const": 90
+    },
+    {
+      "name": "Jacques Plante",
+      "position": "G",
+      "gen": 92,
+      "const": 91
+    },
+    {
+      "name": "Terry Sawchuk",
+      "position": "G",
+      "gen": 90,
+      "const": 93
+    },
+    {
+      "name": "Glenn Hall",
+      "position": "G",
+      "gen": 88,
+      "const": 96
+    },
+    {
+      "name": "Bill Durnan",
+      "position": "G",
+      "gen": 88,
+      "const": 93
+    },
+    {
+      "name": "Bernie Parent",
+      "position": "G",
+      "gen": 88,
+      "const": 90
+    },
+    {
+      "name": "Andrei Vasilevskiy",
+      "position": "G",
+      "gen": 88,
+      "const": 92
+    },
+    {
+      "name": "Ed Belfour",
+      "position": "G",
+      "gen": 87,
+      "const": 91
+    },
+    {
+      "name": "Sergei Bobrovsky",
+      "position": "G",
+      "gen": 87,
+      "const": 87
+    },
+    {
+      "name": "Tony Esposito",
+      "position": "G",
+      "gen": 87,
+      "const": 90
+    },
+    {
+      "name": "Roberto Luongo",
+      "position": "G",
+      "gen": 86,
+      "const": 90
+    },
+    {
+      "name": "Henrik Lundqvist",
+      "position": "G",
+      "gen": 86,
+      "const": 94
+    },
+    {
+      "name": "Tuukka Rask",
+      "position": "G",
+      "gen": 85,
+      "const": 92
+    },
+    {
+      "name": "Grant Fuhr",
+      "position": "G",
+      "gen": 85,
+      "const": 88
+    },
+    {
+      "name": "Billy Smith",
+      "position": "G",
+      "gen": 84,
+      "const": 90
+    },
+    {
+      "name": "Turk Broda",
+      "position": "G",
+      "gen": 84,
+      "const": 91
+    },
+    {
+      "name": "Jonathan Quick",
+      "position": "G",
+      "gen": 84,
+      "const": 88
+    },
+    {
+      "name": "Johnny Bower",
+      "position": "G",
+      "gen": 83,
+      "const": 90
+    },
+    {
+      "name": "Frank Brimsek",
+      "position": "G",
+      "gen": 83,
+      "const": 88
+    },
+    {
+      "name": "Curtis Joseph",
+      "position": "G",
+      "gen": 82,
+      "const": 92
+    },
+    {
+      "name": "Tiny Thompson",
+      "position": "G",
+      "gen": 82,
+      "const": 89
+    },
+    {
+      "name": "Marc-Andre Fleury",
+      "position": "G",
+      "gen": 82,
+      "const": 94
+    },
+    {
+      "name": "George Hainsworth",
+      "position": "G",
+      "gen": 82,
+      "const": 95
+    },
+    {
+      "name": "Ed Giacomin",
+      "position": "G",
+      "gen": 84,
+      "const": 91
+    },
+    {
+      "name": "Miikka Kiprusoff",
+      "position": "G",
+      "gen": 86,
+      "const": 90
+    },
+    {
+      "name": "Ryan Miller",
+      "position": "G",
+      "gen": 85,
+      "const": 89
+    },
+    {
+      "name": "Tim Thomas",
+      "position": "G",
+      "gen": 83,
+      "const": 84
+    },
+    {
+      "name": "Chris Osgood",
+      "position": "G",
+      "gen": 81,
+      "const": 92
+    },
+    {
+      "name": "Alexei Makarov",
+      "position": "G",
+      "gen": 83,
+      "const": 88
+    },
+    {
+      "name": "Ben Bishop",
+      "position": "G",
+      "gen": 83,
+      "const": 85
+    },
+    {
+      "name": "Pekka Rinne",
+      "position": "G",
+      "gen": 86,
+      "const": 90
+    },
+    {
+      "name": "Igor Shesterkin",
+      "position": "G",
+      "gen": 89,
+      "const": 86
+    },
+    {
+      "name": "Ilya Sorokin",
+      "position": "G",
+      "gen": 87,
+      "const": 90
+    }
+  ],
+  "coaches": [
+    {
+      "name": "Scotty Bowman",
+      "off": 92,
+      "def": 98
+    },
+    {
+      "name": "Al Arbour",
+      "off": 82,
+      "def": 96
+    },
+    {
+      "name": "Toe Blake",
+      "off": 85,
+      "def": 90
+    },
+    {
+      "name": "Herb Brooks",
+      "off": 80,
+      "def": 94
+    },
+    {
+      "name": "Jacques Lemaire",
+      "off": 78,
+      "def": 98
+    },
+    {
+      "name": "Mike Babcock",
+      "off": 84,
+      "def": 94
+    },
+    {
+      "name": "Joel Quenneville",
+      "off": 88,
+      "def": 90
+    },
+    {
+      "name": "Ken Hitchcock",
+      "off": 76,
+      "def": 96
+    },
+    {
+      "name": "Pat Quinn",
+      "off": 88,
+      "def": 86
+    },
+    {
+      "name": "Glen Sather",
+      "off": 94,
+      "def": 78
+    },
+    {
+      "name": "Barry Trotz",
+      "off": 78,
+      "def": 96
+    },
+    {
+      "name": "Roger Nielson",
+      "off": 80,
+      "def": 92
+    },
+    {
+      "name": "Emile Francis",
+      "off": 78,
+      "def": 94
+    },
+    {
+      "name": "Fred Sheros",
+      "off": 90,
+      "def": 80
+    },
+    {
+      "name": "Dick Irvin",
+      "off": 82,
+      "def": 90
+    },
+    {
+      "name": "Bill Torrey",
+      "off": 84,
+      "def": 86
+    },
+    {
+      "name": "Tommy Ivan",
+      "off": 80,
+      "def": 92
+    },
+    {
+      "name": "Bryan Murray",
+      "off": 84,
+      "def": 92
+    },
+    {
+      "name": "John Tortorella",
+      "off": 76,
+      "def": 94
+    },
+    {
+      "name": "Bruce Boudreau",
+      "off": 92,
+      "def": 78
+    },
+    {
+      "name": "Lindy Ruff",
+      "off": 86,
+      "def": 88
+    },
+    {
+      "name": "Mike Keenen",
+      "off": 82,
+      "def": 90
+    },
+    {
+      "name": "Craig Berube",
+      "off": 80,
+      "def": 92
+    },
+    {
+      "name": "Dan Bylsma",
+      "off": 88,
+      "def": 82
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "lhl",
+  "version": "1.0.0",
+  "description": "Legend Hockey League - Full Stack Hockey Simulation",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && source venv/bin/activate && python app.py",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt",
+    "fix": "bash fix-install.sh",
+    "setup": "npm run install:all && npm run seed",
+    "seed": "python3 scripts/seed_database.py",
+    "create-admin": "python3 scripts/create_admin.py"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
