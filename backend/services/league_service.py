@@ -2,6 +2,8 @@
 from models.team import Team
 
 # Team configurations based on league size
+# East Conference: MTL, BOS, TOR (6+), PHI (8+), PIT (10+), QC (12+)
+# West Conference: DET, CHI, NYR (6+), LA (8+), EDM (10+), NYI (12+)
 TEAM_CONFIGS = {
     4: [
         {'name': 'MTL', 'city': 'Montreal', 'conference': 'Eastern'},
@@ -55,7 +57,7 @@ TEAM_CONFIGS = {
     ]
 }
 
-def initialize_league(simulation_id, num_teams):
+def initialize_league(simulation_id, num_teams, user_team_id=None):
     """Initialize league teams based on size"""
     if num_teams not in TEAM_CONFIGS:
         raise ValueError(f"Invalid number of teams: {num_teams}")
@@ -63,14 +65,14 @@ def initialize_league(simulation_id, num_teams):
     teams = []
     team_configs = TEAM_CONFIGS[num_teams]
     
-    # First team is user-controlled
+    # Create all teams (all AI-controlled initially)
     for i, config in enumerate(team_configs):
         team = Team(
             simulation_id=simulation_id,
             name=config['name'],
             city=config['city'],
             conference=config['conference'],
-            user_controlled=(i == 0)  # First team is user-controlled
+            user_controlled=False  # Will be set based on user_team_id
         )
         teams.append(team)
     

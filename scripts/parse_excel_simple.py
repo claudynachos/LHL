@@ -65,6 +65,8 @@ def parse_excel_data(filepath):
                     player = {
                         'name': name,
                         'position': row_data.get('D', 'C'),
+                        'type': row_data.get('G', ''),  # Player type (STYLE column - playmaker, sniper, etc.)
+                        'era': row_data.get('F', ''),  # Era (column F)
                         'off': row_data.get('H', 75),
                         'def': row_data.get('I', 75),
                         'lead': row_data.get('J', 75),
@@ -100,8 +102,9 @@ def parse_excel_data(filepath):
                     goalie = {
                         'name': name,
                         'position': 'G',
-                        'gen': row_data.get('G', 80),
-                        'const': row_data.get('H', 80),
+                        'era': row_data.get('F', ''),  # Era (column F)
+                        'gen': row_data.get('G', 80),  # GEN (column G)
+                        'const': row_data.get('H', 80),  # CONST (column H)
                     }
                     data['goalies'].append(goalie)
         
@@ -131,8 +134,10 @@ def parse_excel_data(filepath):
                     
                     coach = {
                         'name': name,
-                        'off': row_data.get('E', 75),
-                        'def': row_data.get('F', 75),
+                        'type': row_data.get('D', ''),  # Style (column D)
+                        'era': row_data.get('C', ''),  # Era (column C)
+                        'off': row_data.get('E', 75),  # OFF (column E)
+                        'def': row_data.get('F', 75),  # DEF (column F)
                     }
                     data['coaches'].append(coach)
     

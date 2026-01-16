@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ModalProvider } from "./components/ModalContext";
 
 export const metadata: Metadata = {
   title: "Legend Hockey League",
@@ -12,8 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased bg-gray-50">{children}</body>
+    <html lang="en" className="dark">
+      <body className="antialiased bg-dark-bg text-dark-text">
+        <ModalProvider>
+          {children}
+        </ModalProvider>
+      </body>
     </html>
   );
 }

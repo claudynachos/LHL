@@ -1,19 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { Simulation, Standing } from '@/lib/types';
+import DashboardLayout from '@/app/components/DashboardLayout';
 
 export default function SimulationPage() {
   const params = useParams();
   const simulationId = params.id;
+  const router = useRouter();
 
   const [simulation, setSimulation] = useState<Simulation | null>(null);
   const [standings, setStandings] = useState<Standing[]>([]);
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
+  const [simulationProgress, setSimulationProgress] = useState<{
+    games_simulated: number;
+    total_games: number;
+    percentage: number;
+  } | null>(null);
 
   useEffect(() => {
     loadSimulation();
@@ -36,23 +43,87 @@ export default function SimulationPage() {
 
   const simulateToPlayoffs = async () => {
     setSimulating(true);
+    
+    // Get initial progress to show total games
+    try {
+      const initialProgress = await api.get(`/api/simulations/${simulationId}/simulation-progress`);
+      setSimulationProgress(initialProgress.data);
+    } catch (error) {
+      console.error('Failed to get initial progress', error);
+      setSimulationProgress({ games_simulated: 0, total_games: 0, percentage: 0 });
+    }
+    
+    // Start polling for progress
+    const progressInterval = setInterval(async () => {
+      try {
+        const progressResponse = await api.get(`/api/simulations/${simulationId}/simulation-progress`);
+        setSimulationProgress(progressResponse.data);
+      } catch (error) {
+        console.error('Failed to get progress', error);
+      }
+    }, 300); // Poll every 300ms for smoother updates
+    
     try {
       await api.post(`/api/simulations/${simulationId}/simulate-to-playoffs`);
+      clearInterval(progressInterval);
+      // Get final progress
+      const finalProgress = await api.get(`/api/simulations/${simulationId}/simulation-progress`);
+      setSimulationProgress(finalProgress.data);
       await loadSimulation();
     } catch (error) {
       console.error('Simulation failed', error);
+      clearInterval(progressInterval);
     } finally {
       setSimulating(false);
+      setSimulationProgress(null);
     }
   };
 
   const simulateSeason = async () => {
     setSimulating(true);
+    
+    // Get initial progress to show total games
+    try {
+      const initialProgress = await api.get(`/api/simulations/${simulationId}/simulation-progress`);
+      setSimulationProgress(initialProgress.data);
+    } catch (error) {
+      console.error('Failed to get initial progress', error);
+      setSimulationProgress({ games_simulated: 0, total_games: 0, percentage: 0 });
+    }
+    
+    // Start polling for progress
+    const progressInterval = setInterval(async () => {
+      try {
+        const progressResponse = await api.get(`/api/simulations/${simulationId}/simulation-progress`);
+        setSimulationProgress(progressResponse.data);
+      } catch (error) {
+        console.error('Failed to get progress', error);
+      }
+    }, 300); // Poll every 300ms for smoother updates
+    
     try {
       await api.post(`/api/simulations/${simulationId}/simulate-season`);
+      clearInterval(progressInterval);
+      // Get final progress
+      const finalProgress = await api.get(`/api/simulations/${simulationId}/simulation-progress`);
+      setSimulationProgress(finalProgress.data);
       await loadSimulation();
     } catch (error) {
       console.error('Simulation failed', error);
+      clearInterval(progressInterval);
+    } finally {
+      setSimulating(false);
+      setSimulationProgress(null);
+    }
+  };
+
+  const enterPlayoffs = async () => {
+    setSimulating(true);
+    try {
+      await api.post(`/api/simulations/${simulationId}/enter-playoffs`);
+      router.push(`/simulation/${simulationId}/playoffs`);
+    } catch (error) {
+      console.error('Enter playoffs failed', error);
     } finally {
       setSimulating(false);
     }
@@ -60,118 +131,187 @@ export default function SimulationPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Loading simulation...</p>
-      </div>
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-dark-text-muted">Loading simulation...</p>
+          </div>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="grid grid-cols-12 gap-4 p-4">
-        {/* Left Sidebar */}
-        <div className="col-span-2 space-y-2">
-          <div className="card">
-            <h3 className="font-bold mb-2">Menu</h3>
-            <nav className="space-y-1">
-              <Link href={`/simulation/${simulationId}/calendar`} className="block p-2 hover:bg-gray-100 rounded">
-                Calendar
-              </Link>
-              <Link href={`/simulation/${simulationId}/stats`} className="block p-2 hover:bg-gray-100 rounded">
-                Season Stats
-              </Link>
-              <Link href={`/simulation/${simulationId}/stats/alltime`} className="block p-2 hover:bg-gray-100 rounded">
-                All-Time Stats
-              </Link>
-              <Link href={`/simulation/${simulationId}/trophies`} className="block p-2 hover:bg-gray-100 rounded">
-                Trophies
-              </Link>
-              <Link href={`/simulation/${simulationId}/lines`} className="block p-2 hover:bg-gray-100 rounded">
-                Lines Config
-              </Link>
-              <Link href={`/simulation/${simulationId}/standings`} className="block p-2 hover:bg-gray-100 rounded">
-                Standings
-              </Link>
-            </nav>
-          </div>
-        </div>
-
-        {/* Center Panel */}
-        <div className="col-span-7">
-          <div className="card mb-4">
-            <h1 className="text-3xl font-bold mb-2">
-              Season {simulation?.current_season}
-            </h1>
-            <p className="text-gray-600">
-              Status: <span className="font-semibold capitalize">{simulation?.status}</span>
-            </p>
-            <p className="text-gray-600">
-              Date: {simulation?.current_date}
-            </p>
-          </div>
-
-          <div className="card">
-            <h2 className="text-2xl font-bold mb-4">Simulation Actions</h2>
-            <div className="space-y-3">
-              <button
-                onClick={simulateToPlayoffs}
-                disabled={simulating || simulation?.status === 'playoffs'}
-                className="btn btn-primary w-full text-lg py-3"
-              >
-                {simulating ? 'Simulating...' : 'Simulate to Playoffs'}
-              </button>
-
-              <button
-                onClick={() => {/* Simulate Round */}}
-                disabled={simulating || simulation?.status !== 'playoffs'}
-                className="btn btn-primary w-full text-lg py-3"
-              >
-                Simulate Playoff Round
-              </button>
-
-              <button
-                onClick={simulateSeason}
-                disabled={simulating}
-                className="btn btn-primary w-full text-lg py-3"
-              >
-                {simulating ? 'Simulating...' : 'Simulate Full Season'}
-              </button>
-            </div>
-
-            {simulating && (
-              <div className="mt-4 bg-blue-50 p-4 rounded-lg">
-                <p className="text-center">Simulating games... This may take a moment.</p>
-              </div>
+    <DashboardLayout>
+      <div className="max-w-7xl mx-auto">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-dark-text mb-2">
+            {simulation?.name || `Season ${simulation?.current_season}`}
+          </h1>
+          <div className="flex items-center gap-4 text-dark-text-muted">
+            {simulation?.name && (
+              <>
+                <span>Season {simulation?.current_season} / {simulation?.year_length}</span>
+                <span>•</span>
+              </>
             )}
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary-500"></span>
+              Status: <span className="text-dark-text font-semibold capitalize">{simulation?.status}</span>
+            </span>
+            <span>•</span>
+            <span>Date: {simulation?.current_date}</span>
           </div>
         </div>
 
-        {/* Right Info Panel */}
-        <div className="col-span-3">
-          <div className="card">
-            <h3 className="font-bold mb-3">Current Standings</h3>
-            <div className="space-y-2">
-              {standings.slice(0, 5).map((s: any, idx) => (
-                <div key={idx} className="flex justify-between text-sm">
-                  <span>{s.team_name}</span>
-                  <span className="font-mono">{s.wins}-{s.losses}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Simulation Actions Card */}
+            <div className="card">
+              <h2 className="text-2xl font-bold mb-6 text-dark-text">Simulation Actions</h2>
+              <div className="space-y-4">
+                <button
+                  onClick={simulateToPlayoffs}
+                  disabled={simulating || simulation?.status !== 'season'}
+                  className="btn btn-primary w-full text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {simulating ? 'Simulating...' : 'Simulate to Playoffs'}
+                </button>
+
+                {simulation?.status === 'season_end' && (
+                  <button
+                    onClick={enterPlayoffs}
+                    disabled={simulating}
+                    className="btn btn-primary w-full text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Enter Playoffs
+                  </button>
+                )}
+
+                <button
+                  onClick={simulateSeason}
+                  disabled={simulating || simulation?.status !== 'season'}
+                  className="btn btn-primary w-full text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {simulating ? 'Simulating...' : 'Simulate Full Season'}
+                </button>
+              </div>
+
+              {simulating && simulationProgress && (
+                <div className="mt-6 bg-primary-500/10 border border-primary-500/20 p-4 rounded-lg">
+                  <div className="mb-2 flex items-center justify-between text-sm">
+                    <span className="text-primary-400 font-medium">Simulating games...</span>
+                    {simulationProgress.total_games > 0 ? (
+                      <span className="text-primary-400">
+                        {simulationProgress.games_simulated} / {simulationProgress.total_games} games
+                      </span>
+                    ) : (
+                      <span className="text-primary-400">Preparing schedule...</span>
+                    )}
+                  </div>
+                  {simulationProgress.total_games > 0 ? (
+                    <>
+                      <div className="w-full bg-dark-surface rounded-full h-3 overflow-hidden">
+                        <div
+                          className="bg-primary-500 h-full transition-all duration-300 ease-out"
+                          style={{ width: `${Math.min(simulationProgress.percentage, 100)}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-center text-primary-400 text-xs mt-2">
+                        {simulationProgress.percentage.toFixed(1)}% complete
+                      </p>
+                    </>
+                  ) : (
+                    <div className="w-full bg-dark-surface rounded-full h-3 overflow-hidden">
+                      <div className="bg-primary-500 h-full animate-pulse" style={{ width: '30%' }}></div>
+                    </div>
+                  )}
                 </div>
-              ))}
+              )}
             </div>
-            <Link href={`/simulation/${simulationId}/standings`} className="text-primary-600 text-sm mt-2 block">
-              View Full Standings →
-            </Link>
+
+            {/* Quick Navigation */}
+            <div className="card">
+              <h2 className="text-xl font-bold mb-4 text-dark-text">Quick Navigation</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <Link 
+                  href={`/simulation/${simulationId}/stats`}
+                  className="card-hover text-center p-4 group"
+                >
+                  <div className="text-2xl mb-2">📊</div>
+                  <div className="text-sm font-medium text-dark-text group-hover:text-primary-500 transition-colors">
+                    Season Stats
+                  </div>
+                </Link>
+                <Link 
+                  href={`/simulation/${simulationId}/standings`}
+                  className="card-hover text-center p-4 group"
+                >
+                  <div className="text-2xl mb-2">🏆</div>
+                  <div className="text-sm font-medium text-dark-text group-hover:text-primary-500 transition-colors">
+                    Standings
+                  </div>
+                </Link>
+                <Link 
+                  href={`/simulation/${simulationId}/lines`}
+                  className="card-hover text-center p-4 group"
+                >
+                  <div className="text-2xl mb-2">⚙️</div>
+                  <div className="text-sm font-medium text-dark-text group-hover:text-primary-500 transition-colors">
+                    Lines Config
+                  </div>
+                </Link>
+              </div>
+            </div>
           </div>
 
-          <div className="card mt-4">
-            <h3 className="font-bold mb-2">Quick Stats</h3>
-            <p className="text-sm text-gray-600">Season Leaders</p>
-            <Link href={`/simulation/${simulationId}/stats`} className="text-primary-600 text-sm mt-2 block">
-              View All Stats →
-            </Link>
+          {/* Right Sidebar */}
+          <div className="space-y-6">
+            {/* Current Standings */}
+            <div className="card">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-dark-text">Current Standings</h3>
+                <Link 
+                  href={`/simulation/${simulationId}/standings`} 
+                  className="text-sm text-primary-500 hover:text-primary-400 transition-colors"
+                >
+                  View all →
+                </Link>
+              </div>
+              <div className="space-y-3">
+                {standings.slice(0, 5).map((s: any, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-3 bg-dark-surface rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary-500/20 flex items-center justify-center text-xs font-bold text-primary-400">
+                        {idx + 1}
+                      </div>
+                      <span className="text-sm text-dark-text font-medium">{s.team_name}</span>
+                    </div>
+                    <span className="text-sm font-mono text-dark-text-muted">{s.wins}-{s.losses}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="card">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-dark-text">Quick Stats</h3>
+                <Link 
+                  href={`/simulation/${simulationId}/stats`} 
+                  className="text-sm text-primary-500 hover:text-primary-400 transition-colors"
+                >
+                  View all →
+                </Link>
+              </div>
+              <p className="text-sm text-dark-text-muted">Season Leaders</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

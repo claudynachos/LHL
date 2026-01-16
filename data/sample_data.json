@@ -3,6 +3,8 @@
     {
       "name": "Mario Lemieux",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 115,
       "def": 82,
       "lead": 88,
@@ -12,6 +14,8 @@
     {
       "name": "Wayne Gretzky",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Run&Gun",
       "off": 118,
       "def": 79,
       "lead": 90,
@@ -21,6 +25,8 @@
     {
       "name": "Gordie Howe",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Original Six",
       "off": 95,
       "def": 90,
       "lead": 95,
@@ -30,6 +36,8 @@
     {
       "name": "Connor McDavid",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 110,
       "def": 88,
       "lead": 87,
@@ -39,6 +47,8 @@
     {
       "name": "Cale Makar",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 104,
       "def": 94,
       "lead": 84,
@@ -48,6 +58,8 @@
     {
       "name": "Bobby Orr",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Expansion",
       "off": 108,
       "def": 89,
       "lead": 85,
@@ -57,6 +69,8 @@
     {
       "name": "Sidney Crosby",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 95,
       "def": 93,
       "lead": 93,
@@ -66,6 +80,8 @@
     {
       "name": "Alex Ovechkin",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Modern",
       "off": 109,
       "def": 80,
       "lead": 82,
@@ -75,6 +91,8 @@
     {
       "name": "Maurice Richard",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Original Six",
       "off": 104,
       "def": 78,
       "lead": 92,
@@ -84,6 +102,8 @@
     {
       "name": "Raymond Bourque",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 98,
       "def": 89,
       "lead": 89,
@@ -93,6 +113,8 @@
     {
       "name": "Jaromir Jagr",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 96,
       "def": 82,
       "lead": 83,
@@ -102,6 +124,8 @@
     {
       "name": "Dale Hawerchuk",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Run&Gun",
       "off": 94,
       "def": 89,
       "lead": 88,
@@ -111,6 +135,8 @@
     {
       "name": "Nicklas Lidstrom",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 92,
       "def": 94,
       "lead": 90,
@@ -120,6 +146,8 @@
     {
       "name": "Larry Robinson",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Expansion",
       "off": 87,
       "def": 94,
       "lead": 88,
@@ -129,6 +157,8 @@
     {
       "name": "Steve Yzerman",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 96,
       "def": 90,
       "lead": 92,
@@ -138,6 +168,8 @@
     {
       "name": "Pavel Datsyuk",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 95,
       "def": 94,
       "lead": 80,
@@ -147,6 +179,8 @@
     {
       "name": "Stan Mikita",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 99,
       "def": 88,
       "lead": 85,
@@ -156,6 +190,8 @@
     {
       "name": "Nathan MacKinnon",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 100,
       "def": 83,
       "lead": 86,
@@ -165,6 +201,8 @@
     {
       "name": "Mark Messier",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 87,
       "def": 88,
       "lead": 98,
@@ -174,6 +212,8 @@
     {
       "name": "Leon Draisaitl",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Modern",
       "off": 97,
       "def": 86,
       "lead": 84,
@@ -183,6 +223,8 @@
     {
       "name": "Mark Recchi",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 94,
       "def": 88,
       "lead": 85,
@@ -192,6 +234,8 @@
     {
       "name": "Scott Stevens",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Dead-Puck",
       "off": 79,
       "def": 97,
       "lead": 85,
@@ -201,6 +245,8 @@
     {
       "name": "Jean B\u00e9liveau",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 90,
       "def": 90,
       "lead": 99,
@@ -210,6 +256,8 @@
     {
       "name": "Chris Pronger",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Dead-Puck",
       "off": 82,
       "def": 94,
       "lead": 87,
@@ -219,6 +267,8 @@
     {
       "name": "Joe Malone",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Pre-Modern",
       "off": 99,
       "def": 80,
       "lead": 85,
@@ -228,6 +278,8 @@
     {
       "name": "Chris Chelios",
       "position": "RD",
+      "type": "Gamer",
+      "era": "Dead-Puck",
       "off": 82,
       "def": 92,
       "lead": 88,
@@ -237,6 +289,8 @@
     {
       "name": "Bobby Clarke",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 87,
       "def": 90,
       "lead": 91,
@@ -246,6 +300,8 @@
     {
       "name": "Denis Potvin",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Expansion",
       "off": 92,
       "def": 90,
       "lead": 88,
@@ -255,6 +311,8 @@
     {
       "name": "Scott Niedermayer",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Run&Gun",
       "off": 92,
       "def": 92,
       "lead": 86,
@@ -264,6 +322,8 @@
     {
       "name": "Bryan Trottier",
       "position": "C",
+      "type": "Gamer",
+      "era": "Expansion",
       "off": 97,
       "def": 88,
       "lead": 85,
@@ -273,6 +333,8 @@
     {
       "name": "Paul Coffey",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 98,
       "def": 83,
       "lead": 85,
@@ -282,6 +344,8 @@
     {
       "name": "Dit Clapper",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Original Six",
       "off": 82,
       "def": 94,
       "lead": 85,
@@ -291,6 +355,8 @@
     {
       "name": "Drew Doughty",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 88,
       "def": 91,
       "lead": 85,
@@ -300,6 +366,8 @@
     {
       "name": "Shea Weber",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Modern",
       "off": 87,
       "def": 90,
       "lead": 88,
@@ -309,6 +377,8 @@
     {
       "name": "Jarome Iginla",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 89,
       "def": 86,
       "lead": 87,
@@ -318,6 +388,8 @@
     {
       "name": "Brendan Shanahan",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 88,
       "def": 86,
       "lead": 88,
@@ -327,6 +399,8 @@
     {
       "name": "Al MacInnis",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 90,
       "def": 90,
       "lead": 85,
@@ -336,6 +410,8 @@
     {
       "name": "Joe Sakic",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 97,
       "def": 86,
       "lead": 88,
@@ -345,6 +421,8 @@
     {
       "name": "Newsy Lalonde",
       "position": "C",
+      "type": "Sniper",
+      "era": "Pre-Modern",
       "off": 100,
       "def": 83,
       "lead": 80,
@@ -354,6 +432,8 @@
     {
       "name": "Ted Lindsay",
       "position": "LW",
+      "type": "Gamer",
+      "era": "Original Six",
       "off": 88,
       "def": 90,
       "lead": 85,
@@ -363,6 +443,8 @@
     {
       "name": "Patrice Bergeron",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 79,
       "def": 105,
       "lead": 94,
@@ -372,6 +454,8 @@
     {
       "name": "Ron Francis",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 91,
       "def": 94,
       "lead": 83,
@@ -381,6 +465,8 @@
     {
       "name": "Johnny Bucyk",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 90,
       "def": 90,
       "lead": 88,
@@ -390,6 +476,8 @@
     {
       "name": "Zdeno Chara",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Dead-Puck",
       "off": 80,
       "def": 92,
       "lead": 90,
@@ -399,6 +487,8 @@
     {
       "name": "Doug Wilson",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 87,
       "def": 89,
       "lead": 88,
@@ -408,6 +498,8 @@
     {
       "name": "Doug Harvey",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 85,
       "def": 98,
       "lead": 90,
@@ -417,6 +509,8 @@
     {
       "name": "Mike Bossy",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Expansion",
       "off": 106,
       "def": 78,
       "lead": 80,
@@ -426,6 +520,8 @@
     {
       "name": "Auston Matthews",
       "position": "C",
+      "type": "Sniper",
+      "era": "Modern",
       "off": 100,
       "def": 87,
       "lead": 79,
@@ -435,6 +531,8 @@
     {
       "name": "Rod Langway",
       "position": "LD",
+      "type": "Defensive",
+      "era": "Dead-Puck",
       "off": 74,
       "def": 105,
       "lead": 85,
@@ -444,6 +542,8 @@
     {
       "name": "Aleksander Barkov",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 89,
       "def": 94,
       "lead": 82,
@@ -453,6 +553,8 @@
     {
       "name": "Joe Thornton",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 96,
       "def": 82,
       "lead": 85,
@@ -462,6 +564,8 @@
     {
       "name": "Rob Blake",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Run&Gun",
       "off": 86,
       "def": 90,
       "lead": 80,
@@ -471,6 +575,8 @@
     {
       "name": "Doug Gilmour",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 91,
       "def": 87,
       "lead": 84,
@@ -480,6 +586,8 @@
     {
       "name": "Shane Doan",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 84,
       "def": 88,
       "lead": 85,
@@ -489,6 +597,8 @@
     {
       "name": "Vladimir Konstantinov",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Dead-Puck",
       "off": 80,
       "def": 95,
       "lead": 82,
@@ -498,6 +608,8 @@
     {
       "name": "Brian Leetch",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 97,
       "def": 88,
       "lead": 80,
@@ -507,6 +619,8 @@
     {
       "name": "Tim Horton",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Original Six",
       "off": 78,
       "def": 96,
       "lead": 85,
@@ -516,6 +630,8 @@
     {
       "name": "King Clancy",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 92,
       "lead": 88,
@@ -525,6 +641,8 @@
     {
       "name": "Peter Forsberg",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 94,
       "def": 85,
       "lead": 80,
@@ -534,6 +652,8 @@
     {
       "name": "Kevin Lowe",
       "position": "RD",
+      "type": "Defensive",
+      "era": "Expansion",
       "off": 78,
       "def": 94,
       "lead": 85,
@@ -543,6 +663,8 @@
     {
       "name": "Brad Park",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 88,
       "def": 90,
       "lead": 85,
@@ -552,6 +674,8 @@
     {
       "name": "Adam Oates",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 98,
       "def": 81,
       "lead": 83,
@@ -561,6 +685,8 @@
     {
       "name": "Quinn Hughes",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 100,
       "def": 82,
       "lead": 82,
@@ -570,6 +696,8 @@
     {
       "name": "Bobby Hull",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Original Six",
       "off": 96,
       "def": 79,
       "lead": 80,
@@ -579,6 +707,8 @@
     {
       "name": "Eddie Shore",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Pre-Modern",
       "off": 80,
       "def": 92,
       "lead": 85,
@@ -588,6 +718,8 @@
     {
       "name": "Jack Stewart",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Original Six",
       "off": 80,
       "def": 94,
       "lead": 85,
@@ -597,6 +729,8 @@
     {
       "name": "Kevin Hatcher",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Dead-Puck",
       "off": 80,
       "def": 92,
       "lead": 82,
@@ -606,6 +740,8 @@
     {
       "name": "Marcel Dionne",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Expansion",
       "off": 101,
       "def": 83,
       "lead": 80,
@@ -615,6 +751,8 @@
     {
       "name": "Syl Apps",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Original Six",
       "off": 86,
       "def": 88,
       "lead": 85,
@@ -624,6 +762,8 @@
     {
       "name": "Randy Carlyle",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Expansion",
       "off": 82,
       "def": 90,
       "lead": 85,
@@ -633,6 +773,8 @@
     {
       "name": "Dave Andreychuk",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 88,
       "def": 85,
       "lead": 87,
@@ -642,6 +784,8 @@
     {
       "name": "Bob Gainey",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 74,
       "def": 100,
       "lead": 90,
@@ -651,6 +795,8 @@
     {
       "name": "George Armstrong",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 90,
       "lead": 88,
@@ -660,6 +806,8 @@
     {
       "name": "Babe Siebert",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Pre-Modern",
       "off": 80,
       "def": 92,
       "lead": 85,
@@ -669,6 +817,8 @@
     {
       "name": "Red Kelly",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 85,
       "def": 94,
       "lead": 88,
@@ -678,6 +828,8 @@
     {
       "name": "Larry Murphy",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Run&Gun",
       "off": 92,
       "def": 89,
       "lead": 82,
@@ -687,6 +839,8 @@
     {
       "name": "Borje Salming",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 90,
       "def": 92,
       "lead": 80,
@@ -696,6 +850,8 @@
     {
       "name": "Henrik Zetterberg",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 88,
       "def": 93,
       "lead": 80,
@@ -705,6 +861,8 @@
     {
       "name": "Frank Nighbor",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 94,
       "lead": 88,
@@ -714,6 +872,8 @@
     {
       "name": "Joe Nieuwendyk",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 86,
       "def": 90,
       "lead": 80,
@@ -723,6 +883,8 @@
     {
       "name": "Toe Blake",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 90,
       "lead": 92,
@@ -732,6 +894,8 @@
     {
       "name": "Victor Hedman",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 89,
       "def": 89,
       "lead": 82,
@@ -741,6 +905,8 @@
     {
       "name": "Frank Mahovlich",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Original Six",
       "off": 95,
       "def": 78,
       "lead": 80,
@@ -750,6 +916,8 @@
     {
       "name": "Sid Abel",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 90,
       "lead": 88,
@@ -759,6 +927,8 @@
     {
       "name": "Henri Richard",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Original Six",
       "off": 83,
       "def": 87,
       "lead": 99,
@@ -768,6 +938,8 @@
     {
       "name": "Mike Modano",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 91,
       "def": 83,
       "lead": 87,
@@ -777,6 +949,8 @@
     {
       "name": "Teemu Selanne",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 97,
       "def": 80,
       "lead": 80,
@@ -786,6 +960,8 @@
     {
       "name": "Mark Howe",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Run&Gun",
       "off": 88,
       "def": 91,
       "lead": 80,
@@ -795,6 +971,8 @@
     {
       "name": "Roman Josi",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 91,
       "def": 88,
       "lead": 80,
@@ -804,6 +982,8 @@
     {
       "name": "Daniel Alfredsson",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 88,
       "def": 87,
       "lead": 88,
@@ -813,6 +993,8 @@
     {
       "name": "Sergei Fedorov",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 90,
       "def": 91,
       "lead": 80,
@@ -822,6 +1004,8 @@
     {
       "name": "Bernie Geoffrion",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Original Six",
       "off": 94,
       "def": 80,
       "lead": 83,
@@ -831,6 +1015,8 @@
     {
       "name": "Phil Housley",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 93,
       "def": 86,
       "lead": 79,
@@ -840,6 +1026,8 @@
     {
       "name": "Ryan Getzlaf",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Modern",
       "off": 88,
       "def": 83,
       "lead": 82,
@@ -849,6 +1037,8 @@
     {
       "name": "Anze Kopitar",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 82,
       "def": 92,
       "lead": 85,
@@ -858,6 +1048,8 @@
     {
       "name": "Tom Johnson",
       "position": "LD",
+      "type": "Defensive",
+      "era": "Original Six",
       "off": 78,
       "def": 94,
       "lead": 85,
@@ -867,6 +1059,8 @@
     {
       "name": "Marian Hossa",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 88,
       "def": 88,
       "lead": 80,
@@ -876,6 +1070,8 @@
     {
       "name": "Keith Tkachuk",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 88,
       "def": 79,
       "lead": 85,
@@ -885,6 +1081,8 @@
     {
       "name": "Mats Sundin",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 90,
       "def": 82,
       "lead": 81,
@@ -894,6 +1092,8 @@
     {
       "name": "Pavel Bure",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Dead-Puck",
       "off": 96,
       "def": 77,
       "lead": 83,
@@ -903,6 +1103,8 @@
     {
       "name": "Corey Perry",
       "position": "RW",
+      "type": "Gamer",
+      "era": "Modern",
       "off": 88,
       "def": 82,
       "lead": 78,
@@ -912,6 +1114,8 @@
     {
       "name": "Earl Seibert",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 82,
       "def": 92,
       "lead": 85,
@@ -921,6 +1125,8 @@
     {
       "name": "Babe Pratt",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Original Six",
       "off": 80,
       "def": 93,
       "lead": 80,
@@ -930,6 +1136,8 @@
     {
       "name": "Brad Marchand",
       "position": "LW",
+      "type": "Gamer",
+      "era": "Modern",
       "off": 88,
       "def": 82,
       "lead": 86,
@@ -939,6 +1147,8 @@
     {
       "name": "Phil Esposito",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Expansion",
       "off": 93,
       "def": 78,
       "lead": 80,
@@ -948,6 +1158,8 @@
     {
       "name": "Jamie Benn",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Modern",
       "off": 86,
       "def": 84,
       "lead": 80,
@@ -957,6 +1169,8 @@
     {
       "name": "Nikita Kucherov",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 100,
       "def": 78,
       "lead": 73,
@@ -966,6 +1180,8 @@
     {
       "name": "Yvan Cournoyer",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Original Six",
       "off": 88,
       "def": 80,
       "lead": 89,
@@ -975,6 +1191,8 @@
     {
       "name": "Peter Stastny",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 94,
       "def": 80,
       "lead": 81,
@@ -984,6 +1202,8 @@
     {
       "name": "Howie Morenz",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Pre-Modern",
       "off": 90,
       "def": 82,
       "lead": 86,
@@ -993,6 +1213,8 @@
     {
       "name": "Pierre Pilote",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 86,
       "def": 88,
       "lead": 85,
@@ -1002,6 +1224,8 @@
     {
       "name": "Sergei Zubov",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Dead-Puck",
       "off": 92,
       "def": 88,
       "lead": 78,
@@ -1011,6 +1235,8 @@
     {
       "name": "Matthew Tkachuk",
       "position": "LW",
+      "type": "Gamer",
+      "era": "Modern",
       "off": 90,
       "def": 81,
       "lead": 85,
@@ -1020,6 +1246,8 @@
     {
       "name": "John Carlson",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 88,
       "def": 86,
       "lead": 78,
@@ -1029,6 +1257,8 @@
     {
       "name": "Gary Suter",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Run&Gun",
       "off": 80,
       "def": 92,
       "lead": 78,
@@ -1038,6 +1268,8 @@
     {
       "name": "Guy Lapointe",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 82,
       "def": 90,
       "lead": 80,
@@ -1047,6 +1279,8 @@
     {
       "name": "Ilya Kovalchuk",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Dead-Puck",
       "off": 96,
       "def": 77,
       "lead": 77,
@@ -1056,6 +1290,8 @@
     {
       "name": "Guy Lafleur",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 99,
       "def": 75,
       "lead": 80,
@@ -1065,6 +1301,8 @@
     {
       "name": "Jari Kurri",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Run&Gun",
       "off": 92,
       "def": 86,
       "lead": 78,
@@ -1074,6 +1312,8 @@
     {
       "name": "Herb Gardiner",
       "position": "LD",
+      "type": "Defensive",
+      "era": "Original Six",
       "off": 78,
       "def": 94,
       "lead": 80,
@@ -1083,6 +1323,8 @@
     {
       "name": "Eric Lindros",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 93,
       "def": 81,
       "lead": 77,
@@ -1092,6 +1334,8 @@
     {
       "name": "Slava Fetisov",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 82,
       "def": 90,
       "lead": 85,
@@ -1101,6 +1345,8 @@
     {
       "name": "Flash Hollett",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Pre-Modern",
       "off": 78,
       "def": 90,
       "lead": 80,
@@ -1110,6 +1356,8 @@
     {
       "name": "Dave Babych",
       "position": "LD",
+      "type": "Power Defense",
+      "era": "Run&Gun",
       "off": 78,
       "def": 90,
       "lead": 78,
@@ -1119,6 +1367,8 @@
     {
       "name": "Jeff Beukeboom",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Dead-Puck",
       "off": 74,
       "def": 94,
       "lead": 78,
@@ -1128,6 +1378,8 @@
     {
       "name": "Ken Daneyko",
       "position": "RD",
+      "type": "Defensive",
+      "era": "Dead-Puck",
       "off": 78,
       "def": 89,
       "lead": 80,
@@ -1137,6 +1389,8 @@
     {
       "name": "Pat Lafontaine",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Run&Gun",
       "off": 97,
       "def": 78,
       "lead": 79,
@@ -1146,6 +1400,8 @@
     {
       "name": "Evgeni Malkin",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Modern",
       "off": 94,
       "def": 80,
       "lead": 75,
@@ -1155,6 +1411,8 @@
     {
       "name": "Denis Savard",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 92,
       "def": 79,
       "lead": 83,
@@ -1164,6 +1422,8 @@
     {
       "name": "Roman Hamrlik",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 82,
       "def": 90,
       "lead": 75,
@@ -1173,6 +1433,8 @@
     {
       "name": "Lanny Ulman",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 94,
       "def": 81,
       "lead": 80,
@@ -1182,6 +1444,8 @@
     {
       "name": "Alex Delvecchio",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 92,
       "lead": 85,
@@ -1191,6 +1455,8 @@
     {
       "name": "Bill Guerin",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 86,
       "def": 80,
       "lead": 82,
@@ -1200,6 +1466,8 @@
     {
       "name": "Jonathan Toews",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 79,
       "def": 91,
       "lead": 88,
@@ -1209,6 +1477,8 @@
     {
       "name": "Alex Pietrangelo",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 79,
       "def": 90,
       "lead": 83,
@@ -1218,6 +1488,8 @@
     {
       "name": "Henrik Sedin",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 92,
       "def": 85,
       "lead": 80,
@@ -1227,6 +1499,8 @@
     {
       "name": "Luc Robitaille",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 95,
       "def": 79,
       "lead": 79,
@@ -1236,6 +1510,8 @@
     {
       "name": "Bill Gadsby",
       "position": "LD",
+      "type": "Defensive",
+      "era": "Original Six",
       "off": 80,
       "def": 88,
       "lead": 82,
@@ -1245,6 +1521,8 @@
     {
       "name": "Doug Weight",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 88,
       "def": 82,
       "lead": 82,
@@ -1254,6 +1532,8 @@
     {
       "name": "Doug Mohns",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 82,
       "def": 88,
       "lead": 80,
@@ -1263,6 +1543,8 @@
     {
       "name": "Claude Provost",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 92,
       "lead": 80,
@@ -1272,6 +1554,8 @@
     {
       "name": "Darryl Sittler",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Run&Gun",
       "off": 88,
       "def": 82,
       "lead": 85,
@@ -1281,6 +1565,8 @@
     {
       "name": "Clark Gillies",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Expansion",
       "off": 86,
       "def": 78,
       "lead": 80,
@@ -1290,6 +1576,8 @@
     {
       "name": "Joe Pavelski",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 86,
       "def": 90,
       "lead": 82,
@@ -1299,6 +1587,8 @@
     {
       "name": "Brian Rafalski",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 88,
       "def": 90,
       "lead": 78,
@@ -1308,6 +1598,8 @@
     {
       "name": "Owen Nolan",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 88,
       "def": 78,
       "lead": 75,
@@ -1317,6 +1609,8 @@
     {
       "name": "Jamie Macoun",
       "position": "RD",
+      "type": "Defensive",
+      "era": "Run&Gun",
       "off": 76,
       "def": 92,
       "lead": 80,
@@ -1326,6 +1620,8 @@
     {
       "name": "Doug Jarvis",
       "position": "LD",
+      "type": "Defensive",
+      "era": "Original Six",
       "off": 75,
       "def": 92,
       "lead": 82,
@@ -1335,6 +1631,8 @@
     {
       "name": "Jeremy Roenick",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 90,
       "def": 79,
       "lead": 76,
@@ -1344,6 +1642,8 @@
     {
       "name": "Darryl Sydor",
       "position": "RD",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 82,
       "def": 90,
       "lead": 78,
@@ -1353,6 +1653,8 @@
     {
       "name": "Pierre Bouchard",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 82,
       "def": 90,
       "lead": 78,
@@ -1362,6 +1664,8 @@
     {
       "name": "Duncan Keith",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 89,
       "def": 87,
       "lead": 79,
@@ -1371,6 +1675,8 @@
     {
       "name": "Ryan Smyth",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 84,
       "def": 84,
       "lead": 75,
@@ -1380,6 +1686,8 @@
     {
       "name": "Ryan Suter",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 83,
       "def": 90,
       "lead": 78,
@@ -1389,6 +1697,8 @@
     {
       "name": "Sergei Gonchar",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Dead-Puck",
       "off": 90,
       "def": 86,
       "lead": 78,
@@ -1398,6 +1708,8 @@
     {
       "name": "Milt Schmidt",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 84,
       "def": 87,
       "lead": 85,
@@ -1407,6 +1719,8 @@
     {
       "name": "Patrick Kane",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 98,
       "def": 75,
       "lead": 75,
@@ -1416,6 +1730,8 @@
     {
       "name": "Jean Ratelle",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 88,
       "def": 80,
       "lead": 80,
@@ -1425,6 +1741,8 @@
     {
       "name": "Erik Karlsson",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 98,
       "def": 78,
       "lead": 77,
@@ -1434,6 +1752,8 @@
     {
       "name": "Brent Burns",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 89,
       "def": 80,
       "lead": 77,
@@ -1443,6 +1763,8 @@
     {
       "name": "Rod Brind'Amour",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 75,
       "def": 94,
       "lead": 85,
@@ -1452,6 +1774,8 @@
     {
       "name": "Brett Hull",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 97,
       "def": 73,
       "lead": 79,
@@ -1461,6 +1785,8 @@
     {
       "name": "Martin St. Louis",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 93,
       "def": 78,
       "lead": 82,
@@ -1470,6 +1796,8 @@
     {
       "name": "Jack Eichel",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 94,
       "def": 82,
       "lead": 73,
@@ -1479,6 +1807,8 @@
     {
       "name": "Adam Graves",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 84,
       "def": 83,
       "lead": 75,
@@ -1488,6 +1818,8 @@
     {
       "name": "Bill Quackenbush",
       "position": "RD",
+      "type": "Defensive",
+      "era": "Pre-Modern",
       "off": 76,
       "def": 90,
       "lead": 78,
@@ -1497,6 +1829,8 @@
     {
       "name": "Jason Arnott",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 84,
       "def": 82,
       "lead": 75,
@@ -1506,6 +1840,8 @@
     {
       "name": "Vincent Damphousse",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 90,
       "def": 78,
       "lead": 85,
@@ -1515,6 +1851,8 @@
     {
       "name": "Woody Dumart",
       "position": "LW",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 82,
       "def": 85,
       "lead": 85,
@@ -1524,6 +1862,8 @@
     {
       "name": "Gary Roberts",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 86,
       "def": 78,
       "lead": 75,
@@ -1533,6 +1873,8 @@
     {
       "name": "Patrick Marleau",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 86,
       "def": 83,
       "lead": 83,
@@ -1542,6 +1884,8 @@
     {
       "name": "Gilbert Perreault",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 93,
       "def": 79,
       "lead": 77,
@@ -1551,6 +1895,8 @@
     {
       "name": "Mitch Marner",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 90,
       "def": 87,
       "lead": 72,
@@ -1560,6 +1906,8 @@
     {
       "name": "Steve Shutt",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Expansion",
       "off": 89,
       "def": 77,
       "lead": 88,
@@ -1569,6 +1917,8 @@
     {
       "name": "Dave Keon",
       "position": "C",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 83,
       "def": 89,
       "lead": 82,
@@ -1578,6 +1928,8 @@
     {
       "name": "Daniel Sedin",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 92,
       "def": 82,
       "lead": 78,
@@ -1587,6 +1939,8 @@
     {
       "name": "Dickie Moore",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Original Six",
       "off": 90,
       "def": 78,
       "lead": 87,
@@ -1596,6 +1950,8 @@
     {
       "name": "James Patrick",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Run&Gun",
       "off": 84,
       "def": 88,
       "lead": 75,
@@ -1605,6 +1961,8 @@
     {
       "name": "Valeri Kharlamov",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 93,
       "def": 75,
       "lead": 74,
@@ -1614,6 +1972,8 @@
     {
       "name": "Sergei Makarov",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 90,
       "def": 78,
       "lead": 73,
@@ -1623,6 +1983,8 @@
     {
       "name": "David Pastrnak",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Modern",
       "off": 93,
       "def": 77,
       "lead": 75,
@@ -1632,6 +1994,8 @@
     {
       "name": "Mathieu Schneider",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 88,
       "def": 86,
       "lead": 75,
@@ -1641,6 +2005,8 @@
     {
       "name": "Glenn Anderson",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Run&Gun",
       "off": 88,
       "def": 80,
       "lead": 78,
@@ -1650,6 +2016,8 @@
     {
       "name": "Marc-Edouard Vlasic",
       "position": "LD",
+      "type": "Defensive",
+      "era": "Modern",
       "off": 75,
       "def": 92,
       "lead": 78,
@@ -1659,6 +2027,8 @@
     {
       "name": "Bill Barber",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Expansion",
       "off": 86,
       "def": 78,
       "lead": 75,
@@ -1668,6 +2038,8 @@
     {
       "name": "Bryan Berard",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 86,
       "def": 88,
       "lead": 75,
@@ -1677,6 +2049,8 @@
     {
       "name": "Vincent Lecavalier",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Dead-Puck",
       "off": 87,
       "def": 79,
       "lead": 81,
@@ -1686,6 +2060,8 @@
     {
       "name": "Derian Hatcher",
       "position": "RD",
+      "type": "Power Defense",
+      "era": "Dead-Puck",
       "off": 75,
       "def": 87,
       "lead": 80,
@@ -1695,6 +2071,8 @@
     {
       "name": "John Tavares",
       "position": "C",
+      "type": "Sniper",
+      "era": "Modern",
       "off": 82,
       "def": 83,
       "lead": 84,
@@ -1704,6 +2082,8 @@
     {
       "name": "Kirk Muller",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 76,
       "def": 89,
       "lead": 87,
@@ -1713,6 +2093,8 @@
     {
       "name": "Tom Webster",
       "position": "RW",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 82,
       "def": 88,
       "lead": 78,
@@ -1722,6 +2104,8 @@
     {
       "name": "Brian Bellows",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 88,
       "def": 77,
       "lead": 74,
@@ -1731,6 +2115,8 @@
     {
       "name": "Johnny Gaudreau",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 93,
       "def": 71,
       "lead": 77,
@@ -1740,6 +2126,8 @@
     {
       "name": "Eric Staal",
       "position": "C",
+      "type": "Power Forward",
+      "era": "Modern",
       "off": 80,
       "def": 81,
       "lead": 82,
@@ -1749,6 +2137,8 @@
     {
       "name": "Jason Smith",
       "position": "RD",
+      "type": "Defensive",
+      "era": "Dead-Puck",
       "off": 70,
       "def": 92,
       "lead": 75,
@@ -1758,6 +2148,8 @@
     {
       "name": "P.K. Subban",
       "position": "RD",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 88,
       "def": 80,
       "lead": 75,
@@ -1767,6 +2159,8 @@
     {
       "name": "Rick Nash",
       "position": "LW",
+      "type": "Power Forward",
+      "era": "Modern",
       "off": 90,
       "def": 78,
       "lead": 70,
@@ -1776,6 +2170,8 @@
     {
       "name": "Ken Danforth",
       "position": "RD",
+      "type": "Defensive",
+      "era": "Pre-Modern",
       "off": 74,
       "def": 90,
       "lead": 78,
@@ -1785,6 +2181,8 @@
     {
       "name": "Zigmund Palffy",
       "position": "C",
+      "type": "Sniper",
+      "era": "Modern",
       "off": 85,
       "def": 80,
       "lead": 80,
@@ -1794,6 +2192,8 @@
     {
       "name": "Bernie Federko",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 88,
       "def": 75,
       "lead": 77,
@@ -1803,6 +2203,8 @@
     {
       "name": "Rick Tocchet",
       "position": "LW",
+      "type": "Gamer",
+      "era": "Run&Gun",
       "off": 84,
       "def": 78,
       "lead": 75,
@@ -1812,6 +2214,8 @@
     {
       "name": "Claude Lemieux",
       "position": "LW",
+      "type": "Gamer",
+      "era": "Dead-Puck",
       "off": 75,
       "def": 82,
       "lead": 87,
@@ -1821,6 +2225,8 @@
     {
       "name": "Cam Neely",
       "position": "RW",
+      "type": "Power Forward",
+      "era": "Run&Gun",
       "off": 90,
       "def": 72,
       "lead": 70,
@@ -1830,6 +2236,8 @@
     {
       "name": "Brad Richards",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 88,
       "def": 78,
       "lead": 80,
@@ -1839,6 +2247,8 @@
     {
       "name": "Paul Kariya",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Dead-Puck",
       "off": 93,
       "def": 77,
       "lead": 77,
@@ -1848,6 +2258,8 @@
     {
       "name": "Pat Verbeek",
       "position": "LW",
+      "type": "Gamer",
+      "era": "Run&Gun",
       "off": 82,
       "def": 75,
       "lead": 80,
@@ -1857,6 +2269,8 @@
     {
       "name": "Alex Kovalev",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Run&Gun",
       "off": 95,
       "def": 70,
       "lead": 72,
@@ -1866,6 +2280,8 @@
     {
       "name": "Theoren Fleury",
       "position": "RW",
+      "type": "Gamer",
+      "era": "Run&Gun",
       "off": 83,
       "def": 80,
       "lead": 80,
@@ -1875,6 +2291,8 @@
     {
       "name": "Elmer Lach",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Original Six",
       "off": 88,
       "def": 80,
       "lead": 75,
@@ -1884,6 +2302,8 @@
     {
       "name": "Reed Larson",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 86,
       "def": 82,
       "lead": 70,
@@ -1893,6 +2313,8 @@
     {
       "name": "Mats Naslund",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Expansion",
       "off": 88,
       "def": 78,
       "lead": 75,
@@ -1902,6 +2324,8 @@
     {
       "name": "Niklas Backstrom",
       "position": "C",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 90,
       "def": 78,
       "lead": 74,
@@ -1911,6 +2335,8 @@
     {
       "name": "Al Iafrate",
       "position": "LD",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 86,
       "def": 78,
       "lead": 70,
@@ -1920,6 +2346,8 @@
     {
       "name": "Lanny McDonald",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 90,
       "def": 72,
       "lead": 75,
@@ -1929,6 +2357,8 @@
     {
       "name": "Michel Goulet",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 94,
       "def": 73,
       "lead": 71,
@@ -1938,6 +2368,8 @@
     {
       "name": "Mark Eaton",
       "position": "RD",
+      "type": "Defensive",
+      "era": "Modern",
       "off": 72,
       "def": 90,
       "lead": 75,
@@ -1947,6 +2379,8 @@
     {
       "name": "Gary Galin",
       "position": "LD",
+      "type": "Defensive",
+      "era": "Expansion",
       "off": 74,
       "def": 90,
       "lead": 75,
@@ -1956,6 +2390,8 @@
     {
       "name": "Ryan McDonagh",
       "position": "LD",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 72,
       "def": 89,
       "lead": 82,
@@ -1965,6 +2401,8 @@
     {
       "name": "Milan Hejduk",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 84,
       "def": 77,
       "lead": 75,
@@ -1974,6 +2412,8 @@
     {
       "name": "Taylor Hall",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 88,
       "def": 82,
       "lead": 70,
@@ -1983,6 +2423,8 @@
     {
       "name": "Artemi Panarin",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Modern",
       "off": 93,
       "def": 73,
       "lead": 73,
@@ -1992,6 +2434,8 @@
     {
       "name": "Peter Bondra",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Dead-Puck",
       "off": 90,
       "def": 74,
       "lead": 75,
@@ -2001,6 +2445,8 @@
     {
       "name": "Bill Cook",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Pre-Modern",
       "off": 90,
       "def": 74,
       "lead": 72,
@@ -2010,6 +2456,8 @@
     {
       "name": "Mike Gartner",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 92,
       "def": 72,
       "lead": 70,
@@ -2019,6 +2467,8 @@
     {
       "name": "Tony Amonte",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Dead-Puck",
       "off": 88,
       "def": 72,
       "lead": 70,
@@ -2028,6 +2478,8 @@
     {
       "name": "Rick Middleton",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 90,
       "def": 72,
       "lead": 70,
@@ -2037,6 +2489,8 @@
     {
       "name": "Dino Ciccarelli",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 90,
       "def": 70,
       "lead": 70,
@@ -2046,6 +2500,8 @@
     {
       "name": "Rod Gilbert",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Original Six",
       "off": 88,
       "def": 72,
       "lead": 75,
@@ -2055,6 +2511,8 @@
     {
       "name": "Rick Martin",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Expansion",
       "off": 90,
       "def": 72,
       "lead": 70,
@@ -2064,6 +2522,8 @@
     {
       "name": "Andy Bathgate",
       "position": "RW",
+      "type": "Playmaker",
+      "era": "Original Six",
       "off": 87,
       "def": 74,
       "lead": 70,
@@ -2073,6 +2533,8 @@
     {
       "name": "Ray Whitney",
       "position": "LW",
+      "type": "Playmaker",
+      "era": "Run&Gun",
       "off": 88,
       "def": 73,
       "lead": 70,
@@ -2082,6 +2544,8 @@
     {
       "name": "Bernie Nicholls",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 90,
       "def": 70,
       "lead": 70,
@@ -2091,6 +2555,8 @@
     {
       "name": "Thomas Vanek",
       "position": "LW",
+      "type": "Sniper",
+      "era": "Modern",
       "off": 88,
       "def": 71,
       "lead": 70,
@@ -2100,6 +2566,8 @@
     {
       "name": "Joe Mullen",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Run&Gun",
       "off": 89,
       "def": 70,
       "lead": 70,
@@ -2109,6 +2577,8 @@
     {
       "name": "Charlie Simmer",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Expansion",
       "off": 88,
       "def": 70,
       "lead": 70,
@@ -2118,6 +2588,8 @@
     {
       "name": "Phil Kessel",
       "position": "RW",
+      "type": "Sniper",
+      "era": "Modern",
       "off": 90,
       "def": 70,
       "lead": 70,
@@ -2129,234 +2601,273 @@
     {
       "name": "Dominik Hasek",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 98,
       "const": 91
     },
     {
       "name": "Vladislav Tretiak",
       "position": "G",
+      "era": "Run&Gun",
       "gen": 98,
       "const": 93
     },
     {
       "name": "Patrick Roy",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 95,
       "const": 96
     },
     {
       "name": "Martin Brodeur",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 93,
       "const": 97
     },
     {
       "name": "Carey Price",
       "position": "G",
+      "era": "Modern",
       "gen": 93,
       "const": 92
     },
     {
       "name": "Ken Dryden",
       "position": "G",
+      "era": "Expansion",
       "gen": 92,
       "const": 94
     },
     {
       "name": "Georges Vezina",
       "position": "G",
+      "era": "Pre-Modern",
       "gen": 92,
       "const": 90
     },
     {
       "name": "Jacques Plante",
       "position": "G",
+      "era": "Original Six",
       "gen": 92,
       "const": 91
     },
     {
       "name": "Terry Sawchuk",
       "position": "G",
+      "era": "Original Six",
       "gen": 90,
       "const": 93
     },
     {
       "name": "Glenn Hall",
       "position": "G",
+      "era": "Original Six",
       "gen": 88,
       "const": 96
     },
     {
       "name": "Bill Durnan",
       "position": "G",
+      "era": "Original Six",
       "gen": 88,
       "const": 93
     },
     {
       "name": "Bernie Parent",
       "position": "G",
+      "era": "Expansion",
       "gen": 88,
       "const": 90
     },
     {
       "name": "Andrei Vasilevskiy",
       "position": "G",
+      "era": "Modern",
       "gen": 88,
       "const": 92
     },
     {
       "name": "Ed Belfour",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 87,
       "const": 91
     },
     {
       "name": "Sergei Bobrovsky",
       "position": "G",
+      "era": "Modern",
       "gen": 87,
       "const": 87
     },
     {
       "name": "Tony Esposito",
       "position": "G",
+      "era": "Expansion",
       "gen": 87,
       "const": 90
     },
     {
       "name": "Roberto Luongo",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 86,
       "const": 90
     },
     {
       "name": "Henrik Lundqvist",
       "position": "G",
+      "era": "Modern",
       "gen": 86,
       "const": 94
     },
     {
       "name": "Tuukka Rask",
       "position": "G",
+      "era": "Modern",
       "gen": 85,
       "const": 92
     },
     {
       "name": "Grant Fuhr",
       "position": "G",
+      "era": "Run&Gun",
       "gen": 85,
       "const": 88
     },
     {
       "name": "Billy Smith",
       "position": "G",
+      "era": "Expansion",
       "gen": 84,
       "const": 90
     },
     {
       "name": "Turk Broda",
       "position": "G",
+      "era": "Original Six",
       "gen": 84,
       "const": 91
     },
     {
       "name": "Jonathan Quick",
       "position": "G",
+      "era": "Modern",
       "gen": 84,
       "const": 88
     },
     {
       "name": "Johnny Bower",
       "position": "G",
+      "era": "Original Six",
       "gen": 83,
       "const": 90
     },
     {
       "name": "Frank Brimsek",
       "position": "G",
+      "era": "Original Six",
       "gen": 83,
       "const": 88
     },
     {
       "name": "Curtis Joseph",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 82,
       "const": 92
     },
     {
       "name": "Tiny Thompson",
       "position": "G",
+      "era": "Pre-Modern",
       "gen": 82,
       "const": 89
     },
     {
       "name": "Marc-Andre Fleury",
       "position": "G",
+      "era": "Modern",
       "gen": 82,
       "const": 94
     },
     {
       "name": "George Hainsworth",
       "position": "G",
+      "era": "Pre-Modern",
       "gen": 82,
       "const": 95
     },
     {
       "name": "Ed Giacomin",
       "position": "G",
+      "era": "Expansion",
       "gen": 84,
       "const": 91
     },
     {
       "name": "Miikka Kiprusoff",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 86,
       "const": 90
     },
     {
       "name": "Ryan Miller",
       "position": "G",
+      "era": "Modern",
       "gen": 85,
       "const": 89
     },
     {
       "name": "Tim Thomas",
       "position": "G",
+      "era": "Modern",
       "gen": 83,
       "const": 84
     },
     {
       "name": "Chris Osgood",
       "position": "G",
+      "era": "Dead-Puck",
       "gen": 81,
       "const": 92
     },
     {
       "name": "Alexei Makarov",
       "position": "G",
+      "era": "Expansion",
       "gen": 83,
       "const": 88
     },
     {
       "name": "Ben Bishop",
       "position": "G",
+      "era": "Modern",
       "gen": 83,
       "const": 85
     },
     {
       "name": "Pekka Rinne",
       "position": "G",
+      "era": "Modern",
       "gen": 86,
       "const": 90
     },
     {
       "name": "Igor Shesterkin",
       "position": "G",
+      "era": "Modern",
       "gen": 89,
       "const": 86
     },
     {
       "name": "Ilya Sorokin",
       "position": "G",
+      "era": "Modern",
       "gen": 87,
       "const": 90
     }
@@ -2364,121 +2875,169 @@
   "coaches": [
     {
       "name": "Scotty Bowman",
+      "type": "Two-Way",
+      "era": "Expansion",
       "off": 92,
       "def": 98
     },
     {
       "name": "Al Arbour",
+      "type": "Defensive",
+      "era": "Run&Gun",
       "off": 82,
       "def": 96
     },
     {
       "name": "Toe Blake",
+      "type": "Two-Way",
+      "era": "Original Six",
       "off": 85,
       "def": 90
     },
     {
       "name": "Herb Brooks",
+      "type": "Defensive",
+      "era": "Run&Gun",
       "off": 80,
       "def": 94
     },
     {
       "name": "Jacques Lemaire",
+      "type": "Defensive",
+      "era": "Dead-Puck",
       "off": 78,
       "def": 98
     },
     {
       "name": "Mike Babcock",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 84,
       "def": 94
     },
     {
       "name": "Joel Quenneville",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 88,
       "def": 90
     },
     {
       "name": "Ken Hitchcock",
+      "type": "Defensive",
+      "era": "Dead-Puck",
       "off": 76,
       "def": 96
     },
     {
       "name": "Pat Quinn",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 88,
       "def": 86
     },
     {
       "name": "Glen Sather",
+      "type": "Offensive",
+      "era": "Run&Gun",
       "off": 94,
       "def": 78
     },
     {
       "name": "Barry Trotz",
+      "type": "Defensive",
+      "era": "Modern",
       "off": 78,
       "def": 96
     },
     {
       "name": "Roger Nielson",
+      "type": "Offensive",
+      "era": "Expansion",
       "off": 80,
       "def": 92
     },
     {
       "name": "Emile Francis",
+      "type": "Defensive",
+      "era": "Expansion",
       "off": 78,
       "def": 94
     },
     {
       "name": "Fred Sheros",
+      "type": "Offense",
+      "era": "Expansion",
       "off": 90,
       "def": 80
     },
     {
       "name": "Dick Irvin",
+      "type": "Offensive",
+      "era": "Original Six",
       "off": 82,
       "def": 90
     },
     {
       "name": "Bill Torrey",
+      "type": "Two-Way",
+      "era": "Run&Gun",
       "off": 84,
       "def": 86
     },
     {
       "name": "Tommy Ivan",
+      "type": "Defensive",
+      "era": "Expansion",
       "off": 80,
       "def": 92
     },
     {
       "name": "Bryan Murray",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 84,
       "def": 92
     },
     {
       "name": "John Tortorella",
+      "type": "Defensive",
+      "era": "Modern",
       "off": 76,
       "def": 94
     },
     {
       "name": "Bruce Boudreau",
+      "type": "Offensive",
+      "era": "Modern",
       "off": 92,
       "def": 78
     },
     {
       "name": "Lindy Ruff",
+      "type": "Two-Way",
+      "era": "Dead-Puck",
       "off": 86,
       "def": 88
     },
     {
       "name": "Mike Keenen",
+      "type": "Offensive",
+      "era": "Dead-Puck",
       "off": 82,
       "def": 90
     },
     {
       "name": "Craig Berube",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 80,
       "def": 92
     },
     {
       "name": "Dan Bylsma",
+      "type": "Two-Way",
+      "era": "Modern",
       "off": 88,
       "def": 82
     }

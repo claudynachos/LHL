@@ -1,0 +1,20 @@
+1.Free
+-1 simulation only saved
+-no trades
+-max: 10 years 
+
+2. 4.99$
+-Team Logos
+-Chose Era
+-25 years max
+-3simulation only saved
+-Trades
+-Other lines (PP,PK,Shootouts)
+
+3. 9.99$
+-Young Guns
+-Strategies
+-Multiplayer
+-10simulation saved
+-AI commentator
++all other features of 2nd tier

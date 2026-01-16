@@ -32,6 +32,8 @@ def seed_database():
                 player = Player(
                     name=player_data['name'],
                     position=player_data['position'],
+                    player_type=player_data.get('type', ''),
+                    era=player_data.get('era', ''),
                     off=player_data['off'],
                     def_=player_data['def'],
                     phys=player_data['phys'],
@@ -40,6 +42,12 @@ def seed_database():
                     is_goalie=False
                 )
                 db.session.add(player)
+            else:
+                # Update existing player with type and era
+                if player_data.get('type'):
+                    existing.player_type = player_data.get('type', '')
+                if player_data.get('era'):
+                    existing.era = player_data.get('era', '')
         
         # Seed goalies
         print("Seeding goalies...")
@@ -51,6 +59,7 @@ def seed_database():
                 goalie = Player(
                     name=goalie_data['name'],
                     position='G',
+                    era=goalie_data.get('era', ''),
                     off=gen_rating,  # Use gen for all goalie stats
                     def_=gen_rating,
                     phys=gen_rating,
@@ -59,6 +68,10 @@ def seed_database():
                     is_goalie=True
                 )
                 db.session.add(goalie)
+            else:
+                # Update existing goalie with era
+                if goalie_data.get('era'):
+                    existing.era = goalie_data.get('era', '')
         
         # Seed coaches
         print("Seeding coaches...")
@@ -71,9 +84,17 @@ def seed_database():
                 rating = (off + def_) // 2
                 coach = Coach(
                     name=coach_data['name'],
+                    coach_type=coach_data.get('type', ''),
+                    era=coach_data.get('era', ''),
                     rating=rating
                 )
                 db.session.add(coach)
+            else:
+                # Update existing coach with type and era
+                if coach_data.get('type'):
+                    existing.coach_type = coach_data.get('type', '')
+                if coach_data.get('era'):
+                    existing.era = coach_data.get('era', '')
         
         # Commit all changes
         db.session.commit()

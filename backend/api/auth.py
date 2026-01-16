@@ -32,6 +32,7 @@ def register():
     db.session.commit()
     
     # Create access token (identity must be a string)
+    # Token expires in 7 days (configured in app.py)
     access_token = create_access_token(identity=str(user.id))
     
     return jsonify({

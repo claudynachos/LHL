@@ -65,8 +65,16 @@ struct GameInput {
 impl Player {
     /// Calculate overall rating for frontend display purposes only.
     /// This value is NOT used in the simulation algorithm - individual attributes (OFF, DEF, PHYS, LEAD, CONST) are used directly.
-    /// Formula: (OFF × 1.1 + DEF × 0.95 + PHYS × 0.9 × (LEAD/100) × (CONST/100)) / 2.5
+    /// 
+    /// Goalies: Use their "gen" rating directly (stored in off/def/phys/lead attributes, all equal to gen)
+    /// Skaters: Formula: (OFF × 1.1 + DEF × 0.95 + PHYS × 0.9 × (LEAD/100) × (CONST/100)) / 2.5
     fn calculate_overall(&self) -> f64 {
+        // Goalies use their "gen" rating directly
+        if self.position == "G" {
+            return self.off as f64;  // For goalies, all attributes are set to gen rating
+        }
+        
+        // Skaters use the weighted formula
         let off_component = self.off as f64 * 1.1;
         let def_component = self.def as f64 * 0.95;
         let phys_component = self.phys as f64 * 0.9 * (self.lead as f64 / 100.0) * (self.consistency as f64 / 100.0);
@@ -97,6 +105,8 @@ struct GameResult {
     away_score: i32,
     home_stats: Vec<PlayerGameStat>,
     away_stats: Vec<PlayerGameStat>,
+    went_to_overtime: bool,
+    went_to_shootout: bool,
 }
 
 // Ice time percentages
@@ -125,6 +135,8 @@ const HOME_ICE_ADVANTAGE: f64 = 1.05;  // 5% boost
 const PLAYOFF_PHYS_BOOST: f64 = 1.20;  // 20% boost to physicality in playoffs
 const BASE_SHOTS_PER_PERIOD: f64 = 9.4;  // ~28.1 shots per team per game / 3 periods
 const BASE_GOAL_PROBABILITY: f64 = 0.10;  // 10% shooting percentage (matches .900 save %)
+const OT_SHOTS_PER_TEAM: f64 = 3.0;  // ~3 shots per team in 5-minute OT (3-on-3)
+const OT_GOAL_PROBABILITY_MULTIPLIER: f64 = 1.5;  // Higher scoring in 3-on-3 OT
 
 fn main() {
     let args = Args::parse();
@@ -196,6 +208,75 @@ fn simulate_game(input: GameInput) -> GameResult {
         merge_stats(&mut away_stats, away_period_stats);
     }
     
+    let mut went_to_overtime = false;
+    let mut went_to_shootout = false;
+    
+    // Check if game is tied after regulation (not in playoffs, OT continues until goal)
+    if home_score == away_score && !input.is_playoff {
+        went_to_overtime = true;
+        
+        // Simulate 5-minute 3-on-3 overtime
+        let (home_ot_goals, away_ot_goals, home_ot_stats, away_ot_stats) = 
+            simulate_overtime(
+                &input.home_team,
+                &input.away_team,
+                home_goalie_idx,
+                away_goalie_idx,
+                home_rating,
+                away_rating,
+                &mut rng
+            );
+        
+        home_score += home_ot_goals;
+        away_score += away_ot_goals;
+        
+        // Aggregate OT stats
+        merge_stats(&mut home_stats, home_ot_stats);
+        merge_stats(&mut away_stats, away_ot_stats);
+        
+        // If still tied after OT, go to shootout
+        if home_score == away_score {
+            went_to_shootout = true;
+            let (home_shootout_goals, away_shootout_goals) = simulate_shootout(
+                &input.home_team,
+                &input.away_team,
+                home_rating,
+                away_rating,
+                &mut rng
+            );
+            home_score += home_shootout_goals;
+            away_score += away_shootout_goals;
+        }
+    } else if home_score == away_score && input.is_playoff {
+        // Playoff overtime: sudden death, continue until someone scores
+        went_to_overtime = true;
+        
+        loop {
+            let (home_ot_goals, away_ot_goals, home_ot_stats, away_ot_stats) = 
+                simulate_overtime(
+                    &input.home_team,
+                    &input.away_team,
+                    home_goalie_idx,
+                    away_goalie_idx,
+                    home_rating,
+                    away_rating,
+                    &mut rng
+                );
+            
+            home_score += home_ot_goals;
+            away_score += away_ot_goals;
+            
+            // Aggregate OT stats
+            merge_stats(&mut home_stats, home_ot_stats);
+            merge_stats(&mut away_stats, away_ot_stats);
+            
+            // Break when someone scores
+            if home_score != away_score {
+                break;
+            }
+        }
+    }
+    
     // Calculate plus/minus
     calculate_plus_minus(&mut home_stats, home_score, away_score);
     calculate_plus_minus(&mut away_stats, away_score, home_score);
@@ -205,6 +286,8 @@ fn simulate_game(input: GameInput) -> GameResult {
         away_score,
         home_stats,
         away_stats,
+        went_to_overtime,
+        went_to_shootout,
     }
 }
 
@@ -242,12 +325,15 @@ fn calculate_team_rating(team: &Team, goalie_idx: usize, is_home: bool, is_playo
             .map(|la| &la.player)
             .collect();
         
+        let ice_time = FORWARD_LINE_TIME[(line_num - 1) as usize];
         if !line_players.is_empty() {
             let line_rating = calculate_line_rating(&line_players, &FORWARD_WEIGHTS[(line_num - 1) as usize], is_playoff);
-            let ice_time = FORWARD_LINE_TIME[(line_num - 1) as usize];
             total_rating += line_rating * ice_time;
-            weight_sum += ice_time;
+        } else {
+            // Missing line gets default low rating (penalty for incomplete roster)
+            total_rating += 50.0 * ice_time;
         }
+        weight_sum += ice_time;
     }
     
     // Calculate defense pairs rating
@@ -257,12 +343,15 @@ fn calculate_team_rating(team: &Team, goalie_idx: usize, is_home: bool, is_playo
             .map(|la| &la.player)
             .collect();
         
+        let ice_time = DEFENSE_LINE_TIME[(pair_num - 1) as usize];
         if !pair_players.is_empty() {
             let pair_rating = calculate_line_rating(&pair_players, &DEFENSE_WEIGHTS[(pair_num - 1) as usize], is_playoff);
-            let ice_time = DEFENSE_LINE_TIME[(pair_num - 1) as usize];
             total_rating += pair_rating * ice_time;
-            weight_sum += ice_time;
+        } else {
+            // Missing defense pair gets default low rating (penalty for incomplete roster)
+            total_rating += 50.0 * ice_time;
         }
+        weight_sum += ice_time;
     }
     
     // Use the selected goalie's rating (plays full game)
@@ -271,13 +360,18 @@ fn calculate_team_rating(team: &Team, goalie_idx: usize, is_home: bool, is_playo
         let goalie_rating = (goalie.off + goalie.def + goalie.phys) as f64 / 3.0;
         total_rating += goalie_rating * 0.3;  // Goalies have 30% weight
         weight_sum += 0.3;
+    } else {
+        // Missing goalie gets default low rating (penalty for incomplete roster)
+        total_rating += 50.0 * 0.3;
+        weight_sum += 0.3;
     }
     
     // Apply coach modifier
     let coach_modifier = if let Some(coach) = &team.coach {
         1.0 + (coach.rating as f64 - 75.0) / 500.0  // ±5% max based on rating
     } else {
-        1.0
+        // Missing coach gets slight penalty (no boost, but also no negative modifier)
+        0.98  // -2% penalty for no coach
     };
     
     let mut final_rating = (total_rating / weight_sum.max(0.1)) * coach_modifier;
@@ -415,6 +509,187 @@ fn simulate_period(
     simulate_physical_stats(&mut away_stats, away_team, is_playoff, rng);
     
     (home_goals, away_goals, home_stats, away_stats)
+}
+
+fn simulate_overtime(
+    home_team: &Team,
+    away_team: &Team,
+    home_goalie_idx: usize,
+    away_goalie_idx: usize,
+    home_rating: f64,
+    away_rating: f64,
+    rng: &mut ThreadRng,
+) -> (i32, i32, Vec<PlayerGameStat>, Vec<PlayerGameStat>) {
+    let mut home_goals = 0;
+    let mut away_goals = 0;
+    let mut home_stats = init_team_stats(home_team);
+    let mut away_stats = init_team_stats(away_team);
+    
+    // Overtime is 3-on-3, higher scoring chance
+    let total_rating = home_rating + away_rating;
+    let home_shot_ratio = home_rating / total_rating;
+    
+    let home_shots = (OT_SHOTS_PER_TEAM * (1.0 + home_shot_ratio)) as i32;
+    let away_shots = (OT_SHOTS_PER_TEAM * (2.0 - home_shot_ratio)) as i32;
+    
+    // Simulate home team shots in OT
+    for _ in 0..home_shots {
+        let (shooter_idx, line_num) = select_shooter(home_team, rng);
+        home_stats[shooter_idx].shots += 1;
+        
+        // Higher goal probability in 3-on-3 OT
+        let goal_prob = BASE_GOAL_PROBABILITY * OT_GOAL_PROBABILITY_MULTIPLIER * (home_rating / 80.0) * (80.0 / away_rating.max(50.0));
+        let is_goal = rng.gen::<f64>() < goal_prob;
+        
+        if is_goal {
+            home_goals += 1;
+            home_stats[shooter_idx].goals += 1;
+            
+            if rng.gen::<f64>() < 0.6 {
+                let assist_idx = select_assist_player(home_team, shooter_idx, line_num, rng);
+                if let Some(idx) = assist_idx {
+                    home_stats[idx].assists += 1;
+                }
+            }
+            // In OT, first goal wins (sudden death)
+            if away_goalie_idx < away_stats.len() {
+                away_stats[away_goalie_idx].shots_against += 1;
+                away_stats[away_goalie_idx].goals_against += 1;
+            }
+            return (home_goals, away_goals, home_stats, away_stats);
+        }
+        
+        if away_goalie_idx < away_stats.len() {
+            away_stats[away_goalie_idx].shots_against += 1;
+            away_stats[away_goalie_idx].saves += 1;
+        }
+    }
+    
+    // Only simulate away shots if home didn't score yet
+    if home_goals == 0 {
+        for _ in 0..away_shots {
+            let (shooter_idx, line_num) = select_shooter(away_team, rng);
+            away_stats[shooter_idx].shots += 1;
+            
+            let goal_prob = BASE_GOAL_PROBABILITY * OT_GOAL_PROBABILITY_MULTIPLIER * (away_rating / 80.0) * (80.0 / home_rating.max(50.0));
+            let is_goal = rng.gen::<f64>() < goal_prob;
+            
+            if is_goal {
+                away_goals += 1;
+                away_stats[shooter_idx].goals += 1;
+                
+                if rng.gen::<f64>() < 0.6 {
+                    let assist_idx = select_assist_player(away_team, shooter_idx, line_num, rng);
+                    if let Some(idx) = assist_idx {
+                        away_stats[idx].assists += 1;
+                    }
+                }
+                // In OT, first goal wins (sudden death)
+                if home_goalie_idx < home_stats.len() {
+                    home_stats[home_goalie_idx].shots_against += 1;
+                    home_stats[home_goalie_idx].goals_against += 1;
+                }
+                return (home_goals, away_goals, home_stats, away_stats);
+            }
+            
+            if home_goalie_idx < home_stats.len() {
+                home_stats[home_goalie_idx].shots_against += 1;
+                home_stats[home_goalie_idx].saves += 1;
+            }
+        }
+    }
+    
+    (home_goals, away_goals, home_stats, away_stats)
+}
+
+fn simulate_shootout(
+    home_team: &Team,
+    away_team: &Team,
+    home_rating: f64,
+    away_rating: f64,
+    rng: &mut ThreadRng,
+) -> (i32, i32) {
+    let mut home_goals = 0;
+    let mut away_goals = 0;
+    
+    // Shootout: 3 rounds, then sudden death if tied
+    for round in 0..3 {
+        // Home team shoots
+        let home_shooter = select_best_shooter(home_team, rng);
+        let home_goal_prob = BASE_GOAL_PROBABILITY * 2.0 * (home_rating / 80.0);  // Higher chance in shootout
+        if rng.gen::<f64>() < home_goal_prob {
+            home_goals += 1;
+        }
+        
+        // Away team shoots
+        let away_shooter = select_best_shooter(away_team, rng);
+        let away_goal_prob = BASE_GOAL_PROBABILITY * 2.0 * (away_rating / 80.0);
+        if rng.gen::<f64>() < away_goal_prob {
+            away_goals += 1;
+        }
+        
+        // Check if shootout is decided (can't tie after 3 rounds if one team is ahead by 2+)
+        if (home_goals - away_goals).abs() >= 2 && round < 2 {
+            break;
+        }
+    }
+    
+    // Sudden death rounds if still tied after 3 rounds
+    if home_goals == away_goals {
+        loop {
+            let home_goal_prob = BASE_GOAL_PROBABILITY * 2.0 * (home_rating / 80.0);
+            let away_goal_prob = BASE_GOAL_PROBABILITY * 2.0 * (away_rating / 80.0);
+            
+            let home_scores = rng.gen::<f64>() < home_goal_prob;
+            let away_scores = rng.gen::<f64>() < away_goal_prob;
+            
+            if home_scores && !away_scores {
+                home_goals += 1;
+                break;
+            } else if away_scores && !home_scores {
+                away_goals += 1;
+                break;
+            }
+            // If both score or both miss, continue
+        }
+    }
+    
+    (home_goals, away_goals)
+}
+
+fn select_best_shooter(team: &Team, rng: &mut ThreadRng) -> usize {
+    // Select from top offensive players (forwards, preferably top lines)
+    let forward_indices: Vec<usize> = team.lines.iter()
+        .enumerate()
+        .filter(|(_, la)| la.line_type == "forward")
+        .map(|(idx, _)| idx)
+        .collect();
+    
+    if forward_indices.is_empty() {
+        return 0;
+    }
+    
+    // Weight by offensive skill and line (prefer top lines)
+    let weights: Vec<f64> = forward_indices.iter()
+        .map(|idx| {
+            let la = &team.lines[*idx];
+            let player = &la.player;
+            let line_num = la.line_number;
+            let line_weight = match line_num {
+                1 => 1.0,
+                2 => 0.8,
+                3 => 0.6,
+                _ => 0.4,
+            };
+            (player.off as f64 / 100.0) * line_weight
+        })
+        .collect();
+    
+    let dist = WeightedIndex::new(&weights).unwrap_or_else(|_| {
+        // Fallback to uniform if all weights are 0
+        WeightedIndex::new(&vec![1.0; weights.len()]).unwrap()
+    });
+    forward_indices[dist.sample(rng)]
 }
 
 fn init_team_stats(team: &Team) -> Vec<PlayerGameStat> {

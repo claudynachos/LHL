@@ -9,54 +9,171 @@ bp = Blueprint('stats', __name__)
 def get_season_stats(simulation_id):
     """Get current season stats"""
     from extensions import db
-    from models.game import PlayerStat
+    from models.game import PlayerStat, Game
     from models.player import Player
     from models.team import Team
+    from models.simulation import Simulation
     
     season = request.args.get('season', type=int)
+    team_id = request.args.get('team_id', type=int)
+    position_filter = request.args.get('position_filter')  # 'forward', 'defenseman', or None
+    game_type = request.args.get('game_type', default='regular')  # 'regular', 'playoff', or 'all'
     
-    # Get player stats aggregated for the season
-    query = db.session.query(
+    # If no season specified, use current_season from simulation
+    if season is None:
+        simulation = Simulation.query.get(simulation_id)
+        if simulation:
+            season = simulation.current_season
+    
+    # Build base query with Game join (needed for filtering and wins calculation)
+    base_query = db.session.query(
         Player.id,
         Player.name,
+        Player.position,
+        Team.id.label('team_id'),
         Team.name.label('team_name'),
-        func.count(PlayerStat.game_id).label('games_played'),
-        func.sum(PlayerStat.goals).label('goals'),
-        func.sum(PlayerStat.assists).label('assists'),
-        (func.sum(PlayerStat.goals) + func.sum(PlayerStat.assists)).label('points'),
-        func.sum(PlayerStat.plus_minus).label('plus_minus'),
-        func.sum(PlayerStat.hits).label('hits'),
-        func.sum(PlayerStat.blocks).label('blocks'),
-        func.sum(PlayerStat.shots).label('shots')
+        Game.id.label('game_id'),
+        Game.home_team_id,
+        Game.away_team_id,
+        Game.home_score,
+        Game.away_score,
+        Game.is_playoff,
+        PlayerStat.goals,
+        PlayerStat.assists,
+        PlayerStat.plus_minus,
+        PlayerStat.hits,
+        PlayerStat.blocks,
+        PlayerStat.shots,
+        # Goalie stats
+        PlayerStat.saves,
+        PlayerStat.goals_against,
+        PlayerStat.shots_against
     ).join(PlayerStat, Player.id == PlayerStat.player_id)\
      .join(Team, PlayerStat.team_id == Team.id)\
+     .join(Game, PlayerStat.game_id == Game.id)\
      .filter(Team.simulation_id == simulation_id)
     
+    # Apply filters - always filter by season (current_season if not specified)
     if season:
-        # Filter by specific season
-        from models.game import Game
-        query = query.join(Game, PlayerStat.game_id == Game.id)\
-                    .filter(Game.season == season)
+        base_query = base_query.filter(Game.season == season)
     
-    stats = query.group_by(Player.id, Player.name, Team.name)\
-                 .order_by(desc('points'))\
-                 .limit(100)\
-                 .all()
+    # Filter by game type (regular season vs playoffs)
+    if game_type == 'regular':
+        base_query = base_query.filter(Game.is_playoff == False)
+    elif game_type == 'playoff':
+        base_query = base_query.filter(Game.is_playoff == True)
+    # If game_type == 'all', don't filter by is_playoff
+    
+    if team_id:
+        base_query = base_query.filter(Team.id == team_id)
+    
+    if position_filter == 'forward':
+        base_query = base_query.filter(Player.position.in_(['C', 'LW', 'RW']))
+    elif position_filter == 'defenseman':
+        base_query = base_query.filter(Player.position.in_(['LD', 'RD']))
+    
+    # Get all rows for aggregation
+    all_rows = base_query.all()
+    
+    # Aggregate stats by player
+    player_stats_dict = {}
+    for row in all_rows:
+        player_id = row.id
+        if player_id not in player_stats_dict:
+            player_stats_dict[player_id] = {
+                'player_id': row.id,
+                'player_name': row.name,
+                'position': row.position,
+                'team_id': row.team_id,
+                'team_name': row.team_name,
+                'games_played': 0,
+                'goals': 0,
+                'assists': 0,
+                'points': 0,
+                'plus_minus': 0,
+                'hits': 0,
+                'blocks': 0,
+                'shots': 0,
+                'saves': 0,
+                'goals_against': 0,
+                'shots_against': 0,
+                'wins': 0,
+                'game_ids': set()
+            }
+        
+        stat = player_stats_dict[player_id]
+        
+        # Track unique games
+        is_new_game = row.game_id not in stat['game_ids']
+        if is_new_game:
+            stat['game_ids'].add(row.game_id)
+            stat['games_played'] += 1
+            
+            # Calculate wins for goalies
+            if row.position == 'G':
+                # Determine if goalie's team won
+                goalie_team_id = row.team_id
+                if goalie_team_id == row.home_team_id:
+                    # Goalie is on home team
+                    if row.home_score is not None and row.away_score is not None and row.home_score > row.away_score:
+                        stat['wins'] += 1
+                elif goalie_team_id == row.away_team_id:
+                    # Goalie is on away team
+                    if row.home_score is not None and row.away_score is not None and row.away_score > row.home_score:
+                        stat['wins'] += 1
+        
+        # Accumulate stats (these can be per-period or per-game, so always add)
+        stat['goals'] += row.goals or 0
+        stat['assists'] += row.assists or 0
+        stat['plus_minus'] += row.plus_minus or 0
+        stat['hits'] += row.hits or 0
+        stat['blocks'] += row.blocks or 0
+        stat['shots'] += row.shots or 0
+        stat['saves'] += row.saves or 0
+        stat['goals_against'] += row.goals_against or 0
+        stat['shots_against'] += row.shots_against or 0
+    
+    # Convert to list and calculate percentages
+    result_stats = []
+    for player_id, stat in player_stats_dict.items():
+        stat_dict = {
+            'player_id': stat['player_id'],
+            'player_name': stat['player_name'],
+            'team_name': stat['team_name'],
+            'position': stat['position'],
+            'games_played': stat['games_played'],
+            'goals': stat['goals'],
+            'assists': stat['assists'],
+            'points': stat['goals'] + stat['assists'],  # Points = goals + assists
+            'plus_minus': stat['plus_minus'],
+            'hits': stat['hits'],
+            'blocks': stat['blocks'],
+            'shots': stat['shots'],
+            'saves': stat['saves'],
+            'goals_against': stat['goals_against'],
+            'shots_against': stat['shots_against'],
+            'wins': stat['wins'] if stat['position'] == 'G' else None
+        }
+        
+        # Calculate save percentage and GAA for goalies
+        if stat['position'] == 'G' and stat['shots_against'] > 0:
+            stat_dict['save_percentage'] = round(stat['saves'] / stat['shots_against'] * 100, 3)
+            stat_dict['goals_against_average'] = round(stat['goals_against'] / (stat['games_played'] or 1), 2) if stat['games_played'] else 0.0
+        else:
+            stat_dict['save_percentage'] = None
+            stat_dict['goals_against_average'] = None
+        
+        result_stats.append(stat_dict)
+    
+    # Sort: goalies by save_percentage (desc), skaters by points (desc)
+    # Frontend will filter by viewMode, so this is just for initial ordering
+    result_stats.sort(key=lambda x: (
+        x['save_percentage'] if x['position'] == 'G' and x['save_percentage'] is not None else 0,
+        x['points'] if x['position'] != 'G' else 0
+    ), reverse=True)
     
     return jsonify({
-        'stats': [{
-            'player_id': s.id,
-            'player_name': s.name,
-            'team_name': s.team_name,
-            'games_played': s.games_played or 0,
-            'goals': s.goals or 0,
-            'assists': s.assists or 0,
-            'points': s.points or 0,
-            'plus_minus': s.plus_minus or 0,
-            'hits': s.hits or 0,
-            'blocks': s.blocks or 0,
-            'shots': s.shots or 0
-        } for s in stats]
+        'stats': result_stats[:100]
     }), 200
 
 @bp.route('/all-time/<int:simulation_id>', methods=['GET'])
@@ -64,42 +181,155 @@ def get_season_stats(simulation_id):
 def get_alltime_stats(simulation_id):
     """Get all-time stats across all seasons"""
     from extensions import db
-    from models.game import PlayerStat
+    from models.game import PlayerStat, Game
     from models.player import Player
     from models.team import Team
     
-    # Similar to season stats but without season filter
-    query = db.session.query(
-        Player.id,
-        Player.name,
-        func.count(PlayerStat.game_id).label('games_played'),
-        func.sum(PlayerStat.goals).label('goals'),
-        func.sum(PlayerStat.assists).label('assists'),
-        (func.sum(PlayerStat.goals) + func.sum(PlayerStat.assists)).label('points'),
-        func.sum(PlayerStat.plus_minus).label('plus_minus'),
-        func.sum(PlayerStat.hits).label('hits'),
-        func.sum(PlayerStat.blocks).label('blocks')
-    ).join(PlayerStat, Player.id == PlayerStat.player_id)\
-     .join(Team, PlayerStat.team_id == Team.id)\
-     .filter(Team.simulation_id == simulation_id)\
-     .group_by(Player.id, Player.name)\
-     .order_by(desc('points'))\
-     .limit(100)\
-     .all()
+    game_type = request.args.get('game_type', default='regular')  # 'regular', 'playoff', or 'all'
     
-    return jsonify({
-        'stats': [{
-            'player_id': s.id,
-            'player_name': s.name,
-            'games_played': s.games_played or 0,
-            'goals': s.goals or 0,
-            'assists': s.assists or 0,
-            'points': s.points or 0,
-            'plus_minus': s.plus_minus or 0,
-            'hits': s.hits or 0,
-            'blocks': s.blocks or 0
-        } for s in query]
-    }), 200
+    try:
+        # Build base query with Game join (needed for wins calculation for goalies)
+        base_query = db.session.query(
+            Player.id,
+            Player.name,
+            Player.position,
+            Team.id.label('team_id'),
+            Team.name.label('team_name'),
+            Game.id.label('game_id'),
+            Game.home_team_id,
+            Game.away_team_id,
+            Game.home_score,
+            Game.away_score,
+            Game.is_playoff,
+            PlayerStat.goals,
+            PlayerStat.assists,
+            PlayerStat.plus_minus,
+            PlayerStat.hits,
+            PlayerStat.blocks,
+            PlayerStat.shots,
+            # Goalie stats
+            PlayerStat.saves,
+            PlayerStat.goals_against,
+            PlayerStat.shots_against
+        ).join(PlayerStat, Player.id == PlayerStat.player_id)\
+         .join(Team, PlayerStat.team_id == Team.id)\
+         .join(Game, PlayerStat.game_id == Game.id)\
+         .filter(Team.simulation_id == simulation_id)
+        
+        # Filter by game type (regular season vs playoffs)
+        if game_type == 'regular':
+            base_query = base_query.filter(Game.is_playoff == False)
+        elif game_type == 'playoff':
+            base_query = base_query.filter(Game.is_playoff == True)
+        # If game_type == 'all', don't filter by is_playoff
+        
+        # Get all rows for aggregation
+        all_rows = base_query.all()
+        
+        # Aggregate stats by player
+        player_stats_dict = {}
+        for row in all_rows:
+            player_id = row.id
+            if player_id not in player_stats_dict:
+                player_stats_dict[player_id] = {
+                    'player_id': row.id,
+                    'player_name': row.name,
+                    'position': row.position,
+                    'games_played': 0,
+                    'goals': 0,
+                    'assists': 0,
+                    'points': 0,
+                    'plus_minus': 0,
+                    'hits': 0,
+                    'blocks': 0,
+                    'shots': 0,
+                    'saves': 0,
+                    'goals_against': 0,
+                    'shots_against': 0,
+                    'wins': 0,
+                    'game_ids': set()
+                }
+            
+            stat = player_stats_dict[player_id]
+            
+            # Track unique games
+            is_new_game = row.game_id not in stat['game_ids']
+            if is_new_game:
+                stat['game_ids'].add(row.game_id)
+                stat['games_played'] += 1
+                
+                # Calculate wins for goalies
+                if row.position == 'G':
+                    # Determine if goalie's team won
+                    goalie_team_id = row.team_id
+                    if goalie_team_id == row.home_team_id:
+                        # Goalie is on home team
+                        if row.home_score is not None and row.away_score is not None and row.home_score > row.away_score:
+                            stat['wins'] += 1
+                    elif goalie_team_id == row.away_team_id:
+                        # Goalie is on away team
+                        if row.home_score is not None and row.away_score is not None and row.away_score > row.home_score:
+                            stat['wins'] += 1
+            
+            # Accumulate stats
+            stat['goals'] += row.goals or 0
+            stat['assists'] += row.assists or 0
+            stat['plus_minus'] += row.plus_minus or 0
+            stat['hits'] += row.hits or 0
+            stat['blocks'] += row.blocks or 0
+            stat['shots'] += row.shots or 0
+            stat['saves'] += row.saves or 0
+            stat['goals_against'] += row.goals_against or 0
+            stat['shots_against'] += row.shots_against or 0
+        
+        # Convert to list and calculate percentages
+        result_stats = []
+        for player_id, stat in player_stats_dict.items():
+            stat_dict = {
+                'player_id': stat['player_id'],
+                'player_name': stat['player_name'],
+                'position': stat['position'],
+                'games_played': stat['games_played'],
+                'goals': stat['goals'],
+                'assists': stat['assists'],
+                'points': stat['goals'] + stat['assists'],  # Points = goals + assists
+                'plus_minus': stat['plus_minus'],
+                'hits': stat['hits'],
+                'blocks': stat['blocks'],
+                'shots': stat['shots'],
+                'saves': stat['saves'],
+                'goals_against': stat['goals_against'],
+                'shots_against': stat['shots_against'],
+                'wins': stat['wins'] if stat['position'] == 'G' else None
+            }
+            
+            # Calculate save percentage and GAA for goalies
+            if stat['position'] == 'G' and stat['shots_against'] > 0:
+                stat_dict['save_percentage'] = round(stat['saves'] / stat['shots_against'] * 100, 3)
+                stat_dict['goals_against_average'] = round(stat['goals_against'] / (stat['games_played'] or 1), 2) if stat['games_played'] else 0.0
+            else:
+                stat_dict['save_percentage'] = None
+                stat_dict['goals_against_average'] = None
+            
+            result_stats.append(stat_dict)
+        
+        # Sort: goalies by save_percentage (desc), skaters by points (desc)
+        result_stats.sort(key=lambda x: (
+            x['save_percentage'] if x['position'] == 'G' and x['save_percentage'] is not None else 0,
+            x['points'] if x['position'] != 'G' else 0
+        ), reverse=True)
+        
+        return jsonify({
+            'stats': result_stats[:100]
+        }), 200
+    except Exception as e:
+        # If there's an error (e.g., no data yet, database issue), return empty list
+        print(f"Error in get_alltime_stats: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            'stats': []
+        }), 200
 
 @bp.route('/standings/<int:simulation_id>', methods=['GET'])
 @jwt_required()
@@ -108,13 +338,21 @@ def get_standings(simulation_id):
     from extensions import db
     from models.game import Standing
     from models.team import Team
+    from models.simulation import Simulation
     
     season = request.args.get('season', type=int)
+    
+    # If no season specified, use current_season from simulation
+    if season is None:
+        simulation = Simulation.query.get(simulation_id)
+        if simulation:
+            season = simulation.current_season
     
     query = db.session.query(Standing, Team)\
         .join(Team, Standing.team_id == Team.id)\
         .filter(Standing.simulation_id == simulation_id)
     
+    # Always filter by season (current_season if not specified)
     if season:
         query = query.filter(Standing.season == season)
     
@@ -143,12 +381,3 @@ def get_standings(simulation_id):
         'western': western
     }), 200
 
-@bp.route('/trophies/<int:simulation_id>', methods=['GET'])
-@jwt_required()
-def get_trophies(simulation_id):
-    """Get trophy winners by season"""
-    # This would require a separate trophies table, for now return placeholder
-    return jsonify({
-        'message': 'Trophy tracking coming soon',
-        'trophies': []
-    }), 200

@@ -27,3 +27,15 @@ def get_player(player_id):
         return jsonify({'error': 'Player not found'}), 404
     
     return jsonify(player.to_dict()), 200
+
+@bp.route('/coaches', methods=['GET'])
+@jwt_required()
+def get_all_coaches():
+    """Get all available coaches for drafting"""
+    from models.player import Coach
+    
+    coaches = Coach.query.all()
+    
+    return jsonify({
+        'coaches': [c.to_dict() for c in coaches]
+    }), 200

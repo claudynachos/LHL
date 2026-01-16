@@ -10,6 +10,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'dev-secret-key-change-in-production')
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
+# Set JWT token expiration to 7 days (604800 seconds) for long draft sessions
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 604800  # 7 days in seconds
 
 # Initialize extensions with app
 from extensions import db, jwt
@@ -37,17 +39,29 @@ CORS(
     app,
     resources={r"/api/*": {"origins": [o.strip() for o in cors_origins.split(',') if o.strip()]}},
     supports_credentials=True,
-    allow_headers=["Content-Type", "Authorization"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    expose_headers=["Content-Type"],
 )
+
+# Explicit OPTIONS handler for CORS preflight
+@app.before_request
+def handle_preflight():
+    from flask import request
+    if request.method == "OPTIONS":
+        response = jsonify({'status': 'ok'})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization")
+        response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
+        return response
 
 # Ensure all models are registered before handling requests
 with app.app_context():
-    from models import user, simulation, team, game, player  # noqa: F401
+    from models import user, simulation, team, game, player, trophy  # noqa: F401
 
 # Import and register blueprints
 def register_blueprints():
-    from api import auth, simulations, teams, stats, admin, players
+    from api import auth, simulations, teams, stats, admin, players, trophies
     
     app.register_blueprint(auth.bp, url_prefix='/api/auth')
     app.register_blueprint(simulations.bp, url_prefix='/api/simulations')
@@ -55,6 +69,7 @@ def register_blueprints():
     app.register_blueprint(stats.bp, url_prefix='/api/stats')
     app.register_blueprint(admin.bp, url_prefix='/api/admin')
     app.register_blueprint(players.bp, url_prefix='/api/players')
+    app.register_blueprint(trophies.bp, url_prefix='/api/trophies')
 
 register_blueprints()
 

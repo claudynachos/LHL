@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
+import { useModal } from '@/app/components/ModalContext';
 
 export default function AdminPage() {
+  const { showConfirm } = useModal();
   const [users, setUsers] = useState<any[]>([]);
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,8 @@ export default function AdminPage() {
   };
 
   const deleteUser = async (userId: number) => {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+    const confirmed = await showConfirm('Are you sure you want to delete this user?');
+    if (!confirmed) return;
     
     try {
       await api.delete(`/api/admin/users/${userId}`);

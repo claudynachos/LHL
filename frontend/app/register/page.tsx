@@ -44,24 +44,33 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen flex items-center justify-center bg-dark-bg p-4">
       <div className="card max-w-md w-full">
-        <h1 className="text-3xl font-bold text-center mb-6 text-primary-600">
-          Join LHL
-        </h1>
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 rounded-full bg-gradient-orange flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl font-bold text-white">L</span>
+          </div>
+          <h1 className="text-3xl font-bold mb-2 text-dark-text">
+            Join LHL
+          </h1>
+          <p className="text-dark-text-muted">
+            Create your account to get started
+          </p>
+        </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4">
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-lg mb-6">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-1">Username</label>
+            <label className="block text-sm font-medium mb-2 text-dark-text">Username</label>
             <input
               type="text"
               className="input"
+              placeholder="Choose a username"
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
               required
@@ -69,10 +78,11 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm font-medium mb-2 text-dark-text">Email</label>
             <input
               type="email"
               className="input"
+              placeholder="Enter your email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
@@ -80,10 +90,11 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="block text-sm font-medium mb-2 text-dark-text">Password</label>
             <input
               type="password"
               className="input"
+              placeholder="Create a password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
@@ -91,10 +102,11 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Confirm Password</label>
+            <label className="block text-sm font-medium mb-2 text-dark-text">Confirm Password</label>
             <input
               type="password"
               className="input"
+              placeholder="Confirm your password"
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               required
@@ -103,16 +115,16 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="btn btn-primary w-full"
+            className="btn btn-primary w-full text-lg py-3"
             disabled={loading}
           >
             {loading ? 'Creating account...' : 'Register'}
           </button>
         </form>
 
-        <p className="text-center mt-4 text-gray-600">
+        <p className="text-center mt-6 text-dark-text-muted">
           Already have an account?{' '}
-          <Link href="/login" className="text-primary-600 hover:underline">
+          <Link href="/login" className="text-primary-500 hover:text-primary-400 transition-colors font-medium">
             Login here
           </Link>
         </p>
