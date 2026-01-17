@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import DashboardLayout from '@/app/components/DashboardLayout';
 import { PlayoffBracket, PlayoffSeries, Team } from '@/lib/types';
@@ -13,12 +13,20 @@ const teamLabel = (team: Team | null) => {
 
 export default function PlayoffsPage() {
   const params = useParams();
+  const router = useRouter();
   const simulationId = params.id;
   const [bracket, setBracket] = useState<PlayoffBracket | null>(null);
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
   const [simulatingRound, setSimulatingRound] = useState(false);
   const [teams, setTeams] = useState<any[]>([]);
+  
+  // Stanley Cup winner animation state
+  const [showCupAnimation, setShowCupAnimation] = useState(false);
+  const [cupWinner, setCupWinner] = useState<{ city: string; name: string } | null>(null);
+  const [animationTimer, setAnimationTimer] = useState(10);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadBracket = async () => {
     try {
@@ -48,7 +56,17 @@ export default function PlayoffsPage() {
   const simulateNextGames = async () => {
     setSimulating(true);
     try {
-      await api.post(`/api/simulations/${simulationId}/playoffs/simulate-game`);
+      const response = await api.post(`/api/simulations/${simulationId}/playoffs/simulate-game`);
+      
+      // Check if playoffs just completed - backend returns cup_winner directly
+      if (response.data.playoffs_complete && response.data.cup_winner) {
+        const winner = response.data.cup_winner;
+        console.log('Stanley Cup winner from API:', winner.city, winner.name);
+        triggerCupAnimation(winner.city, winner.name);
+        return;
+      }
+      
+      // Reload bracket to get latest state
       await loadBracket();
     } catch (error) {
       console.error('Failed to simulate playoff games', error);
@@ -63,15 +81,17 @@ export default function PlayoffsPage() {
     setSimulatingRound(true);
     try {
       const response = await api.post(`/api/simulations/${simulationId}/playoffs/simulate-round`);
-      await loadBracket();
       
-      // If playoffs are complete, refresh the page to show updated status
-      if (response.data.simulation_status === 'season') {
-        // Reload the bracket and check if we should redirect or refresh
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+      // Check if playoffs just completed - backend returns cup_winner directly
+      if (response.data.playoffs_complete && response.data.cup_winner) {
+        const winner = response.data.cup_winner;
+        console.log('Stanley Cup winner from API:', winner.city, winner.name);
+        triggerCupAnimation(winner.city, winner.name);
+        return; // Don't continue, animation will redirect
       }
+      
+      // Reload bracket to get latest state
+      await loadBracket();
     } catch (error) {
       console.error('Failed to simulate playoff round', error);
       // Still reload bracket even on error to show current state
@@ -80,6 +100,80 @@ export default function PlayoffsPage() {
       setSimulatingRound(false);
     }
   };
+  
+  const triggerCupAnimation = (city: string, name: string) => {
+    setCupWinner({ city, name });
+    setShowCupAnimation(true);
+    setAnimationTimer(10);
+    
+    // Play celebratory audio
+    if (!audioRef.current) {
+      audioRef.current = new Audio('/HockeyNightinCanada.mp3');
+      audioRef.current.volume = 1;
+    }
+    audioRef.current.play().catch(error => {
+      console.error('Failed to play audio:', error);
+    });
+    
+    // Start countdown timer with local variable to avoid React state closure issues
+    let countdown = 10;
+    animationTimerRef.current = setInterval(() => {
+      countdown -= 1;
+      setAnimationTimer(countdown);
+      if (countdown <= 0) {
+        // Time's up, clean up and redirect to dashboard
+        if (animationTimerRef.current) {
+          clearInterval(animationTimerRef.current);
+          animationTimerRef.current = null;
+        }
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+        setShowCupAnimation(false);
+        
+        // Store that we're coming from playoffs completion for dashboard animation
+        sessionStorage.setItem('seasonComplete', 'true');
+        sessionStorage.setItem('cupWinner', `${city} ${name}`);
+        
+        // Redirect to dashboard
+        router.push(`/simulation/${simulationId}`);
+      }
+    }, 1000);
+  };
+  
+  const skipCupAnimation = () => {
+    // Clean up
+    if (animationTimerRef.current) {
+      clearInterval(animationTimerRef.current);
+      animationTimerRef.current = null;
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    setShowCupAnimation(false);
+    
+    // Store that we're coming from playoffs completion for dashboard animation
+    sessionStorage.setItem('seasonComplete', 'true');
+    sessionStorage.setItem('cupWinner', cupWinner ? `${cupWinner.city} ${cupWinner.name}` : '');
+    
+    // Redirect to dashboard
+    router.push(`/simulation/${simulationId}`);
+  };
+  
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (animationTimerRef.current) {
+        clearInterval(animationTimerRef.current);
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   // Check if there are any active series
   const hasActiveSeries = bracket && Object.values(bracket.rounds).some((round: any) =>
@@ -198,25 +292,25 @@ export default function PlayoffsPage() {
     const lowerWon = series.status === 'complete' && series.winner_team_id === series.lower_seed_team_id;
 
     return (
-      <div className="bg-dark-surface rounded-lg border border-dark-border overflow-hidden">
-        <div className={`p-3 text-sm transition-colors ${
+      <div className="bg-dark-surface rounded-lg border border-dark-border overflow-hidden" style={{ minWidth: '280px' }}>
+        <div className={`px-6 py-5 transition-colors ${
           higherWon
             ? 'bg-primary-500/20 font-semibold text-primary-400'
             : 'text-dark-text'
         }`}>
-          <div className="flex items-center justify-between">
-            <span className="font-medium">{teamLabel(higherTeam)}</span>
-            <span className="font-mono font-bold">{series.higher_seed_wins}</span>
+          <div className="flex items-center justify-between gap-8">
+            <span className="font-medium text-xl">{teamLabel(higherTeam)}</span>
+            <span className="font-mono font-bold text-2xl">{series.higher_seed_wins}</span>
           </div>
         </div>
-        <div className={`p-3 text-sm border-t border-dark-border transition-colors ${
+        <div className={`px-6 py-5 border-t border-dark-border transition-colors ${
           lowerWon
             ? 'bg-primary-500/20 font-semibold text-primary-400'
             : 'text-dark-text'
         }`}>
-          <div className="flex items-center justify-between">
-            <span className="font-medium">{teamLabel(lowerTeam)}</span>
-            <span className="font-mono font-bold">{series.lower_seed_wins}</span>
+          <div className="flex items-center justify-between gap-8">
+            <span className="font-medium text-xl">{teamLabel(lowerTeam)}</span>
+            <span className="font-mono font-bold text-2xl">{series.lower_seed_wins}</span>
           </div>
         </div>
       </div>
@@ -226,22 +320,31 @@ export default function PlayoffsPage() {
   const renderRound = (roundSeries: PlayoffSeries[], roundNum: number, roundKey: string) => {
     if (!roundSeries || roundSeries.length === 0) return null;
 
+    // Group matchups into pairs for bracket structure
+    const pairs: PlayoffSeries[][] = [];
+    for (let i = 0; i < roundSeries.length; i += 2) {
+      pairs.push(roundSeries.slice(i, i + 2));
+    }
+
     return (
-      <div className="flex flex-col gap-3" data-round-key={roundKey}>
-        {roundSeries.map((series, seriesIdx) => (
-          <div 
-            key={series.id} 
-            className="relative" 
-            data-series-index={seriesIdx}
-            data-series-id={series.id}
-            ref={(el) => {
-              if (el) {
-                // Store element reference for connector calculation
-                (el as any).__seriesId = series.id;
-              }
-            }}
-          >
-            {renderMatchup(series)}
+      <div className="flex flex-col gap-16" data-round-key={roundKey}>
+        {pairs.map((pair, pairIdx) => (
+          <div key={pairIdx} className="flex flex-col gap-3">
+            {pair.map((series, seriesIdx) => (
+              <div 
+                key={series.id} 
+                className="relative" 
+                data-series-index={pairIdx * 2 + seriesIdx}
+                data-series-id={series.id}
+                ref={(el) => {
+                  if (el) {
+                    (el as any).__seriesId = series.id;
+                  }
+                }}
+              >
+                {renderMatchup(series)}
+              </div>
+            ))}
           </div>
         ))}
       </div>
@@ -263,10 +366,12 @@ export default function PlayoffsPage() {
         </div>
         <div className="flex gap-8 items-center justify-center overflow-x-auto pb-8">
           {displayRounds.map((round, roundIdx) => {
-            const isLastRound = roundIdx === displayRounds.length - 1;
-            const actualRoundIdx = isEastern ? displayRounds.length - 1 - roundIdx : roundIdx;
-            const nextRound = displayRounds[roundIdx + 1];
-            const nextRoundSeries = nextRound ? conferenceSeries[nextRound] : [];
+            // Check if THIS round should have connector lines going to the next round
+            // Connector should be drawn from the round that has PAIRS of matchups feeding into the next round
+            const nextActualRound = round + 1;
+            const hasNextRound = conferenceSeries[nextActualRound] && conferenceSeries[nextActualRound].length > 0;
+            const currentSeriesList = conferenceSeries[round] || [];
+            const shouldDrawConnector = hasNextRound && currentSeriesList.length >= 2;
             
             return (
               <div key={round} className="flex-shrink-0 relative flex flex-col items-center">
@@ -278,91 +383,112 @@ export default function PlayoffsPage() {
                 <div className="relative flex items-center">
                   {renderRound(conferenceSeries[round], round, `${conferenceName}-round-${round}`)}
                   
-                  {/* Vertical connector lines between rounds */}
-                  {!isLastRound && (
-                    <div className={`absolute top-0 bottom-0 w-20 flex items-center ${
+                  {/* NHL-style bracket connector lines between rounds */}
+                  {shouldDrawConnector && (
+                    <div className={`absolute top-0 bottom-0 w-32 flex items-center ${
                       isEastern ? 'right-full' : 'left-full'
                     }`}>
                       <svg className="w-full h-full" style={{ overflow: 'visible' }}>
-                        {conferenceSeries[round].map((series, idx) => {
-                          if (series.status !== 'complete') return null;
-                          
-                          // Calculate positions based on actual rendered layout
-                          // Each matchup box: 2 rows with p-3 (12px padding) + text-sm line height
-                          // Actual rendered height might vary slightly, so we'll use a measured approach
-                          // Matchup box approximate height: ~90px (2 rows × ~45px each)
-                          // Gap between matchups: 12px (gap-3)
-                          // Total spacing: ~102px per matchup
-                          const boxHeight = 90; // Slightly adjusted to match actual rendered height
-                          const gap = 12;
-                          const totalSpacing = boxHeight + gap; // 102px
-                          
-                          // Calculate center Y position for each matchup
-                          // Position from top: (idx * totalSpacing) + (boxHeight / 2)
-                          const currentTop = (idx * totalSpacing) + (boxHeight / 2);
-                          
-                          // Find which matchup in next round this winner goes to
-                          const nextMatchupIndex = Math.floor(idx / 2);
-                          const nextTop = (nextMatchupIndex * totalSpacing) + (boxHeight / 2);
-                          
-                          // For Eastern (right to left), flip the connector
-                          const xStart = isEastern ? 80 : 0;
-                          const xMid = 40;
-                          const xEnd = isEastern ? 0 : 80;
-                          const cornerRadius = 10;
-                          
-                          // Create smooth path with rounded corners
-                          let path = '';
-                          const goingDown = currentTop < nextTop;
-                          
-                          if (isEastern) {
-                            // Right to left flow
-                            path = goingDown
-                              ? `M ${xStart} ${currentTop} 
-                                 L ${xMid + cornerRadius} ${currentTop}
-                                 Q ${xMid} ${currentTop} ${xMid} ${currentTop + cornerRadius}
-                                 L ${xMid} ${nextTop - cornerRadius}
-                                 Q ${xMid} ${nextTop} ${xMid - cornerRadius} ${nextTop}
-                                 L ${xEnd} ${nextTop}`
-                              : `M ${xStart} ${currentTop} 
-                                 L ${xMid + cornerRadius} ${currentTop}
-                                 Q ${xMid} ${currentTop} ${xMid} ${currentTop - cornerRadius}
-                                 L ${xMid} ${nextTop + cornerRadius}
-                                 Q ${xMid} ${nextTop} ${xMid - cornerRadius} ${nextTop}
-                                 L ${xEnd} ${nextTop}`;
-                          } else {
-                            // Left to right flow
-                            path = goingDown
-                              ? `M ${xStart} ${currentTop} 
-                                 L ${xMid - cornerRadius} ${currentTop}
-                                 Q ${xMid} ${currentTop} ${xMid} ${currentTop + cornerRadius}
-                                 L ${xMid} ${nextTop - cornerRadius}
-                                 Q ${xMid} ${nextTop} ${xMid + cornerRadius} ${nextTop}
-                                 L ${xEnd} ${nextTop}`
-                              : `M ${xStart} ${currentTop} 
-                                 L ${xMid - cornerRadius} ${currentTop}
-                                 Q ${xMid} ${currentTop} ${xMid} ${currentTop - cornerRadius}
-                                 L ${xMid} ${nextTop + cornerRadius}
-                                 Q ${xMid} ${nextTop} ${xMid + cornerRadius} ${nextTop}
-                                 L ${xEnd} ${nextTop}`;
+                        {(() => {
+                          // Group matchups in pairs for bracket connections
+                          const seriesList = conferenceSeries[round];
+                          const pairs: [PlayoffSeries | undefined, PlayoffSeries | undefined][] = [];
+                          for (let i = 0; i < seriesList.length; i += 2) {
+                            pairs.push([seriesList[i], seriesList[i + 1]]);
                           }
                           
-                          return (
-                            <g key={series.id}>
-                              <path
-                                d={path}
-                                fill="none"
-                                stroke="#f97316"
-                                strokeWidth="3.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                style={{ 
-                                  filter: 'drop-shadow(0 0 2px rgba(249, 115, 22, 0.4))'
-                                }}
-                              />
-                            </g>
-                          );
-                        })}
+                          // Box dimensions (updated for larger boxes - px-6 py-5 = ~64px per row)
+                          const boxHeight = 140; // Height of matchup box (2 rows * 64px + borders)
+                          const gapWithinPair = 12; // Gap between matchups within a pair (gap-3)
+                          const gapBetweenPairs = 64; // Gap between pairs (gap-16)
+                          const pairHeight = boxHeight * 2 + gapWithinPair; // Height of one pair
+                          
+                          return pairs.map((pair, pairIdx) => {
+                            const [series1, series2] = pair;
+                            const bothComplete = series1?.status === 'complete' && series2?.status === 'complete';
+                            
+                            // Calculate Y positions for each matchup center within this pair
+                            const pairStartY = pairIdx * (pairHeight + gapBetweenPairs);
+                            const topY = pairStartY + (boxHeight / 2);
+                            const bottomY = pairStartY + boxHeight + gapWithinPair + (boxHeight / 2);
+                            const midY = (topY + bottomY) / 2;
+                            
+                            // X positions for bracket shape (w-32 = 128px)
+                            // For Western: lines go from left (0) to right (128)
+                            // For Eastern: lines go from right (128) to left (0) - but positioned on the LEFT of round 1
+                            const xStart = isEastern ? 128 : 0;
+                            const xMid = 64;
+                            const xEnd = isEastern ? 0 : 128;
+                            
+                            const strokeColor = "#f97316";
+                            const strokeWidth = 3;
+                            
+                            return (
+                              <g key={`pair-${pairIdx}`}>
+                                {/* TOP matchup: horizontal line, then vertical line going DOWN to midpoint */}
+                                {series1?.status === 'complete' && (
+                                  <>
+                                    <line
+                                      x1={xStart}
+                                      y1={topY}
+                                      x2={xMid}
+                                      y2={topY}
+                                      stroke={strokeColor}
+                                      strokeWidth={strokeWidth}
+                                      strokeLinecap="square"
+                                    />
+                                    <line
+                                      x1={xMid}
+                                      y1={topY}
+                                      x2={xMid}
+                                      y2={midY}
+                                      stroke={strokeColor}
+                                      strokeWidth={strokeWidth}
+                                      strokeLinecap="square"
+                                    />
+                                  </>
+                                )}
+                                
+                                {/* BOTTOM matchup: horizontal line, then vertical line going UP to midpoint */}
+                                {series2?.status === 'complete' && (
+                                  <>
+                                    <line
+                                      x1={xStart}
+                                      y1={bottomY}
+                                      x2={xMid}
+                                      y2={bottomY}
+                                      stroke={strokeColor}
+                                      strokeWidth={strokeWidth}
+                                      strokeLinecap="square"
+                                    />
+                                    <line
+                                      x1={xMid}
+                                      y1={bottomY}
+                                      x2={xMid}
+                                      y2={midY}
+                                      stroke={strokeColor}
+                                      strokeWidth={strokeWidth}
+                                      strokeLinecap="square"
+                                    />
+                                  </>
+                                )}
+                                
+                                {/* Horizontal line from midpoint to next round */}
+                                {bothComplete && (
+                                  <line
+                                    x1={xMid}
+                                    y1={midY}
+                                    x2={xEnd}
+                                    y2={midY}
+                                    stroke={strokeColor}
+                                    strokeWidth={strokeWidth}
+                                    strokeLinecap="square"
+                                  />
+                                )}
+                              </g>
+                            );
+                          });
+                        })()}
                       </svg>
                     </div>
                   )}
@@ -377,6 +503,30 @@ export default function PlayoffsPage() {
 
   return (
     <DashboardLayout>
+      {/* Stanley Cup Winner Animation */}
+      {showCupAnimation && cupWinner && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+          <div className="text-center animate-fade-in">
+            <div className="text-6xl mb-6">🏆</div>
+            <h1 className="text-5xl font-bold text-primary-500 mb-4 animate-pulse">
+              STANLEY CUP CHAMPIONS
+            </h1>
+            <h2 className="text-4xl font-bold text-white mb-8">
+              {cupWinner.city} {cupWinner.name}
+            </h2>
+            <p className="text-dark-text-muted mb-6">
+              Redirecting to dashboard in {animationTimer} seconds...
+            </p>
+            <button
+              onClick={skipCupAnimation}
+              className="btn btn-secondary px-8 py-3"
+            >
+              Continue to Dashboard
+            </button>
+          </div>
+        </div>
+      )}
+      
       <div className="max-w-7xl mx-auto">
         <div className="card mb-6">
           <div className="flex items-center justify-between">
@@ -429,27 +579,32 @@ export default function PlayoffsPage() {
             {validRounds.length > 0 && (
               <div className="space-y-8">
                 {/* Conference Brackets */}
-                <div className="flex gap-8 items-start">
+                <div className="flex gap-8 items-start justify-center">
                   {renderConferenceBracket(organizedBracket.western, 'Western')}
                   {renderConferenceBracket(organizedBracket.eastern, 'Eastern')}
                 </div>
 
-                {/* Stanley Cup Final */}
-                {organizedBracket.final && (
-                  <div className="flex justify-center">
-                    <div className="card bg-gradient-to-br from-primary-500/20 to-primary-600/10 border-2 border-primary-500 max-w-md w-full">
-                      <div className="text-center mb-6">
-                        <h2 className="text-3xl font-bold text-primary-500 mb-2">STANLEY CUP FINAL</h2>
-                        <div className="text-dark-text-muted">Round {maxRound}</div>
+                {/* Stanley Cup Final - below conferences */}
+                <div className="flex justify-center">
+                  {organizedBracket.final ? (
+                    <div className="card bg-gradient-to-br from-primary-500/20 to-primary-600/10 border-2 border-primary-500 max-w-lg">
+                      <div className="text-center mb-4">
+                        <h2 className="text-2xl font-bold text-primary-500 mb-1">STANLEY CUP FINAL</h2>
+                        <div className="text-dark-text-muted text-sm">Round {maxRound}</div>
                       </div>
                       <div className="flex justify-center">
-                        <div className="w-full max-w-xs">
-                          {renderMatchup(organizedBracket.final)}
-                        </div>
+                        {renderMatchup(organizedBracket.final)}
                       </div>
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <div className="card bg-dark-surface/50 border border-dashed border-dark-border px-12 py-8">
+                      <div className="text-center text-dark-text-muted">
+                        <div className="text-lg font-semibold mb-1">Stanley Cup Final</div>
+                        <div className="text-sm">Awaiting conference champions</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </>

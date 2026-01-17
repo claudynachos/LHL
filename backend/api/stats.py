@@ -4,6 +4,16 @@ from sqlalchemy import func, desc
 
 bp = Blueprint('stats', __name__)
 
+def calculate_player_overall(position, is_goalie, off, def_val, phys, lead, const):
+    """Calculate overall rating from raw attributes"""
+    if is_goalie or position == 'G':
+        return float(off)  # For goalies, off stores the gen rating
+    # Skaters formula
+    off_component = off * 1.1
+    def_component = def_val * 0.95
+    phys_component = phys * 0.9 * (lead / 100.0) * (const / 100.0)
+    return round((off_component + def_component + phys_component) / 2.5, 1)
+
 @bp.route('/season/<int:simulation_id>', methods=['GET'])
 @jwt_required()
 def get_season_stats(simulation_id):
@@ -11,7 +21,7 @@ def get_season_stats(simulation_id):
     from extensions import db
     from models.game import PlayerStat, Game
     from models.player import Player
-    from models.team import Team
+    from models.team import Team, Roster
     from models.simulation import Simulation
     
     season = request.args.get('season', type=int)
@@ -26,10 +36,17 @@ def get_season_stats(simulation_id):
             season = simulation.current_season
     
     # Build base query with Game join (needed for filtering and wins calculation)
+    # Note: Player.overall is calculated, not a column - we need the raw attributes
     base_query = db.session.query(
         Player.id,
         Player.name,
         Player.position,
+        Player.is_goalie,
+        Player.off,
+        Player.def_.label('def_val'),
+        Player.phys,
+        Player.lead,
+        Player.const,
         Team.id.label('team_id'),
         Team.name.label('team_name'),
         Game.id.label('game_id'),
@@ -75,6 +92,70 @@ def get_season_stats(simulation_id):
     # Get all rows for aggregation
     all_rows = base_query.all()
     
+    # If no stats found, return all rostered players with 0 stats
+    if len(all_rows) == 0:
+        # Get all players from rosters for the simulation
+        roster_query = db.session.query(
+            Player.id,
+            Player.name,
+            Player.position,
+            Player.is_goalie,
+            Player.off,
+            Player.def_.label('def_val'),
+            Player.phys,
+            Player.lead,
+            Player.const,
+            Team.id.label('team_id'),
+            Team.name.label('team_name')
+        ).join(Roster, Player.id == Roster.player_id)\
+         .join(Team, Roster.team_id == Team.id)\
+         .filter(Team.simulation_id == simulation_id)
+        
+        if team_id:
+            roster_query = roster_query.filter(Team.id == team_id)
+        
+        if position_filter == 'forward':
+            roster_query = roster_query.filter(Player.position.in_(['C', 'LW', 'RW']))
+        elif position_filter == 'defenseman':
+            roster_query = roster_query.filter(Player.position.in_(['LD', 'RD']))
+        
+        rostered_players = roster_query.all()
+        
+        result_stats = []
+        for player in rostered_players:
+            stat_dict = {
+                'player_id': player.id,
+                'player_name': player.name,
+                'player_overall': calculate_player_overall(
+                    player.position, player.is_goalie, player.off, player.def_val, player.phys, player.lead, player.const
+                ),
+                'position': player.position,
+                'team_id': player.team_id,
+                'team_name': player.team_name,
+                'games_played': 0,
+                'goals': 0,
+                'assists': 0,
+                'points': 0,
+                'plus_minus': 0,
+                'hits': 0,
+                'blocks': 0,
+                'shots': 0,
+                'saves': 0,
+                'goals_against': 0,
+                'shots_against': 0,
+                'wins': 0 if player.position == 'G' else None,
+                'save_percentage': None,
+                'goals_against_average': None
+            }
+            result_stats.append(stat_dict)
+        
+        # Sort by overall rating (descending) for initial display
+        result_stats.sort(key=lambda x: x.get('player_overall') or 0, reverse=True)
+        
+        return jsonify({
+            'stats': result_stats[:100]
+        }), 200
+    
     # Aggregate stats by player
     player_stats_dict = {}
     for row in all_rows:
@@ -84,6 +165,9 @@ def get_season_stats(simulation_id):
                 'player_id': row.id,
                 'player_name': row.name,
                 'position': row.position,
+                'player_overall': calculate_player_overall(
+                    row.position, row.is_goalie, row.off, row.def_val, row.phys, row.lead, row.const
+                ),
                 'team_id': row.team_id,
                 'team_name': row.team_name,
                 'games_played': 0,
@@ -139,6 +223,7 @@ def get_season_stats(simulation_id):
         stat_dict = {
             'player_id': stat['player_id'],
             'player_name': stat['player_name'],
+            'player_overall': stat['player_overall'],
             'team_name': stat['team_name'],
             'position': stat['position'],
             'games_played': stat['games_played'],
@@ -193,6 +278,12 @@ def get_alltime_stats(simulation_id):
             Player.id,
             Player.name,
             Player.position,
+            Player.is_goalie,
+            Player.off,
+            Player.def_.label('def_val'),
+            Player.phys,
+            Player.lead,
+            Player.const,
             Team.id.label('team_id'),
             Team.name.label('team_name'),
             Game.id.label('game_id'),
@@ -235,6 +326,11 @@ def get_alltime_stats(simulation_id):
                     'player_id': row.id,
                     'player_name': row.name,
                     'position': row.position,
+                    'player_overall': calculate_player_overall(
+                        row.position, row.is_goalie, row.off, row.def_val, row.phys, row.lead, row.const
+                    ),
+                    'team_id': row.team_id,
+                    'team_name': row.team_name,
                     'games_played': 0,
                     'goals': 0,
                     'assists': 0,
@@ -288,7 +384,10 @@ def get_alltime_stats(simulation_id):
             stat_dict = {
                 'player_id': stat['player_id'],
                 'player_name': stat['player_name'],
+                'player_overall': stat['player_overall'],
                 'position': stat['position'],
+                'team_id': stat['team_id'],
+                'team_name': stat['team_name'],
                 'games_played': stat['games_played'],
                 'goals': stat['goals'],
                 'assists': stat['assists'],

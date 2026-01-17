@@ -35,25 +35,22 @@ def expired_token_callback(jwt_header, jwt_payload):
     return jsonify({'error': 'Token has expired'}), 401
 
 cors_origins = os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000')
+cors_origins_list = [o.strip() for o in cors_origins.split(',') if o.strip()]
+
+# Configure CORS to handle preflight requests automatically
 CORS(
     app,
-    resources={r"/api/*": {"origins": [o.strip() for o in cors_origins.split(',') if o.strip()]}},
-    supports_credentials=True,
-    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
-    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    expose_headers=["Content-Type"],
+    resources={
+        r"/api/*": {
+            "origins": cors_origins_list,
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
+            "supports_credentials": True,
+            "expose_headers": ["Content-Type"]
+        }
+    },
+    supports_credentials=True
 )
-
-# Explicit OPTIONS handler for CORS preflight
-@app.before_request
-def handle_preflight():
-    from flask import request
-    if request.method == "OPTIONS":
-        response = jsonify({'status': 'ok'})
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization")
-        response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
-        return response
 
 # Ensure all models are registered before handling requests
 with app.app_context():

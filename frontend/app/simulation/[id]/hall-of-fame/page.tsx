@@ -1,18 +1,29 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import api from '@/lib/api';
 import { PlayerStats } from '@/lib/types';
 import DashboardLayout from '@/app/components/DashboardLayout';
+
+// Helper function to get name color class based on rating (gold for 100+, silver for 95-100)
+const getNameColorClass = (rating: number | undefined): string => {
+  if (rating === undefined || rating === null) return '';
+  if (rating > 100) return 'text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.6)]'; // Gold with glow
+  if (rating >= 95) return 'text-slate-300 drop-shadow-[0_0_3px_rgba(203,213,225,0.5)]'; // Silver with glow
+  return ''; // Default - no special styling
+};
 
 type TabType = 'stats' | 'trophies' | 'ranking';
 
 export default function HallOfFamePage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const simulationId = params.id;
-
-  const [activeTab, setActiveTab] = useState<TabType>('stats');
+  
+  // Read initial tab from URL if provided
+  const urlTab = searchParams.get('tab') as TabType | null;
+  const [activeTab, setActiveTab] = useState<TabType>(urlTab || 'stats');
   
   // Stats tab state
   const [stats, setStats] = useState<PlayerStats[]>([]);
@@ -282,6 +293,8 @@ export default function HallOfFamePage() {
                     <tr>
                       <th className="p-3 text-left text-dark-text">Rank</th>
                       <th className="p-3 text-left text-dark-text">Player</th>
+                      <th className="p-3 text-center text-dark-text">Pos</th>
+                      <th className="p-3 text-left text-dark-text">Team</th>
                       <th className="p-3 text-center text-dark-text">GP</th>
                       <th className="p-3 text-center text-dark-text">G</th>
                       <th className="p-3 text-center text-dark-text">A</th>
@@ -294,6 +307,7 @@ export default function HallOfFamePage() {
                     <tr>
                       <th className="p-3 text-left text-dark-text">Rank</th>
                       <th className="p-3 text-left text-dark-text">Player</th>
+                      <th className="p-3 text-left text-dark-text">Team</th>
                       <th className="p-3 text-center text-dark-text">GP</th>
                       <th className="p-3 text-center text-dark-text">W</th>
                       <th className="p-3 text-center text-dark-text">SV</th>
@@ -307,7 +321,7 @@ export default function HallOfFamePage() {
                 <tbody>
                   {sortedStats.length === 0 ? (
                     <tr>
-                      <td colSpan={viewMode === 'skaters' ? 9 : 9} className="p-8 text-center text-dark-text-muted">
+                      <td colSpan={viewMode === 'skaters' ? 11 : 10} className="p-8 text-center text-dark-text-muted">
                         No statistics available yet
                       </td>
                     </tr>
@@ -315,7 +329,11 @@ export default function HallOfFamePage() {
                     sortedStats.map((stat, idx) => (
                       <tr key={stat.player_id} className="border-b border-dark-border hover:bg-dark-surface">
                         <td className="p-3 font-bold text-dark-text">{idx + 1}</td>
-                        <td className="p-3 font-medium text-dark-text">{stat.player_name}</td>
+                        <td className={`p-3 font-medium ${getNameColorClass(stat.player_overall) || 'text-dark-text'}`}>{stat.player_name}</td>
+                        {viewMode === 'skaters' && (
+                          <td className="p-3 text-center text-dark-text-muted">{stat.position}</td>
+                        )}
+                        <td className="p-3 text-dark-text">{(stat as any).team_name || '-'}</td>
                         {viewMode === 'skaters' ? (
                           <>
                             <td className="p-3 text-center text-dark-text">{stat.games_played}</td>

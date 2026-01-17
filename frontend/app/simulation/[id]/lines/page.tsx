@@ -21,6 +21,14 @@ interface Player {
   overall?: number;
 }
 
+// Helper function to get name color class based on rating (gold for 100+, silver for 95-100)
+const getNameColorClass = (rating: number | undefined): string => {
+  if (rating === undefined || rating === null) return '';
+  if (rating > 100) return 'text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.6)]'; // Gold with glow
+  if (rating >= 95) return 'text-slate-300 drop-shadow-[0_0_3px_rgba(203,213,225,0.5)]'; // Silver with glow
+  return ''; // Default - no special styling
+};
+
 export default function LinesPage() {
   const params = useParams();
   const simulationId = params.id;
@@ -390,7 +398,7 @@ export default function LinesPage() {
               <div>
                 <div className="font-bold mb-2 text-dark-text">Coach</div>
                 <div className="text-dark-text-muted">
-                  {coach.name} <span className="text-dark-text">(Rating: {coach.rating})</span>
+                  <span className={getNameColorClass(coach.rating)}>{coach.name}</span> <span className="text-orange-400">(Rating: {coach.rating})</span>
                 </div>
               </div>
             ) : (

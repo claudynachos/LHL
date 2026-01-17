@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/lib/api';
@@ -21,10 +21,82 @@ export default function SimulationPage() {
     total_games: number;
     percentage: number;
   } | null>(null);
+  
+  // Season complete animation state
+  const [showSeasonComplete, setShowSeasonComplete] = useState(false);
+  const [cupWinnerName, setCupWinnerName] = useState('');
+  const [animationTimer, setAnimationTimer] = useState(10);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Check for season complete flag on mount
   useEffect(() => {
     loadSimulation();
+    
+    // Check if coming from playoffs completion
+    const seasonComplete = sessionStorage.getItem('seasonComplete');
+    const cupWinner = sessionStorage.getItem('cupWinner');
+    
+    if (seasonComplete === 'true') {
+      // Clear the flags immediately
+      sessionStorage.removeItem('seasonComplete');
+      sessionStorage.removeItem('cupWinner');
+      
+      // Trigger the animation
+      setCupWinnerName(cupWinner || '');
+      setAnimationTimer(10);
+      setShowSeasonComplete(true);
+    }
   }, []);
+  
+  // Handle countdown timer when animation is shown
+  useEffect(() => {
+    if (!showSeasonComplete) return;
+    
+    // Play audio
+    const audio = new Audio('/HockeyNightinCanada.mp3');
+    audio.volume = 1;
+    audio.play().catch(error => {
+      console.error('Failed to play audio:', error);
+    });
+    audioRef.current = audio;
+    
+    // Start countdown
+    let countdown = 10;
+    const timerId = setInterval(() => {
+      countdown -= 1;
+      setAnimationTimer(countdown);
+      if (countdown <= 0) {
+        clearInterval(timerId);
+        setShowSeasonComplete(false);
+      }
+    }, 1000);
+    animationTimerRef.current = timerId;
+    
+    // Cleanup
+    return () => {
+      if (animationTimerRef.current) {
+        clearInterval(animationTimerRef.current);
+        animationTimerRef.current = null;
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, [showSeasonComplete]);
+  
+  const dismissSeasonComplete = () => {
+    if (animationTimerRef.current) {
+      clearInterval(animationTimerRef.current);
+      animationTimerRef.current = null;
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    setShowSeasonComplete(false);
+  };
 
   const loadSimulation = async () => {
     try {
@@ -144,6 +216,41 @@ export default function SimulationPage() {
 
   return (
     <DashboardLayout>
+      {/* Season Complete Animation */}
+      {showSeasonComplete && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+          <div className="text-center animate-fade-in max-w-lg mx-4">
+            <div className="text-6xl mb-6">🏒</div>
+            <h1 className="text-4xl font-bold text-primary-500 mb-4">
+              SEASON COMPLETE
+            </h1>
+            {cupWinnerName && (
+              <p className="text-xl text-white mb-4">
+                {cupWinnerName} are your Stanley Cup Champions!
+              </p>
+            )}
+            <p className="text-lg text-dark-text-muted mb-6">
+              A new season is about to begin.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+              <Link
+                href={`/simulation/${simulationId}/hall-of-fame?tab=trophies`}
+                onClick={dismissSeasonComplete}
+                className="btn btn-primary px-6 py-3"
+              >
+                View Trophy Winners
+              </Link>
+              <button
+                onClick={dismissSeasonComplete}
+                className="btn btn-secondary px-6 py-3"
+              >
+                Continue ({animationTimer}s)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <div className="max-w-7xl mx-auto">
         {/* Welcome Section */}
         <div className="mb-8">

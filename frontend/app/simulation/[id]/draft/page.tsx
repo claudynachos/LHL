@@ -10,6 +10,14 @@ import { useModal } from '@/app/components/ModalContext';
 const USER_PICK_TIME = 120; // 2 minutes in seconds
 const AI_PICK_TIME = 20; // 20 seconds
 
+// Helper function to get name color class based on rating (gold for 100+, silver for 95-100)
+const getNameColorClass = (rating: number | undefined): string => {
+  if (rating === undefined || rating === null) return '';
+  if (rating > 100) return 'text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.6)]'; // Gold with glow
+  if (rating >= 95) return 'text-slate-300 drop-shadow-[0_0_3px_rgba(203,213,225,0.5)]'; // Silver with glow
+  return ''; // Default - no special styling
+};
+
 export default function DraftPage() {
   const router = useRouter();
   const params = useParams();
@@ -618,7 +626,8 @@ export default function DraftPage() {
       if (response.data.error) {
         console.error('AI pick error:', response.data.error);
         await showAlert(`AI pick failed: ${response.data.error}`);
-        // Still refresh to see current state
+        // Reset flag before updating pick so timer can start
+        isProcessingAIPickRef.current = false;
         await updateCurrentPick();
         await loadDraftHistory();
         return;
@@ -640,6 +649,9 @@ export default function DraftPage() {
         // Small delay to ensure backend transaction is fully committed
         await new Promise(resolve => setTimeout(resolve, 100));
         
+        // Reset flag BEFORE updating pick so the useEffect can trigger startTimer
+        isProcessingAIPickRef.current = false;
+        
         // Reload user roster if it became our turn
         if (response.data.next_pick?.is_user_team && userTeam) {
           await loadUserRoster(userTeam.id);
@@ -656,11 +668,12 @@ export default function DraftPage() {
       console.error('Failed to sim next AI pick', error);
       const errorMsg = error.response?.data?.error || error.message || 'Failed to simulate AI pick';
       await showAlert(`Error: ${errorMsg}`);
-      // Refresh to see current state
+      // Reset flag before updating pick so timer can start
+      isProcessingAIPickRef.current = false;
       await updateCurrentPick();
       await loadDraftHistory();
     } finally {
-      // Always reset the flag, even if there was an error
+      // Ensure flag is reset (may already be reset above, but this is a safety net)
       isProcessingAIPickRef.current = false;
     }
   };
@@ -866,36 +879,26 @@ export default function DraftPage() {
                 </p>
               </div>
 
-              {/* Recent Picks - Horizontal Scrollable */}
+              {/* Recent Picks - Scrollable */}
               {draftHistory.length > 0 && (
                 <div className="mb-4">
-                  <h4 className="font-semibold mb-2 text-dark-text">Recent Picks</h4>
+                  <h4 className="font-semibold mb-2 text-dark-text">Recent Picks ({draftHistory.length} total)</h4>
                   <div 
-                    className="overflow-x-auto overflow-y-hidden pb-2" 
+                    className="overflow-y-auto overflow-x-hidden pr-2" 
                     style={{ 
-                      // Constrain to exactly 5 cards width: 5 * 200px + 4 * 12px (gap) = 1048px
-                      // Use max-width to prevent expansion, but allow smaller on mobile
-                      width: '100%',
-                      maxWidth: '1048px',
-                      maxHeight: '120px',
+                      maxHeight: '200px',
                       boxSizing: 'border-box'
                     }}
                   >
-                    <div className="flex gap-3" style={{ width: 'max-content' }}>
-                      {draftHistory.slice(-5).reverse().map((pick: any) => (
+                    <div className="grid grid-cols-5 gap-3">
+                      {[...draftHistory].reverse().map((pick: any) => (
                         <div
                           key={pick.pick}
-                          className={`flex-shrink-0 p-3 rounded-lg border ${
+                          className={`p-3 rounded-lg border ${
                             pick.is_user_team
                               ? 'bg-primary-500/10 border-primary-500/30'
                               : 'bg-dark-surface border-dark-border'
                           }`}
-                          style={{ 
-                            width: '200px', 
-                            minWidth: '200px', 
-                            maxWidth: '200px',
-                            flexShrink: 0
-                          }}
                         >
                           <div className="flex justify-between items-start mb-2">
                             <span className="text-xs text-dark-text-muted">
@@ -907,14 +910,14 @@ export default function DraftPage() {
                           </div>
                           {pick.player ? (
                             <div className="text-sm text-dark-text">
-                              <div className="font-medium">{pick.player.name}</div>
+                              <div className={`font-medium truncate ${getNameColorClass(pick.player.overall)}`}>{pick.player.name}</div>
                               <div className="text-xs text-dark-text-muted">
                                 {pick.player.position} - <span className="text-orange-400 font-semibold">OVR: {pick.player.overall?.toFixed(1)}</span>
                               </div>
                             </div>
                           ) : pick.coach ? (
                             <div className="text-sm text-dark-text">
-                              <div className="font-medium">{pick.coach.name}</div>
+                              <div className={`font-medium truncate ${getNameColorClass(pick.coach.rating)}`}>{pick.coach.name}</div>
                               <div className="text-xs text-dark-text-muted">
                                 Coach - <span className="text-orange-400 font-semibold">Rating: {pick.coach.rating}</span>
                               </div>
@@ -1036,11 +1039,11 @@ export default function DraftPage() {
                       <tbody>
                         {filteredSkaters.map(player => (
                           <tr key={player.id} className="border-b border-dark-border hover:bg-dark-surface">
-                            <td className="p-2 font-medium text-dark-text text-xs">{player.name}</td>
+                            <td className={`p-2 font-medium text-xs ${getNameColorClass(player.overall) || 'text-dark-text'}`}>{player.name}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.position}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.player_type || '-'}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.era || '-'}</td>
-                            <td className="p-2 text-center font-bold text-orange-400 text-xs">{player.overall?.toFixed(1) || 'N/A'}</td>
+                            <td className="p-2 text-center font-bold text-xs text-orange-400">{player.overall?.toFixed(1) || 'N/A'}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.off}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.def}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.phys}</td>
@@ -1081,7 +1084,7 @@ export default function DraftPage() {
                       <tbody>
                         {filteredGoalies.map(player => (
                           <tr key={player.id} className="border-b border-dark-border hover:bg-dark-surface">
-                            <td className="p-2 font-medium text-dark-text text-xs">{player.name}</td>
+                            <td className={`p-2 font-medium text-xs ${getNameColorClass(player.overall) || 'text-dark-text'}`}>{player.name}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.era || '-'}</td>
                             <td className="p-2 text-center font-bold text-orange-400 text-xs">{player.overall?.toFixed(1) || 'N/A'}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{player.const}</td>
@@ -1121,10 +1124,10 @@ export default function DraftPage() {
                       <tbody>
                         {filteredCoaches.map(coach => (
                           <tr key={coach.id} className="border-b border-dark-border hover:bg-dark-surface">
-                            <td className="p-2 font-medium text-dark-text text-xs">{coach.name}</td>
+                            <td className={`p-2 font-medium text-xs ${getNameColorClass(coach.rating) || 'text-dark-text'}`}>{coach.name}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{coach.coach_type || '-'}</td>
                             <td className="p-2 text-center text-dark-text text-xs">{coach.era || '-'}</td>
-                            <td className="p-2 text-center font-bold text-orange-400 text-xs">{coach.rating}</td>
+                            <td className="p-2 text-center font-bold text-xs text-orange-400">{coach.rating}</td>
                             <td className="p-2">
                               {currentPick?.is_user_team && (
                                 <button
@@ -1192,21 +1195,21 @@ export default function DraftPage() {
                           <div className="space-y-1">
                             {lw ? (
                               <div className="text-dark-text-muted">
-                                LW - {lw.name} <span className="text-dark-text">(OVR: {lw.overall?.toFixed(1)})</span>
+                                LW - <span className={getNameColorClass(lw.overall)}>{lw.name}</span> <span className="text-orange-400">(OVR: {lw.overall?.toFixed(1)})</span>
                               </div>
                             ) : (
                               <div className="text-dark-text-muted/50">LW - Empty</div>
                             )}
                             {c ? (
                               <div className="text-dark-text-muted">
-                                C - {c.name} <span className="text-dark-text">(OVR: {c.overall?.toFixed(1)})</span>
+                                C - <span className={getNameColorClass(c.overall)}>{c.name}</span> <span className="text-orange-400">(OVR: {c.overall?.toFixed(1)})</span>
                               </div>
                             ) : (
                               <div className="text-dark-text-muted/50">C - Empty</div>
                             )}
                             {rw ? (
                               <div className="text-dark-text-muted">
-                                RW - {rw.name} <span className="text-dark-text">(OVR: {rw.overall?.toFixed(1)})</span>
+                                RW - <span className={getNameColorClass(rw.overall)}>{rw.name}</span> <span className="text-orange-400">(OVR: {rw.overall?.toFixed(1)})</span>
                               </div>
                             ) : (
                               <div className="text-dark-text-muted/50">RW - Empty</div>
@@ -1248,14 +1251,14 @@ export default function DraftPage() {
                           <div className="space-y-1">
                             {ld ? (
                               <div className="text-dark-text-muted">
-                                LD - {ld.name} <span className="text-dark-text">(OVR: {ld.overall?.toFixed(1)})</span>
+                                LD - <span className={getNameColorClass(ld.overall)}>{ld.name}</span> <span className="text-orange-400">(OVR: {ld.overall?.toFixed(1)})</span>
                               </div>
                             ) : (
                               <div className="text-dark-text-muted/50">LD - Empty</div>
                             )}
                             {rd ? (
                               <div className="text-dark-text-muted">
-                                RD - {rd.name} <span className="text-dark-text">(OVR: {rd.overall?.toFixed(1)})</span>
+                                RD - <span className={getNameColorClass(rd.overall)}>{rd.name}</span> <span className="text-orange-400">(OVR: {rd.overall?.toFixed(1)})</span>
                               </div>
                             ) : (
                               <div className="text-dark-text-muted/50">RD - Empty</div>
@@ -1294,7 +1297,7 @@ export default function DraftPage() {
                           <div key={p.id} className="mb-2 p-2 bg-dark-surface rounded text-sm">
                             <div className="font-medium mb-1 text-dark-text">G{idx + 1}</div>
                             <div className="text-dark-text-muted">
-                              {p.name} <span className="text-dark-text">(OVR: {p.overall?.toFixed(1)})</span>
+                              <span className={getNameColorClass(p.overall)}>{p.name}</span> <span className="text-orange-400">(OVR: {p.overall?.toFixed(1)})</span>
                             </div>
                           </div>
                         ))}
@@ -1312,7 +1315,7 @@ export default function DraftPage() {
                     <div className="mb-2 p-2 bg-dark-surface rounded text-sm">
                       <div className="font-medium mb-1 text-dark-text">Coach</div>
                       <div className="text-dark-text-muted">
-                        {userCoach.name} <span className="text-dark-text">(Rating: {userCoach.rating})</span>
+                        <span className={getNameColorClass(userCoach.rating)}>{userCoach.name}</span> <span className="text-orange-400">(Rating: {userCoach.rating})</span>
                       </div>
                     </div>
                   ) : (
@@ -1322,25 +1325,43 @@ export default function DraftPage() {
               </div>
             )}
 
-            {/* Draft Board */}
+            {/* Draft Board - Use lotteryOrder for correct pick order */}
             <div className="card">
-              <h3 className="font-bold mb-2 text-dark-text">Draft Order</h3>
-              <div className="space-y-2 max-h-64 overflow-auto">
-                {teams.map(team => (
-                  <div 
-                    key={team.id} 
-                    className={`p-2 rounded text-sm ${
-                      team.user_controlled 
-                        ? 'bg-primary-500/20 font-bold border border-primary-500/30 text-primary-400' 
-                        : currentPick?.team_id === team.id
-                        ? 'bg-yellow-500/20 border border-yellow-500/30 text-dark-text'
-                        : 'bg-dark-surface border border-dark-border text-dark-text'
-                    }`}
-                  >
-                    {formatTeamName(`${team.city} ${team.name}`)}
-                    {team.user_controlled && ' (You)'}
-                  </div>
-                ))}
+              <h3 className="font-bold mb-3 text-dark-text">
+                Draft Order {currentPick && <span className="text-dark-text-muted font-normal text-sm ml-2">Round {currentPick.round}</span>}
+              </h3>
+              <div className="space-y-2 max-h-80 overflow-auto">
+                {lotteryOrder.map((lotteryTeam, idx) => {
+                  const team = teams.find(t => t.id === lotteryTeam.team_id);
+                  const isCurrentlyPicking = currentPick?.team_id === lotteryTeam.team_id;
+                  const isUserTeam = team?.user_controlled;
+                  
+                  return (
+                    <div 
+                      key={lotteryTeam.team_id} 
+                      className={`p-3 rounded text-sm flex items-center justify-between ${
+                        isCurrentlyPicking
+                          ? 'bg-yellow-500/20 border-2 border-yellow-500 text-dark-text animate-pulse'
+                          : isUserTeam
+                          ? 'bg-primary-500/20 border border-primary-500/30 text-primary-400' 
+                          : 'bg-dark-surface border border-dark-border text-dark-text'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-dark-text-muted text-xs w-5">{idx + 1}.</span>
+                        <span className={isUserTeam ? 'font-bold' : ''}>
+                          {formatTeamName(lotteryTeam.team_name)}
+                        </span>
+                        {isUserTeam && <span className="text-xs text-primary-400">(You)</span>}
+                      </div>
+                      {isCurrentlyPicking && (
+                        <span className="text-xs font-bold text-yellow-400 uppercase tracking-wide">
+                          On the Clock
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

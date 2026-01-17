@@ -281,9 +281,48 @@ def simulate_playoff_game(simulation_id):
     if errors:
         return jsonify({'errors': errors}), 400
 
+    # Refresh simulation state
+    from extensions import db
+    db.session.refresh(simulation)
+    
+    # Check if playoffs are complete - find Stanley Cup winner
+    # NOTE: sim_game may have called _check_and_advance_to_next_season internally
+    cup_winner = None
+    playoffs_complete = False
+    
+    # Determine which season to check - if we just advanced, check the previous season
+    check_season = simulation.current_season
+    if simulation.status == 'season':
+        check_season = simulation.current_season - 1
+    
+    # Find completed Stanley Cup Final
+    from models.team import Team
+    all_complete_series = PlayoffSeries.query.filter_by(
+        simulation_id=simulation_id,
+        season=check_season,
+        status='complete'
+    ).order_by(PlayoffSeries.round.desc()).all()
+    
+    for series_item in all_complete_series:
+        higher_team = Team.query.get(series_item.higher_seed_team_id)
+        lower_team = Team.query.get(series_item.lower_seed_team_id)
+        if higher_team and lower_team and higher_team.conference != lower_team.conference:
+            if series_item.winner_team_id:
+                winner_team = Team.query.get(series_item.winner_team_id)
+                if winner_team:
+                    playoffs_complete = True
+                    cup_winner = {
+                        'id': winner_team.id,
+                        'city': winner_team.city,
+                        'name': winner_team.name
+                    }
+            break
+
     return jsonify({
         'message': f'Simulated {len(results)} games',
-        'games_simulated': len(results)
+        'games_simulated': len(results),
+        'playoffs_complete': playoffs_complete,
+        'cup_winner': cup_winner
     }), 200
 
 @bp.route('/<int:simulation_id>/playoffs/simulate-round', methods=['POST'])
@@ -356,18 +395,53 @@ def simulate_playoff_round(simulation_id):
     # Refresh simulation from DB to get latest status
     db.session.refresh(simulation)
     
-    # Check if playoffs are complete and advance to next season if needed
-    from services.game_service import _check_and_advance_to_next_season
-    _check_and_advance_to_next_season(simulation_id)
+    # Check if playoffs are complete - find Stanley Cup winner
+    # NOTE: By this point, _check_and_advance_to_next_season may have already been called
+    # inside sim_game when a series completed. So we need to check the PREVIOUS season
+    # (current_season - 1 if status is now 'season', otherwise current_season)
+    cup_winner = None
+    playoffs_complete = False
     
-    # Refresh again after potential status change
-    db.session.refresh(simulation)
+    # Determine which season to check - if we just advanced, check the previous season
+    check_season = simulation.current_season
+    if simulation.status == 'season':
+        # We may have just advanced, check previous season
+        check_season = simulation.current_season - 1
+    
+    # Find completed Stanley Cup Final (series with teams from different conferences)
+    from models.team import Team
+    all_complete_series = PlayoffSeries.query.filter_by(
+        simulation_id=simulation_id,
+        season=check_season,
+        status='complete'
+    ).order_by(PlayoffSeries.round.desc()).all()
+    
+    for series in all_complete_series:
+        higher_team = Team.query.get(series.higher_seed_team_id)
+        lower_team = Team.query.get(series.lower_seed_team_id)
+        if higher_team and lower_team and higher_team.conference != lower_team.conference:
+            # This is the Stanley Cup Final
+            if series.winner_team_id:
+                winner_team = Team.query.get(series.winner_team_id)
+                if winner_team:
+                    playoffs_complete = True
+                    cup_winner = {
+                        'id': winner_team.id,
+                        'city': winner_team.city,
+                        'name': winner_team.name
+                    }
+            break
+    
+    # _check_and_advance_to_next_season is already called inside sim_game when series complete
+    # No need to call it again here
 
     return jsonify({
         'message': f'Simulated round {current_round}',
         'round': current_round,
         'games_simulated': total_games,
-        'simulation_status': simulation.status
+        'simulation_status': simulation.status,
+        'playoffs_complete': playoffs_complete,
+        'cup_winner': cup_winner
     }), 200
 
 @bp.route('/<int:simulation_id>/simulate-season', methods=['POST'])

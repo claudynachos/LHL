@@ -92,6 +92,7 @@ export interface PlayoffBracket {
 export interface PlayerStats {
   player_id: number;
   player_name: string;
+  player_overall?: number;
   team_name?: string;
   position: string;
   games_played: number;

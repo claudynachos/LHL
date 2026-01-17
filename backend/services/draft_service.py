@@ -602,85 +602,56 @@ def get_draft_history(simulation_id):
     current_pick = (simulation.draft_pick or 1) - 1
     
     # Get all rosters ordered by Roster.id (creation order = pick order globally)
-    # IMPORTANT: Roster entries are created in pick order globally, so Roster.id order = global pick order
     all_rosters_list = Roster.query.filter_by(simulation_id=simulation_id).order_by(Roster.id).all()
     print(f"Draft history: Found {len(all_rosters_list)} total roster entries for simulation {simulation_id}")
     
-    # Create a mapping: pick_index -> roster_entry for player picks
-    # We'll match roster entries to picks in the order they were created
-    global_roster_index = 0  # Track position in global roster list
-    
-    # Group rosters by team for easy lookup
-    all_rosters = {}
-    for roster_entry in all_rosters_list:
-        if roster_entry.team_id not in all_rosters:
-            all_rosters[roster_entry.team_id] = []
-        all_rosters[roster_entry.team_id].append({
-            'player_id': roster_entry.player_id,
-            'roster_id': roster_entry.id,
-            'global_index': global_roster_index  # Track global position
-        })
-        global_roster_index += 1
-        print(f"  - Team {roster_entry.team_id}: Player {roster_entry.player_id} (Roster ID: {roster_entry.id}, Global Index: {global_roster_index-1})")
-    
-    # Get all teams with their coaches - refresh to get latest
+    # Get all teams with their coaches
     all_teams = Team.query.filter_by(simulation_id=simulation_id).all()
     team_coaches = {team.id: team.coach_id for team in all_teams if team.coach_id}
     
-    history = []
-    team_coach_pick_index = {}  # Track which pick index was the coach pick for each team
+    # New approach: Use global roster entry order to match picks
+    # Roster entries are created in the exact order picks were made (for player picks)
+    # We iterate through picks and consume roster entries in global order
     
-    # First pass: identify which pick was the coach pick for each team
-    # Strategy: For each team, count total picks and total roster entries.
-    # The difference is the number of coach picks (should be 1).
-    # Then match roster entries to picks sequentially - the pick that doesn't get a roster entry is the coach.
+    # Build a global queue of roster entries with their team info
+    global_roster_queue = []
+    for roster_entry in all_rosters_list:
+        player = Player.query.get(roster_entry.player_id)
+        global_roster_queue.append({
+            'team_id': roster_entry.team_id,
+            'player_id': roster_entry.player_id,
+            'roster_id': roster_entry.id,
+            'player': player
+        })
     
-    # Count picks per team
-    team_pick_counts = {}
+    # Track which teams have used their coach pick
+    teams_with_coach_pick_used = set()
+    
+    # Track per-team: how many roster entries we've consumed
+    team_roster_consumed = {team.id: 0 for team in all_teams}
+    
+    # Count how many roster entries each team should have based on picks made
+    team_expected_rosters = {team.id: 0 for team in all_teams}
     for pick_index in range(current_pick):
         if pick_index >= len(order):
             break
         round_num, team_id = order[pick_index]
-        if team_id not in team_pick_counts:
-            team_pick_counts[team_id] = 0
-        team_pick_counts[team_id] += 1
+        team_expected_rosters[team_id] = team_expected_rosters.get(team_id, 0) + 1
     
-    # For each team with a coach, find which pick was the coach
-    # Strategy: Match roster entries to picks in order. The pick without a roster entry is the coach.
-    for team_id in team_coaches:
-        if not team_coaches[team_id]:
-            continue
-        
-        team_roster_list = all_rosters.get(team_id, [])
-        total_picks = team_pick_counts.get(team_id, 0)
-        total_rosters = len(team_roster_list)
-        
-        # If team has more picks than roster entries, one of them was a coach
-        if total_picks > total_rosters:
-            # Find the first pick for this team that doesn't get a roster entry
-            roster_index = 0
-            for pick_index in range(current_pick):
-                if pick_index >= len(order):
-                    break
-                round_num, pick_team_id = order[pick_index]
-                if pick_team_id != team_id:
-                    continue  # Not this team's pick
-                
-                # Check if this pick should have a roster entry
-                if roster_index < len(team_roster_list):
-                    # This pick has a roster entry - it was a player pick
-                    roster_index += 1
-                else:
-                    # No roster entry available - this is the coach pick
-                    if team_id not in team_coach_pick_index:
-                        team_coach_pick_index[team_id] = pick_index
-                        print(f"Draft history: Identified pick {pick_index + 1} (R{round_num}) as coach pick for team {team_id} (matched {roster_index} roster entries out of {total_picks} picks)")
-                    break  # Found coach pick, done
+    # Subtract 1 for teams that have a coach (they have 1 fewer roster entry than picks)
+    for team_id, coach_id in team_coaches.items():
+        if coach_id:
+            team_expected_rosters[team_id] = max(0, team_expected_rosters.get(team_id, 0) - 1)
     
-    # Second pass: build the actual history
-    # Use per-team roster indices to avoid skipping entries for other teams.
-    team_roster_indices = {team_id: 0 for team_id in all_rosters.keys()}
-
+    # Group roster entries by team for counting
+    team_actual_rosters = {}
+    for entry in global_roster_queue:
+        tid = entry['team_id']
+        team_actual_rosters[tid] = team_actual_rosters.get(tid, 0) + 1
+    
+    history = []
+    global_roster_idx = 0
+    
     for pick_index in range(current_pick):
         if pick_index >= len(order):
             break
@@ -688,7 +659,6 @@ def get_draft_history(simulation_id):
         round_num, team_id = order[pick_index]
         team = Team.query.get(team_id)
         
-        # Get what was picked
         pick_data = {
             'round': round_num,
             'pick': pick_index + 1,
@@ -697,32 +667,55 @@ def get_draft_history(simulation_id):
             'is_user_team': team.user_controlled
         }
         
-        # Check if this pick was a coach (from first pass identification)
-        is_coach_pick = (team_id in team_coaches and team_coaches[team_id] and 
-                        team_id in team_coach_pick_index and 
-                        team_coach_pick_index[team_id] == pick_index)
+        # Determine if this pick was a coach or player
+        # Strategy: Look at the next roster entry in global order
+        # If it belongs to this team, it's a player pick
+        # If not (or no more entries for this team), check if this team has a coach they haven't used yet
+        
+        team_has_coach = team_id in team_coaches and team_coaches[team_id]
+        team_coach_used = team_id in teams_with_coach_pick_used
+        team_remaining_rosters = team_actual_rosters.get(team_id, 0) - team_roster_consumed.get(team_id, 0)
+        
+        # Check if this pick should be a coach pick
+        # A pick is a coach pick if:
+        # 1. The team has a coach assigned AND hasn't used their coach pick yet
+        # 2. AND either there are no more roster entries for this team, 
+        #    OR the next global roster entry is for a different team
+        
+        is_coach_pick = False
+        if team_has_coach and not team_coach_used:
+            if team_remaining_rosters == 0:
+                # No more roster entries for this team - must be coach
+                is_coach_pick = True
+            elif global_roster_idx < len(global_roster_queue):
+                next_entry = global_roster_queue[global_roster_idx]
+                if next_entry['team_id'] != team_id:
+                    # Next roster entry is for a different team - this pick was a coach
+                    is_coach_pick = True
         
         if is_coach_pick:
             coach = Coach.query.get(team_coaches[team_id])
             if coach:
                 pick_data['coach'] = coach.to_dict()
-                print(f"Draft history: Pick {pick_index + 1} (R{round_num}) - Team {team_id} ({team.city} {team.name}) picked coach {coach.name} (Rating: {coach.rating})")
+                teams_with_coach_pick_used.add(team_id)
+                print(f"Draft history: Pick {pick_index + 1} (R{round_num}) - Team {team_id} ({team.city} {team.name}) picked coach {coach.name}")
         else:
-            # This should be a player pick - use next roster entry for this team
-            team_roster_list = all_rosters.get(team_id, [])
-            roster_index = team_roster_indices.get(team_id, 0)
-            if roster_index < len(team_roster_list):
-                roster_entry = team_roster_list[roster_index]
-                team_roster_indices[team_id] = roster_index + 1
-                player = Player.query.get(roster_entry['player_id'])
-                if player:
-                    pick_data['player'] = player.to_dict()
-                    print(f"Draft history: Pick {pick_index + 1} (R{round_num}) - Team {team_id} ({team.city} {team.name}) picked player {player.name} ({player.position}) [Roster ID: {roster_entry['roster_id']}]")
+            # Player pick - consume the next roster entry in global order
+            if global_roster_idx < len(global_roster_queue):
+                entry = global_roster_queue[global_roster_idx]
+                # Sanity check: the entry should be for this team
+                if entry['team_id'] == team_id:
+                    if entry['player']:
+                        pick_data['player'] = entry['player'].to_dict()
+                        print(f"Draft history: Pick {pick_index + 1} (R{round_num}) - Team {team_id} ({team.city} {team.name}) picked player {entry['player'].name}")
+                    global_roster_idx += 1
+                    team_roster_consumed[team_id] = team_roster_consumed.get(team_id, 0) + 1
                 else:
-                    print(f"Draft history: WARNING - Pick {pick_index + 1} (R{round_num}) - Team {team_id} has roster entry (ID: {roster_entry['roster_id']}) for player_id {roster_entry['player_id']} but player not found")
+                    # Mismatch - this shouldn't happen, log warning
+                    print(f"Draft history: WARNING - Pick {pick_index + 1} (R{round_num}) - Team {team_id} expected but roster entry is for team {entry['team_id']}")
+                    # Skip this and try to continue
             else:
-                # No roster entry for this pick
-                print(f"Draft history: WARNING - Pick {pick_index + 1} (R{round_num}) - Team {team_id} ({team.city} {team.name}) has no roster entry")
+                print(f"Draft history: WARNING - Pick {pick_index + 1} (R{round_num}) - No roster entry available for team {team_id}")
         
         history.append(pick_data)
     
@@ -777,7 +770,7 @@ def sim_to_next_user_pick(simulation_id):
             # Draft complete
             from models.simulation import Simulation
             from services.lines_service import auto_populate_all_teams
-            from services.game_service import generate_season_schedule
+            from services.game_service import generate_season_schedule, initialize_standings
             sim = Simulation.query.get(simulation_id)
             sim.status = 'season'
             db.session.commit()
@@ -787,6 +780,9 @@ def sim_to_next_user_pick(simulation_id):
             
             # Generate season schedule when draft completes
             generate_season_schedule(simulation_id, sim.current_season)
+            
+            # Initialize standings with 0s so they're visible before games are played
+            initialize_standings(simulation_id, sim.current_season)
             
             return {'draft_complete': True}
         
@@ -811,12 +807,17 @@ def sim_next_ai_pick(simulation_id):
         # Draft complete
         from models.simulation import Simulation
         from services.lines_service import auto_populate_all_teams
+        from services.game_service import generate_season_schedule, initialize_standings
         sim = Simulation.query.get(simulation_id)
         sim.status = 'season'
         db.session.commit()
         
         # Auto-populate lines for all teams
         auto_populate_all_teams(simulation_id)
+        
+        # Generate season schedule and initialize standings
+        generate_season_schedule(simulation_id, sim.current_season)
+        initialize_standings(simulation_id, sim.current_season)
         
         return {'draft_complete': True}
     
@@ -837,12 +838,17 @@ def sim_next_ai_pick(simulation_id):
         if not result.get('next_pick'):
             from models.simulation import Simulation
             from services.lines_service import auto_populate_all_teams
+            from services.game_service import generate_season_schedule, initialize_standings
             sim = Simulation.query.get(simulation_id)
             sim.status = 'season'
             db.session.commit()
             
             # Auto-populate lines for all teams
             auto_populate_all_teams(simulation_id)
+            
+            # Generate season schedule and initialize standings
+            generate_season_schedule(simulation_id, sim.current_season)
+            initialize_standings(simulation_id, sim.current_season)
             
             result['draft_complete'] = True
         
@@ -866,7 +872,7 @@ def sim_all_draft(simulation_id):
             # Draft complete
             from models.simulation import Simulation
             from services.lines_service import auto_populate_all_teams
-            from services.game_service import generate_season_schedule
+            from services.game_service import generate_season_schedule, initialize_standings
             sim = Simulation.query.get(simulation_id)
             sim.status = 'season'
             db.session.commit()
@@ -876,6 +882,9 @@ def sim_all_draft(simulation_id):
             
             # Generate season schedule when draft completes
             generate_season_schedule(simulation_id, sim.current_season)
+            
+            # Initialize standings with 0s so they're visible before games are played
+            initialize_standings(simulation_id, sim.current_season)
             
             return {'draft_complete': True}
         

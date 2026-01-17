@@ -47,7 +47,9 @@ CREATE TABLE players (
     phys INTEGER NOT NULL,  -- Physicality (0-100)
     lead INTEGER NOT NULL,  -- Leadership (0-100)
     const INTEGER NOT NULL,  -- Consistency (0-100)
-    is_goalie BOOLEAN DEFAULT FALSE
+    is_goalie BOOLEAN DEFAULT FALSE,
+    player_type VARCHAR(50),  -- Player classification type
+    era VARCHAR(50)  -- Era the player represents
 );
 
 CREATE INDEX idx_players_position ON players(position);
@@ -59,7 +61,9 @@ CREATE INDEX idx_players_is_goalie ON players(is_goalie);
 CREATE TABLE coaches (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    rating INTEGER NOT NULL  -- Overall coaching rating (0-100)
+    rating INTEGER NOT NULL,  -- Overall coaching rating (0-100)
+    coach_type VARCHAR(50),  -- Coach classification type
+    era VARCHAR(50)  -- Era the coach represents
 );
 
 -- ============================================
@@ -125,7 +129,8 @@ CREATE TABLE games (
     away_score INTEGER,
     is_playoff BOOLEAN DEFAULT FALSE,
     playoff_round INTEGER,  -- 1-4
-    simulated BOOLEAN DEFAULT FALSE
+    simulated BOOLEAN DEFAULT FALSE,
+    series_id INTEGER REFERENCES playoff_series(id)  -- Reference to playoff series
 );
 
 CREATE INDEX idx_games_simulation_id ON games(simulation_id);
@@ -183,6 +188,49 @@ CREATE INDEX idx_standings_team_id ON standings(team_id);
 CREATE INDEX idx_standings_simulation_id ON standings(simulation_id);
 CREATE INDEX idx_standings_season ON standings(season);
 CREATE UNIQUE INDEX idx_standings_unique ON standings(team_id, simulation_id, season);
+
+-- ============================================
+-- PLAYOFF SERIES TABLE
+-- ============================================
+CREATE TABLE playoff_series (
+    id SERIAL PRIMARY KEY,
+    simulation_id INTEGER NOT NULL REFERENCES simulations(id) ON DELETE CASCADE,
+    season INTEGER NOT NULL,
+    round INTEGER NOT NULL,  -- 1-4 (Quarterfinals, Semifinals, Finals, Stanley Cup)
+    higher_seed_team_id INTEGER NOT NULL REFERENCES teams(id),
+    lower_seed_team_id INTEGER NOT NULL REFERENCES teams(id),
+    higher_seed_wins INTEGER DEFAULT 0,
+    lower_seed_wins INTEGER DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'in_progress',  -- in_progress, completed
+    winner_team_id INTEGER REFERENCES teams(id),
+    next_game_number INTEGER DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_playoff_series_simulation_id ON playoff_series(simulation_id);
+CREATE INDEX idx_playoff_series_season ON playoff_series(season);
+CREATE INDEX idx_playoff_series_round ON playoff_series(round);
+CREATE INDEX idx_playoff_series_status ON playoff_series(status);
+
+-- ============================================
+-- TROPHIES TABLE
+-- ============================================
+CREATE TABLE trophies (
+    id SERIAL PRIMARY KEY,
+    simulation_id INTEGER NOT NULL REFERENCES simulations(id) ON DELETE CASCADE,
+    season INTEGER NOT NULL,
+    trophy_name VARCHAR(100) NOT NULL,
+    trophy_type VARCHAR(20) NOT NULL,  -- e.g., art_ross, hart, conn_smythe, stanley_cup
+    player_id INTEGER REFERENCES players(id),  -- For player awards
+    team_id INTEGER REFERENCES teams(id),  -- For team awards
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_trophies_simulation_id ON trophies(simulation_id);
+CREATE INDEX idx_trophies_season ON trophies(season);
+CREATE INDEX idx_trophies_trophy_type ON trophies(trophy_type);
+CREATE INDEX idx_trophies_player_id ON trophies(player_id);
+CREATE INDEX idx_trophies_team_id ON trophies(team_id);
 
 -- ============================================
 -- NOTES
