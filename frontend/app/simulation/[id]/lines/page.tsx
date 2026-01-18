@@ -42,8 +42,18 @@ export default function LinesPage() {
   const [selectedTeamData, setSelectedTeamData] = useState<any>(null);
   const [teamOverall, setTeamOverall] = useState<number | null>(null);
   const [coach, setCoach] = useState<any>(null);
+  const [playStyle, setPlayStyle] = useState<string>('auto');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+
+  const PLAY_STYLES = [
+    { value: 'auto', label: 'Auto (Match Coach)', description: 'Automatically match play style to coach type' },
+    { value: 'trap', label: 'Trap (Devils 2000s)', description: 'Clog neutral zone, force turnovers, protect leads. Best for slow D.' },
+    { value: 'possession', label: 'Possession (Red Wings)', description: 'Cycle puck, short passes, wear them down. Best for skilled skaters.' },
+    { value: 'dump_chase', label: 'Dump & Chase (Flyers)', description: 'Flip deep, battle corners, garbage goals. Best for physical teams.' },
+    { value: 'rush', label: 'Rush/Transition (Oilers 80s)', description: 'Quick outlets, odd-man rushes, end-to-end speed. Best for fast teams.' },
+    { value: 'shoot_crash', label: 'Shoot & Crash (Broad Street)', description: 'High shot volume, net-front presence, dirty goals. Best for aggressive teams.' },
+  ];
 
   useEffect(() => {
     loadSimulation();
@@ -83,6 +93,7 @@ export default function LinesPage() {
       const rosterResponse = await api.get(`/api/teams/${teamId}`);
       setRoster(rosterResponse.data.roster || []);
       setSelectedTeamData(rosterResponse.data.team);
+      setPlayStyle(rosterResponse.data.team?.play_style || 'auto');
 
       // Load coach if team has one
       if (rosterResponse.data.team?.coach_id) {
@@ -114,6 +125,26 @@ export default function LinesPage() {
     } catch (error) {
       console.error('Failed to load team data', error);
     }
+  };
+
+  const updatePlayStyle = async (newStyle: string) => {
+    setPlayStyle(newStyle);
+    try {
+      await api.put(`/api/teams/${selectedTeam}/play-style`, { play_style: newStyle });
+    } catch (error) {
+      console.error('Failed to update play style', error);
+    }
+  };
+
+  const getCoachStyleHint = (): string => {
+    if (!coach?.coach_type) return 'Balanced';
+    const coachType = coach.coach_type.toLowerCase();
+    if (coachType.includes('defensive') || coachType.includes('trap')) return 'Trap';
+    if (coachType.includes('offensive') || coachType.includes('possession')) return 'Possession';
+    if (coachType.includes('physical') || coachType.includes('grind')) return 'Dump & Chase';
+    if (coachType.includes('speed') || coachType.includes('transition')) return 'Rush';
+    if (coachType.includes('aggressive') || coachType.includes('crash')) return 'Shoot & Crash';
+    return 'Possession';
   };
 
   const autoPopulateLines = async (teamId: string) => {
@@ -399,11 +430,55 @@ export default function LinesPage() {
                 <div className="font-bold mb-2 text-dark-text">Coach</div>
                 <div className="text-dark-text-muted">
                   <span className={getNameColorClass(coach.rating)}>{coach.name}</span> <span className="text-orange-400">(Rating: {coach.rating})</span>
+                  {coach.coach_type && <span className="ml-2 text-xs text-dark-text-muted">({coach.coach_type})</span>}
                 </div>
               </div>
             ) : (
               <div className="text-dark-text-muted/50">No coach assigned</div>
             )}
+          </div>
+
+          <h2 className="text-2xl font-bold mb-4 mt-6 text-dark-text">Play Style</h2>
+          <div className="mb-4 p-4 bg-dark-surface rounded-lg border border-dark-border">
+            <div className="mb-3">
+              <label className="text-sm text-dark-text-muted mb-2 block">Team Strategy</label>
+              <select
+                className="input w-full"
+                value={playStyle}
+                onChange={(e) => updatePlayStyle(e.target.value)}
+              >
+                {PLAY_STYLES.map(style => (
+                  <option key={style.value} value={style.value}>
+                    {style.value === 'auto' ? `${style.label} - ${getCoachStyleHint()}` : style.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="text-xs text-dark-text-muted bg-dark-bg/50 p-3 rounded border border-dark-border/50">
+              {PLAY_STYLES.find(s => s.value === playStyle)?.description || ''}
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+              <div className="flex items-center gap-2 text-dark-text-muted">
+                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                <span>Trap: Low scoring, turnovers</span>
+              </div>
+              <div className="flex items-center gap-2 text-dark-text-muted">
+                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                <span>Possession: High-danger chances</span>
+              </div>
+              <div className="flex items-center gap-2 text-dark-text-muted">
+                <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                <span>Dump & Chase: Physical, rebounds</span>
+              </div>
+              <div className="flex items-center gap-2 text-dark-text-muted">
+                <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                <span>Rush: Odd-man rushes, speed</span>
+              </div>
+              <div className="flex items-center gap-2 text-dark-text-muted col-span-2">
+                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                <span>Shoot & Crash: High volume, net-front</span>
+              </div>
+            </div>
           </div>
 
           <button

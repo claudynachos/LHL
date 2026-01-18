@@ -10,6 +10,7 @@ class Team(db.Model):
     conference = db.Column(db.String(10), nullable=False)  # Eastern, Western
     user_controlled = db.Column(db.Boolean, default=False)
     coach_id = db.Column(db.Integer, db.ForeignKey('coaches.id'), nullable=True)
+    play_style = db.Column(db.String(20), default='auto')  # auto, trap, possession, dump_chase, rush, shoot_crash
     
     # Relationships
     roster_entries = db.relationship('Roster', backref='team', lazy=True, cascade='all, delete-orphan')
@@ -26,7 +27,8 @@ class Team(db.Model):
             'city': self.city,
             'conference': self.conference,
             'user_controlled': self.user_controlled,
-            'coach_id': self.coach_id
+            'coach_id': self.coach_id,
+            'play_style': self.play_style or 'auto'
         }
 
 class Roster(db.Model):

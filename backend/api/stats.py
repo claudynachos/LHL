@@ -61,6 +61,9 @@ def get_season_stats(simulation_id):
         PlayerStat.hits,
         PlayerStat.blocks,
         PlayerStat.shots,
+        PlayerStat.time_on_ice,
+        PlayerStat.takeaways,
+        PlayerStat.giveaways,
         # Goalie stats
         PlayerStat.saves,
         PlayerStat.goals_against,
@@ -178,6 +181,9 @@ def get_season_stats(simulation_id):
                 'hits': 0,
                 'blocks': 0,
                 'shots': 0,
+                'time_on_ice': 0,
+                'takeaways': 0,
+                'giveaways': 0,
                 'saves': 0,
                 'goals_against': 0,
                 'shots_against': 0,
@@ -213,6 +219,9 @@ def get_season_stats(simulation_id):
         stat['hits'] += row.hits or 0
         stat['blocks'] += row.blocks or 0
         stat['shots'] += row.shots or 0
+        stat['time_on_ice'] += row.time_on_ice or 0
+        stat['takeaways'] += row.takeaways or 0
+        stat['giveaways'] += row.giveaways or 0
         stat['saves'] += row.saves or 0
         stat['goals_against'] += row.goals_against or 0
         stat['shots_against'] += row.shots_against or 0
@@ -234,6 +243,9 @@ def get_season_stats(simulation_id):
             'hits': stat['hits'],
             'blocks': stat['blocks'],
             'shots': stat['shots'],
+            'time_on_ice': stat['time_on_ice'],
+            'takeaways': stat['takeaways'],
+            'giveaways': stat['giveaways'],
             'saves': stat['saves'],
             'goals_against': stat['goals_against'],
             'shots_against': stat['shots_against'],

@@ -413,6 +413,9 @@ def save_game_result(game, result):
             hits=stat['hits'],
             blocks=stat['blocks'],
             plus_minus=stat['plus_minus'],
+            time_on_ice=stat.get('time_on_ice', 0),
+            takeaways=stat.get('takeaways', 0),
+            giveaways=stat.get('giveaways', 0),
             saves=stat.get('saves', 0),
             goals_against=stat.get('goals_against', 0),
             shots_against=stat.get('shots_against', 0)
@@ -430,6 +433,9 @@ def save_game_result(game, result):
             hits=stat['hits'],
             blocks=stat['blocks'],
             plus_minus=stat['plus_minus'],
+            time_on_ice=stat.get('time_on_ice', 0),
+            takeaways=stat.get('takeaways', 0),
+            giveaways=stat.get('giveaways', 0),
             saves=stat.get('saves', 0),
             goals_against=stat.get('goals_against', 0),
             shots_against=stat.get('shots_against', 0)

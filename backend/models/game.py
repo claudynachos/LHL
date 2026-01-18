@@ -85,6 +85,9 @@ class PlayerStat(db.Model):
     hits = db.Column(db.Integer, default=0)
     blocks = db.Column(db.Integer, default=0)
     plus_minus = db.Column(db.Integer, default=0)
+    time_on_ice = db.Column(db.Integer, default=0)  # in seconds
+    takeaways = db.Column(db.Integer, default=0)
+    giveaways = db.Column(db.Integer, default=0)
     
     # Goalie stats
     saves = db.Column(db.Integer, default=0)
@@ -103,6 +106,9 @@ class PlayerStat(db.Model):
             'hits': self.hits,
             'blocks': self.blocks,
             'plus_minus': self.plus_minus,
+            'time_on_ice': self.time_on_ice,
+            'takeaways': self.takeaways,
+            'giveaways': self.giveaways,
             'saves': self.saves,
             'goals_against': self.goals_against,
             'shots_against': self.shots_against

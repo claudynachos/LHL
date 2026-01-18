@@ -14,6 +14,14 @@ const getNameColorClass = (rating: number | undefined): string => {
   return ''; // Default - no special styling
 };
 
+// Helper function to format time on ice (seconds) to MM:SS format
+const formatTOI = (seconds: number): string => {
+  if (!seconds || seconds <= 0) return '0:00';
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${minutes}:${secs.toString().padStart(2, '0')}`;
+};
+
 export default function StatsPage() {
   const params = useParams();
   const simulationId = params.id;
@@ -200,6 +208,10 @@ export default function StatsPage() {
                         <option value="goals">Goals</option>
                         <option value="assists">Assists</option>
                         <option value="plus_minus">Plus/Minus</option>
+                        <option value="shots">Shots</option>
+                        <option value="time_on_ice">TOI</option>
+                        <option value="takeaways">Takeaways</option>
+                        <option value="giveaways">Giveaways</option>
                         <option value="hits">Hits</option>
                         <option value="blocks">Block Shots</option>
                       </>
@@ -235,8 +247,13 @@ export default function StatsPage() {
                         <th className="p-3 text-center text-dark-text">A</th>
                         <th className="p-3 text-center text-dark-text">PTS</th>
                         <th className="p-3 text-center text-dark-text">+/-</th>
+                        <th className="p-3 text-center text-dark-text">S</th>
+                        <th className="p-3 text-center text-dark-text">S%</th>
+                        <th className="p-3 text-center text-dark-text">TOI/G</th>
+                        <th className="p-3 text-center text-dark-text">TK</th>
+                        <th className="p-3 text-center text-dark-text">GV</th>
                         <th className="p-3 text-center text-dark-text">Hits</th>
-                        <th className="p-3 text-center text-dark-text">Block Shots</th>
+                        <th className="p-3 text-center text-dark-text">Blk</th>
                       </tr>
                     ) : (
                       <tr>
@@ -271,6 +288,19 @@ export default function StatsPage() {
                             <td className={`p-3 text-center ${stat.plus_minus >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               {stat.plus_minus >= 0 ? '+' : ''}{stat.plus_minus}
                             </td>
+                            <td className="p-3 text-center text-dark-text">{stat.shots || 0}</td>
+                            <td className="p-3 text-center text-dark-text">
+                              {stat.shots && stat.shots > 0 
+                                ? ((stat.goals / stat.shots) * 100).toFixed(1) + '%'
+                                : '-'}
+                            </td>
+                            <td className="p-3 text-center text-dark-text text-sm">
+                              {(stat as any).time_on_ice && stat.games_played > 0 
+                                ? formatTOI(Math.round((stat as any).time_on_ice / stat.games_played)) 
+                                : '-'}
+                            </td>
+                            <td className="p-3 text-center text-dark-text">{(stat as any).takeaways || 0}</td>
+                            <td className="p-3 text-center text-dark-text">{(stat as any).giveaways || 0}</td>
                             <td className="p-3 text-center text-dark-text">{stat.hits}</td>
                             <td className="p-3 text-center text-dark-text">{stat.blocks}</td>
                           </>

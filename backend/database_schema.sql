@@ -76,7 +76,8 @@ CREATE TABLE teams (
     city VARCHAR(100) NOT NULL,  -- Montreal, Boston, etc
     conference VARCHAR(10) NOT NULL,  -- Eastern, Western
     user_controlled BOOLEAN DEFAULT FALSE,
-    coach_id INTEGER REFERENCES coaches(id)
+    coach_id INTEGER REFERENCES coaches(id),
+    play_style VARCHAR(20) DEFAULT 'auto'  -- Trap, Possession, Dump & Chase, Rush, Shoot & Crash, auto
 );
 
 CREATE INDEX idx_teams_simulation_id ON teams(simulation_id);
@@ -156,6 +157,9 @@ CREATE TABLE player_stats (
     hits INTEGER DEFAULT 0,
     blocks INTEGER DEFAULT 0,
     plus_minus INTEGER DEFAULT 0,
+    time_on_ice INTEGER DEFAULT 0,  -- Time on ice in seconds
+    takeaways INTEGER DEFAULT 0,    -- Puck takeaways
+    giveaways INTEGER DEFAULT 0,    -- Puck giveaways
     
     -- Goalie stats
     saves INTEGER DEFAULT 0,

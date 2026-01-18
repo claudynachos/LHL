@@ -4,7 +4,7 @@
   "description": "Legend Hockey League - Full Stack Hockey Simulation",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "cd backend && source venv/bin/activate && python app.py",
+    "dev:backend": "cd backend && source venv/bin/activate && PORT=5001 python app.py",
     "dev:frontend": "cd frontend && npm run dev",
     "install:all": "npm run install:frontend && npm run install:backend",
     "install:frontend": "cd frontend && npm install",

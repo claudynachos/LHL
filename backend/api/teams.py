@@ -137,6 +137,40 @@ def manage_lines(team_id):
     
     return jsonify({'message': 'Lines updated successfully'}), 200
 
+@bp.route('/<int:team_id>/play-style', methods=['PUT'])
+@jwt_required()
+def update_play_style(team_id):
+    """Update team play style"""
+    from extensions import db
+    from models.team import Team
+    from models.simulation import Simulation
+    
+    user_id = int(get_jwt_identity())
+    team = Team.query.get(team_id)
+    
+    if not team:
+        return jsonify({'error': 'Team not found'}), 404
+    
+    simulation = Simulation.query.get(team.simulation_id)
+    if not simulation or simulation.user_id != user_id:
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    data = request.get_json()
+    play_style = data.get('play_style', 'auto')
+    
+    # Validate play style
+    valid_styles = ['auto', 'trap', 'possession', 'dump_chase', 'rush', 'shoot_crash']
+    if play_style not in valid_styles:
+        return jsonify({'error': f'Invalid play style. Must be one of: {", ".join(valid_styles)}'}), 400
+    
+    team.play_style = play_style
+    db.session.commit()
+    
+    return jsonify({
+        'message': 'Play style updated successfully',
+        'play_style': play_style
+    }), 200
+
 @bp.route('/<int:team_id>/sign-free-agent', methods=['POST'])
 @jwt_required()
 def sign_free_agent(team_id):
