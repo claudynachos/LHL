@@ -39,8 +39,8 @@ export function ModalProvider({ children }: { children: ReactNode }) {
         title,
         message,
         type: 'confirm',
-        resolve: (value: boolean) => {
-          resolve(value);
+        resolve: (value?: boolean) => {
+          resolve(value ?? false);
         },
       });
       setIsOpen(true);
