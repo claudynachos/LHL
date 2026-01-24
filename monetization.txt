@@ -1,9 +1,11 @@
+ONE TIME CHARGE
+
 1.Free
 -1 simulation only saved
 -no trades
 -max: 10 years 
 
-2. 4.99$
+2. AMATEUR: 4.99$
 -Team Logos
 -Chose Era
 -25 years max
@@ -11,10 +13,20 @@
 -Trades
 -Other lines (PP,PK,Shootouts)
 
-3. 9.99$
+3. PRO: 9.99$
 -Young Guns
 -Strategies
 -Multiplayer
 -10simulation saved
 -AI commentator
 +all other features of 2nd tier
+
+
+Ou per month is even better
+
+1.Free
+2.1.99$ per month
+3.4.99$ per month
+
+
++ add betting feature with friend (crypto or Whop.com for funding) - we take a 1 or 2% cut.
